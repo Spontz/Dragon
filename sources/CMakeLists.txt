@@ -1,0 +1,21 @@
+file(GLOB_RECURSE SRCS *.cpp *.hpp *.c *.h)
+
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*.*)
+source_group(main FILES ${SVE_SRCS})
+
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/core/*.*)
+source_group(core FILES ${SVE_SRCS})
+
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/core/drivers/*.*)
+source_group(core\\drivers FILES ${SVE_SRCS})
+
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/expreval/*.*)
+source_group(expreval FILES ${SVE_SRCS})
+
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/interface/*.*)
+source_group(interface FILES ${SVE_SRCS})
+
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/net2/*.*)
+source_group(net2 FILES ${SVE_SRCS})
+
+add_executable(sve WIN32 ${SRCS})
