@@ -12,6 +12,7 @@ extern "C" {
 #include <SDL.h>
 #include <SDL_endian.h>
 #include <SDL_opengl.h>
+#include <SDL_opengl_glext.h>
 #include <SDL_image.h>
 
 #ifdef WIN32

@@ -56,7 +56,6 @@ int main(int argc, char **argv)
 
       case NET2_TCPACCEPTEVENT:
         printf("accept(%d)\n", NET2_GetSocket(&ev));
-        printNET2Event(&ev);
         socks++;
         break;
 
@@ -80,7 +79,6 @@ int main(int argc, char **argv)
 
       case NET2_TCPCLOSEEVENT:
         printf("close(%d)\n", NET2_GetSocket(&ev));
-        printNET2Event(&ev);
         NET2_TCPClose(NET2_GetSocket(&ev));  // close the socket
 
         printf("count=%d\n", count); fflush(NULL);
@@ -97,7 +95,6 @@ int main(int argc, char **argv)
 
       case NET2_ERROREVENT:
         printf("Error: %s(%d)\n", NET2_GetEventError(&ev), NET2_GetSocket(&ev));
-        printNET2Event(&ev);
         break;
       }
       break;

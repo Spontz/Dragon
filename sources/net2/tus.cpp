@@ -70,7 +70,6 @@ int main(int argc, char **argv)
 
       case NET2_ERROREVENT:
         printf("Error: %s(%d)\n", NET2_GetEventError(&ev), NET2_GetSocket(&ev));
-        printNET2Event(&ev);
         break;
       }
       break;

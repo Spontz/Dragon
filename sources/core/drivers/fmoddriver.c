@@ -33,7 +33,7 @@ void sound_init() {
     }
 	
 	result = system->init(1, FMOD_INIT_NORMAL, 0);
-    ERRCHECK(result); */
+    ERRCHECK(result); 
 	
 	
 	if (FSOUND_GetVersion() < FMOD_VERSION)
@@ -57,14 +57,14 @@ void sound_init() {
 		i++;
 	}
 
-	if (!driver) sound_error();
+	if (!driver) sound_error();*/
 }
 
 // ******************************************************************
 
 void sound_play() {
 
-	FSOUND_SetPaused(FSOUND_ALL,FALSE);
+	//FSOUND_SetPaused(FSOUND_ALL,FALSE);
 }
 
 // ******************************************************************
@@ -78,14 +78,14 @@ void sound_update() {
 
 void sound_pause() {
 
-	FSOUND_SetPaused(FSOUND_ALL,TRUE);
+	//FSOUND_SetPaused(FSOUND_ALL,TRUE);
 }
 
 // ******************************************************************
 
 void sound_stop() {
 
-	FSOUND_StopSound(FSOUND_ALL);
+	//FSOUND_StopSound(FSOUND_ALL);
 }
 
 // ******************************************************************

@@ -33,22 +33,6 @@
 extern "C" {
 #endif
 
-  void printSDLColor(const SDL_Color *c);
-  void printSDLEvent(SDL_Event *e);
-  void printSDLInitFlags(const Uint32 f);
-  void printSDLModifiers(SDL_Keymod mod);
-  void printSDLOpenGLAttrs();
-  void printSDLPalette(const SDL_Palette *p);
-  void printSDLPixelFormat(const SDL_PixelFormat *f);
-  void printSDLRect(const SDL_Rect *r);
-  void printSDLSurface(const SDL_Surface *s);
-  void printSDLSurfaceFlags(const Uint32 f);
-  //void printSDLVideoInfo(const SDL_VideoInfo *vi);
-  void printIPaddress(IPaddress *addr);  // IPaddress structure print utility
-  void printNET2Event(SDL_Event *event); // net2 event print utility
-  void printUDPpacket(UDPpacket *packet);
-  void printBytes(char *buf, int len);
-
   void mySDLInitOrQuit(Uint32 flags);   // Initialize SDL and networking or die trying
   char *mySDL_Init(Uint32 flags);       // Initialize networking and the rest of SDL
   void mySDL_Quit();                    // Quit networking and the rest of SDL

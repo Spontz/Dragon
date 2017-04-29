@@ -124,17 +124,17 @@ void gldrv_initEXT()
 	// reset the extension
 	memset(&glDriver.ext, 0, sizeof(tGlExtensions));
 
-	glGetIntegerv(GL_MAX_TEXTURE_SIZE, (GLint *)&glDriver.ext.max_tex_size);
-	glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, (GLint *)&glDriver.ext.max_tus);
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE         , (GLint *)&glDriver.ext.max_tex_size         );
+	glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB    , (GLint *)&glDriver.ext.max_tus              );
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS_EXT, (GLint *)&glDriver.ext.max_color_attachments);
-	glGetIntegerv(GL_MAX_DRAW_BUFFERS, (GLint *)&glDriver.ext.max_draw_buffers);
+	glGetIntegerv(GL_MAX_DRAW_BUFFERS         , (GLint *)&glDriver.ext.max_draw_buffers     );
 	
+	/*
 	// multitexture
 	if (gldrv_checkEXT("GL_ARB_multitexture")) {
 		glDriver.ext.multitexture = TRUE;
 
-	/*
-	#ifdef WIN32
+	#ifdef _WIN32
 			glActiveTextureARB       = (PFNGLACTIVETEXTUREARBPROC)       wglGetProcAddress("glActiveTextureARB");
 			glClientActiveTextureARB = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
 			glMultiTexCoord2fARB     = (PFNGLMULTITEXCOORD2FARBPROC)     wglGetProcAddress("glMultiTexCoord2fARB");
@@ -147,8 +147,7 @@ void gldrv_initEXT()
 			//all &= glMultiTexCoord2fARB && glMultiTexCoord2fvARB && glMultiTexCoord3fARB && glMultiTexCoord3fvARB;
 			if (!(glActiveTextureARB && glClientActiveTextureARB && glMultiTexCoord2fARB && glMultiTexCoord2fvARB && glMultiTexCoord3fARB && glMultiTexCoord3fvARB)) glDriver.ext.multitexture = FALSE;
 	#endif
-	*/
-	}
+	}*/
 
 	// glsl shaders support
 	if (gldrv_checkEXT("GL_ARB_vertex_program") && gldrv_checkEXT("GL_ARB_vertex_shader") &&
@@ -163,7 +162,8 @@ void gldrv_initEXT()
 		glDriver.ext.multisample = TRUE;
 	}
 
-#ifdef WIN32
+/*
+#ifdef _WIN32
 	// texture_compression
 	if (gldrv_checkEXT("GL_ARB_texture_compression")) {
 		glDriver.ext.texture_compression = TRUE;
@@ -172,6 +172,7 @@ void gldrv_initEXT()
 		if (!glCompressedTexImage2DARB) glDriver.ext.texture_compression = FALSE;
 	}
 #endif
+*/
 
 	// texture cube map
 	if (gldrv_checkEXT("GL_ARB_texture_cube_map")) {
@@ -202,12 +203,12 @@ void gldrv_initEXT()
 	if (gldrv_checkEXT("GL_EXT_compiled_vertex_array")) {
 		glDriver.ext.vertex_array = TRUE;
 
-#ifdef WIN32
+/*#ifdef WIN32
 		glLockArraysEXT		= (PFNGLLOCKARRAYSEXTPROC)		wglGetProcAddress("glLockArraysEXT");
 		glUnlockArraysEXT	= (PFNGLUNLOCKARRAYSEXTPROC)	wglGetProcAddress("glUnlockArraysEXT");
 		//all = glLockArraysEXT && glUnlockArraysEXT;
 		if (!(glLockArraysEXT && glUnlockArraysEXT)) glDriver.ext.vertex_array = FALSE;
-#endif
+#endif*/
 	}
 
 	// blend subtract
@@ -215,10 +216,10 @@ void gldrv_initEXT()
 
 		glDriver.ext.blend_subtract = TRUE;
 
-	#ifdef WIN32
+	/*#ifdef WIN32
 			glBlendEquationEXT	= (PFNGLBLENDEQUATIONEXTPROC) wglGetProcAddress("glBlendEquationEXT");
 			if (!glBlendEquationEXT) glDriver.ext.blend_subtract = FALSE;
-	#endif
+	#endif*/
 	}
 
 	// generate_mipmap
@@ -458,15 +459,18 @@ void gldrv_initViewport()
 		}
 	}
 
-/* *************************************************************
+/**************************************************************
  create window and opengl context
-**************************************************************** */
+**************************************************************/
 
 void gldrv_init()
 	{
 	// information about the current video settings
-	const SDL_VideoInfo* info = NULL;
-	#ifdef WIN32
+	assert(0); 
+
+	/*const SDL_VideoInfo* info = NULL;
+
+	#ifdef _WIN32
 		unsigned int err;
 	#endif
 
@@ -583,9 +587,8 @@ void gldrv_init()
 	dkernel_trace("Initializing viewport, rtts and fbos...");
 	gldrv_initViewport();
 
-	dkernel_trace("SVE OpenGL Driver initialized.");
-	}
-
+	dkernel_trace("SVE OpenGL Driver initialized.");*/
+}
 
 /* *************************************************************
  delete window and opengl context

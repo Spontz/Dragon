@@ -305,61 +305,6 @@ float vector_angle (vector_t *a, vector_t *b)
 
 void vector_transform (vector_t *v, matrix_t m)
 {
-
-#ifdef WIN32
-
-	//	about 30% +speed asm version
-	__asm {
-		mov		eax, v
-		mov		edx, m
-
-		fld		[eax]				// x
-		fmul	dword ptr[edx]		// x*m[0][0]
-		fld		[eax]				// x | x*m[0][0]
-		fmul	dword ptr[edx+4]	// x*m[0][1] x*m[0][0]
-		fld		[eax]				// x | x*m[0][1] | x*m[0][0]
-		fmul	dword ptr[edx+8]	// x*m[0][2] | x*m[0][1] | x*m[0][0]
-
-		fld		[eax+4]				// y | ...
-		fmul	dword ptr[edx+16]	// y*m[1][0] | ...
-		fld		[eax+4]				// y | y*m[1][0] | ...
-		fmul	dword ptr[edx+4+16]	// y*m[1][1] | y*m[1][0] | ...
-		fld		[eax+4]				// y | y*m[1][1] | y*m[1][0] | ...
-		fmul	dword ptr[edx+8+16]	// y*m[1][2] | y*m[1][1] | y*m[1][0] | ...
-
-		fxch	st(2)				// y*m[1][0] | y*m[1][1] | y*m[1][2] | ...
-		faddp	st(5), st(0)		// y*m[1][1] | y*m[1][2] | x*m[0][2] | x*m[0][1] | xacc
-		faddp	st(3), st(0)		// y*m[1][2] | x*m[0][2] | yacc | xacc
-		faddp	st(1), st(0)		// zacc | yacc | xacc
-
-		fld		[eax+8]				// z | ...
-		fmul	dword ptr[edx+32]	// z*m[2][0] | ...
-		fld		[eax+8]				// z | z*m[2][0] | ...
-		fmul	dword ptr[edx+4+32]	// z*m[2][1] | z*m[2][0] | ...
-		fld		[eax+8]				// z | z*m[2][1] | z*m[2][0] | ...
-		fmul	dword ptr[edx+8+32]	// z*m[2][2] | z*m[2][1] | z*m[2][0] | ...
-
-		fxch	st(2)				// z*m[2][0] | z*m[2][1] | z*m[2][2] | ...
-		faddp	st(5), st(0)		// z*m[2][1] | z*m[2][2] | zacc | yacc | xacc
-		faddp	st(3), st(0)		// z*m[2][2] | zacc | yacc | xacc
-		faddp	st(1), st(0)		// zacc | yacc | xacc
-
-		fld		[edx+48]			// m[3][0] | zacc | yacc | xacc
-		fld		[edx+4+48]			// m[3][1] | m[3][0] | zacc | yacc | xacc
-		fld		[edx+8+48]			// m[3][2] | m[3][1] | m[3][0] | zacc | yacc | xacc
-
-		fxch	st(2)				// z*m[2][0] | z*m[2][1] | z*m[2][2] | ...
-		faddp	st(5), st(0)		// z*m[2][1] | z*m[2][2] | zacc | yacc | xacc
-		faddp	st(3), st(0)		// z*m[2][2] | zacc | yacc | xacc
-		faddp	st(1), st(0)		// zacc | yacc | xacc
-
-		fstp	[eax+8]				// v->z
-		fstp	[eax+4]				// v->y
-		fstp	[eax]				// v->x
-	}
-
-#else
-
 	float x, y, z;
 
 	x = v->x;
@@ -369,8 +314,6 @@ void vector_transform (vector_t *v, matrix_t m)
 	v->x = x * m[0][0] + y * m[1][0] + z * m[2][0] + m[3][0];
 	v->y = x * m[0][1] + y * m[1][1] + z * m[2][1] + m[3][1];
 	v->z = x * m[0][2] + y * m[1][2] + z * m[2][2] + m[3][2];
-
-#endif
 }
 
 float smoothstep( float a, float b, float x )
