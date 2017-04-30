@@ -25,7 +25,6 @@ if (MSVC)
 endif ()
 
 
-
 # SDL2
 include_directories(dependencies/vs/SDL2-2.0.5/include)
 link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2-2.0.5/lib/x64)

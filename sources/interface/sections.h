@@ -1,6 +1,12 @@
 #ifndef __SECTIONS_H
 #define __SECTIONS_H
 
+void preload_sound();
+void load_sound();
+void init_sound();
+void render_sound();
+void end_sound();
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -227,11 +233,7 @@ void init_rayMatrix();
 void render_rayMatrix();
 void end_rayMatrix();
 
-void preload_sound();
-void load_sound();
-void init_sound();
-void render_sound();
-void end_sound();
+
 
 void preload_saveBuffer();
 void load_saveBuffer();

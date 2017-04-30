@@ -9,6 +9,12 @@ source_group(core FILES ${SVE_SRCS})
 file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/core/drivers/*.*)
 source_group(core\\drivers FILES ${SVE_SRCS})
 
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/sections/*.*)
+source_group(sections FILES ${SVE_SRCS})
+
+file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/effects/*.*)
+source_group(effects FILES ${SVE_SRCS})
+
 file(GLOB SVE_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/expreval/*.*)
 source_group(expreval FILES ${SVE_SRCS})
 
