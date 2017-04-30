@@ -24,11 +24,28 @@ if (MSVC)
 	#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LTCG:NO" )
 endif ()
 
-include_directories(dependencies/vs/SDL2-2.0.5/include)
-include_directories(dependencies/vs/SDL2_image-2.0.1/include)
-include_directories(dependencies/vs/SDL2_net-2.0.1/include)
 
+
+# SDL2
+include_directories(dependencies/vs/SDL2-2.0.5/include)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2-2.0.5/lib/x64)
+
+# SDL2 Image
+include_directories(dependencies/vs/SDL2_image-2.0.1/include)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2_image-2.0.1/lib/x64)
+
+# SDL2 Net
+include_directories(dependencies/vs/SDL2_net-2.0.1/include)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2_net-2.0.1/lib/x64)
+
+# FMOD
 include_directories(dependencies/vs/fmod10903/lowlevel/inc)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/fmod10903/lowlevel/lib)
+
+# GLEW
+add_definitions(-DGLEW_STATIC)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/glew-2.0.0/include)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/glew-2.0.0/lib/Release/x64)
 
 add_subdirectory(sources)
 

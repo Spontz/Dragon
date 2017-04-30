@@ -4,7 +4,10 @@
 
 #ifdef WIN32
 	#include <io.h>
+	#include <Windows.h>
 #endif
+
+#include <cassert>
 
 #include "../main.h"
 #include "timing.h"
@@ -12,6 +15,7 @@
 #include "files.h"
 #include "debug.h"
 #include "drivers/events.h"
+#include "drivers/fmoddriver.h"
 
 #include "../interface/sections.h"
 
@@ -420,7 +424,7 @@ void dkernel_getArguments(int argc, char *argv[])
 	demoSystem.demoDir = ".";
 
 	#ifdef WIN32
-		demoSystem.hInstance = (long) GetModuleHandle(NULL);
+		demoSystem.hInstance = GetModuleHandle(NULL);
 	#endif
 	}
 
@@ -973,7 +977,7 @@ void init_sectionQueues()
 			loading = &sectionFunction[loadingSection->staticSectionIndex];
 			break;
 			}
-		ds = ds->next;
+		ds = (tDemoSection*) ds->next;
 		}
 
 	if (!loadingSection) {
@@ -1024,7 +1028,7 @@ void init_sectionQueues()
 				ds_tmp = demoSystem.readySection;
 				isLast = FALSE;
 				while ((!isLast) && (ds_tmp->startTime < ds->startTime)) {
-					if (ds_tmp->nextRdy) ds_tmp = ds_tmp->nextRdy;
+					if (ds_tmp->nextRdy) ds_tmp = (tDemoSection*) ds_tmp->nextRdy;
 					else isLast = TRUE;
 				}
 
@@ -1040,7 +1044,7 @@ void init_sectionQueues()
 				}
 			}
 		}
-		ds = ds->next;
+		ds = (tDemoSection*) ds->next;
 	}
 
 	// all sections will be preloaded except loading section
@@ -1386,7 +1390,10 @@ void dkernel_doExec() {
 	// Reset the mouse position if the left mouse button is pressed
 	if (demoSystem.mouseButtons & SDL_BUTTON(1)) {
 		SDL_ShowCursor(FALSE);
-		SDL_WarpMouse(glDriver.width / 2, glDriver.height / 2);
+		
+		assert(FALSE);
+		// SDL_WarpMouse(glDriver.width / 2, glDriver.height / 2);
+
 	} else if (demoSystem.debug) {
 		SDL_ShowCursor(TRUE);
 	}
@@ -2009,7 +2016,7 @@ void parse_error(const char* pFilename, int line, const char* pError, ...)
 
 // ******************************************************************
 
-/*const matrix_t*			get_sve_variable_matrix_4x4f(enum_sve_variable id) {
+const matrix_t*			get_sve_variable_matrix_4x4f(enum_sve_variable id) {
 	return &demoSystem.m_VariableMatrix[id];
 }
 
@@ -2066,4 +2073,4 @@ void					set_sve_variable_matrix_4x4f(enum_sve_variable id, const matrix_t* pVal
 			invalidate_sve_variable(sve_variable_matrix_projection_transpose);
 			break;
 	}
-} */
+}

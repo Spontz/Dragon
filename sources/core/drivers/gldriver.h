@@ -9,6 +9,8 @@ extern "C" {
 
 #define NO_SDL_GLEXT 1
 
+#include "gl/glew.h"
+
 #include <SDL.h>
 #include <SDL_endian.h>
 #include <SDL_opengl.h>
@@ -16,6 +18,13 @@ extern "C" {
 #include <SDL_image.h>
 
 #ifdef WIN32
+
+#pragma comment( lib, "opengl32" )
+#pragma comment( lib, "glu32" )
+#pragma comment( lib, "opengl32" )
+#pragma comment( lib, "sdl2" )
+#pragma comment( lib, "sdl2main" )
+#pragma comment( lib, "glew32s" )
 
 #elif __APPLE__
 

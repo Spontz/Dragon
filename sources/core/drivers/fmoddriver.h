@@ -7,12 +7,12 @@ extern "C" {
 
 // ******************************************************************
 
-void sound_init( );
-void sound_play( );
-void sound_update( );
-void sound_pause( );
-void sound_stop( );
-void sound_end( );
+extern void sound_init( );
+extern void sound_play( );
+extern void sound_update( );
+extern void sound_pause( );
+extern void sound_stop( );
+extern void sound_end( );
 
 float sound_cpu( );
 int sound_channels( );

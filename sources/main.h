@@ -1,7 +1,6 @@
-#ifndef __MAIN_H
-#define __MAIN_H
+#pragma once
 
-// ******************************************************************
+//
 
 #define TRUE  1
 #define FALSE 0
@@ -9,7 +8,15 @@
 #define USE_CACHE 1
 #define NO_CACHE  0
 
-// ******************************************************************
+//
+
+#ifdef _WIN32
+	#define spz_strcmpi _strcmpi
+#else
+	#define spz_strcmpi strcasecmp
+#endif
+
+//
 
 #include <SDL.h>
 
@@ -20,16 +27,16 @@
 #include <math.h>
 #include <float.h>
 
-// ******************************************************************
+//
 
 #include "core/dkernel.h"
 #include "core/disk.h"
 #include "core/drivers/gldriver.h"
-//#include "core/drivers/fmoddriver.h"
+// #include "core/drivers/fmoddriver.h"
 #include "core/drivers/netdriver.h"
 #include "core/drivers/exprevaldriver.h"
 
-// ******************************************************************
+//
 
 #include "core/math3d.h"
 #include "core/skybox.h"
@@ -55,7 +62,3 @@
 #include "core/cubemap.h"
 #include "core/parse.h"
 #include "core/viewport.h"
-
-// ******************************************************************
-
-#endif
