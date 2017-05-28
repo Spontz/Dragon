@@ -1,11 +1,11 @@
 /*
- *  windowmng.c : Window Management
+ *  spzmessagebox.c : Window Management
  *  Inferno
  *
  *
  */
 
-#include "windowmng.h"
+#include "spzmessagebox.h"
 
 #ifdef WIN32
 	#include <windows.h>
@@ -20,13 +20,13 @@
 
 
 
-void SpzMessageBox( const char* title, const char* message )
+void SpzMessageBox(const char* pTitle, const char* pMmessage)
 	{
-	static char *lastMessage;
+	static char* pLastMessage;
 		
-	if (lastMessage != NULL)
-		if (strcmp(lastMessage, message) == 0)
-			return; // The message has been already displayed, so don't show it again (return the function)
+	if (pLastMessage != NULL)
+		if (strcmp(pLastMessage, pMmessage) == 0)
+			return; // Hack: The message has been already displayed, so don't show it again (return the function)
 		
 	#if defined( __APPLE__ ) && defined( __MACH__ )
 		CFStringRef titleStr = CFStringCreateWithCString(NULL, title, kCFStringEncodingUTF8);
@@ -35,13 +35,13 @@ void SpzMessageBox( const char* title, const char* message )
 		CFRelease(titleStr);
 		CFRelease(messageStr);
 	#elif WIN32
-		MessageBoxA( 0, message, title, 0 ); // Messagebox with an OK button
+		MessageBoxA( 0, pMmessage, pTitle, 0 ); // Messagebox with an OK button
 	#else
 		#error Unsupported platform
 	#endif
 
 	// Save the message
-	free(lastMessage);
-	lastMessage = calloc(strlen(message) + 1, sizeof(char));
-	lastMessage = SDL_strdup(message);
+	free(pLastMessage);
+	pLastMessage = calloc(strlen(pMmessage) + 1, sizeof(char));
+	pLastMessage = SDL_strdup(pMmessage);
 	}

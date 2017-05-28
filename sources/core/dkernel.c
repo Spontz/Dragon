@@ -2029,10 +2029,11 @@ enum_sve_variable		get_sve_variable_id(const char* pString) {
 	else return sve_variable_unknown;
 }
 
+/*
+static bool g_ initialized;
 enum_sve_variable_type	get_sve_variable_type(enum_sve_variable id)
 {
 	static enum_sve_variable_type VariableType[MAX_SVE_VARIABLE_ID+1];
-	static bool initialized = false;
 	
 	if (!initialized)
 	{
@@ -2047,11 +2048,14 @@ enum_sve_variable_type	get_sve_variable_type(enum_sve_variable id)
 	
 	return VariableType[id];
 }
+*/
 
+/*
 void					invalidate_sve_variable(enum_sve_variable id)
 {
 	//SL_NOT_IMPLEMENTED;
 }
+*/
 
 void					set_sve_variable_matrix_4x4f(enum_sve_variable id, const matrix_t* pValue)
 {

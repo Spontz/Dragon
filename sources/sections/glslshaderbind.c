@@ -83,7 +83,7 @@ typedef struct {
 } glslshaderbind_section;
 
 static glslshaderbind_section *local;
-
+/*
 // ********** COMIENZO DEL CODIGO INCOMPRENSIBLE DE ISAAC ********** //
 enum_sve_variable		get_sve_variable_id(const char* pString)
 	{
@@ -148,7 +148,7 @@ void					set_sve_variable_matrix_4x4f(enum_sve_variable id, const matrix_t* pVal
 // ********** FIN DEL CODIGO INCOMPRENSIBLE DE ISAAC ********** //
 
 // ******************************************************************
-
+*/
 void preload_glslshaderbind () {}
 
 // ******************************************************************
