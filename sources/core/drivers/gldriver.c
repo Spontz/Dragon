@@ -490,8 +490,6 @@ void gldrv_initViewport()
 void gldrv_init()
 	{
 	GLenum			GLEWError;
-	SDL_GLContext*	pSDLContext;
-	SDL_Window*		pSDLWindow;
 	uint32_t		SDLWindowFlags;
 
 
@@ -555,7 +553,7 @@ void gldrv_init()
 		SDLWindowFlags |= SDL_WINDOW_FULLSCREEN;
 
 	// TODO: glDriver.bpp = info->vfmt->BitsPerPixel;
-	pSDLWindow = SDL_CreateWindow(
+	glDriver.pSDLWindow = SDL_CreateWindow(
 		demoSystem.demoName,
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
@@ -569,7 +567,7 @@ void gldrv_init()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-	pSDLContext = SDL_GL_CreateContext(pSDLWindow);
+	glDriver.pSDLContext = SDL_GL_CreateContext(glDriver.pSDLWindow);
 
 	glClearColor(0,0,0,1);
 
@@ -743,7 +741,7 @@ void gldrv_endRender()
 void gldrv_swap()
 	{
 	glFlush();
-	SDL_GL_SwapWindow(0);
+	SDL_GL_SwapWindow(glDriver.pSDLWindow);
 	}
 
 /* *************************************************************

@@ -110,6 +110,8 @@ typedef struct
 	int				multisampling;
 	float			gamma;
 	tGLFboFormat	fbo[FBO_BUFFERS];
+	SDL_GLContext*	pSDLContext;
+	SDL_Window*		pSDLWindow;
 	} tGlDriver;
 
 float	gldrv_get_aspect_ratio();
