@@ -350,17 +350,33 @@ void gldrv_initState()
 
 	// Set default ogl states
 	glMatrixMode(GL_PROJECTION);
+
+	while (gl_drv_check_for_gl_errors(OGLError))
+		dkernel_warn("OpenGL Error while setting the default state in gldrv_initState:\n\n%s", OGLError);
+
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	while (gl_drv_check_for_gl_errors(OGLError))
+		dkernel_warn("OpenGL Error while setting the default state in gldrv_initState:\n\n%s", OGLError);
+
 	glClearColor(0, 0, 0, 0);
 	glDisable(GL_BLEND);						// blending disabled
 	glDisable(GL_ALPHA_TEST);					// alpha test disabled
 	glDisable(GL_LIGHTING);						// lighting disabled
 	glDisable(GL_LIGHT0);						// default light disabled too
+
+	while (gl_drv_check_for_gl_errors(OGLError))
+		dkernel_warn("OpenGL Error while setting the default state in gldrv_initState:\n\n%s", OGLError);
+
 	glDisable(GL_CULL_FACE);					// cull face disabled
 	glEnable(GL_TEXTURE_2D);					// textures enabled
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// draw cwise and ccwise in fill mode
+
+	while (gl_drv_check_for_gl_errors(OGLError))
+		dkernel_warn("OpenGL Error while setting the default state in gldrv_initState:\n\n%s", OGLError);
+
 	glShadeModel(GL_FLAT);						// polygon smoothing disabled
 	glEnable(GL_DEPTH_TEST);					// depth test enabled
 	glDepthFunc(GL_LEQUAL);						// depth test comparison function set to LEQUAL
@@ -549,11 +565,13 @@ void gldrv_init()
 	);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	pSDLContext = SDL_GL_CreateContext(pSDLWindow);
+
+	glClearColor(0,0,0,1);
 
 /*
 	if (!demoSystem.debug)

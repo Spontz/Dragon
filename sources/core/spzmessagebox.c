@@ -18,7 +18,19 @@
 	#include <AGL/agl.h>
 #endif
 
-
+#if _WIN64 || __cplusplus_cli
+	#define SL_DBG_BREAK __debugbreak();
+#elif __linux__
+	#define SL_DBG_BREAK asm("int $3");
+	#define __FUNCTION__ __func__
+#elif __APPLE__
+	#define SL_DBG_BREAK __builtin_trap();
+#elif WIN32
+	#define SL_DBG_BREAK __asm { int 3 }
+#else
+	// emscripten
+	#define SL_DBG_BREAK abort();
+#endif
 
 void SpzMessageBox(const char* pTitle, const char* pMmessage)
 	{
@@ -39,6 +51,8 @@ void SpzMessageBox(const char* pTitle, const char* pMmessage)
 	#else
 		#error Unsupported platform
 	#endif
+
+	SL_DBG_BREAK;
 
 	// Save the message
 	free(pLastMessage);
