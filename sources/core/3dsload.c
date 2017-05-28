@@ -516,7 +516,7 @@ static void ReadMaterial(H3dsMaterial *mat, tChunk *prevChunk) {
 
 			case CHUNK_MAPFILE:
 				readString(text, chunk);
-				mat->TexFilename = strdup(text);
+				mat->TexFilename = _strdup(text);
 				mat->hTex = 1;
 				break;
 
@@ -599,7 +599,7 @@ static void ChunkReader(H3dsScene *scene, tChunk *prevChunk) {
 				meshObj = GetMeshObj(scene);
 				// load object name
 				readString(text,chunk);
-				meshObj->name = strdup(text);
+				meshObj->name = _strdup(text);
 				// load object chunks
 				ReadObject(scene,meshObj,chunk);
 				break;
@@ -1308,7 +1308,7 @@ H3dsScene *model_load(const char *name, int cache)
 	// If cache is enabled, check if the model is cached (only in loading mode)
 	if (demoSystem.state == DEMO_LOADING) {
 		if (cache == 1) {
-			sceneCache[sceneCount].name = strdup(name);
+			sceneCache[sceneCount].name = _strdup(name);
 			sceneCache[sceneCount].scene = scene;
 			if (++sceneCount >= MAX_SCENES) dkernel_error("Too many 3ds scenes. Only %i simultaneous scenes are supported.", MAX_SCENES);
 		}

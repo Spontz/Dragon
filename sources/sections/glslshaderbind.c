@@ -199,8 +199,8 @@ void load_glslshaderbind () {
 	script_variable_matrix_4x4*	pVariableMatrix4x4;
 
 	// Exit if shaders not supported
-	if (!glDriver.ext.glslshaders)
-		return;
+//	if (!glDriver.ext.glslshaders)
+	//	return;
 	
 	// script validation
 	// 2 strings needed: Vertex and fragment shader path
@@ -394,8 +394,8 @@ void render_glslshaderbind()
 	double			d;
 
 	// Exit if shaders not supported
-	if (!glDriver.ext.glslshaders)
-		return;
+	//if (!glDriver.ext.glslshaders)
+		//return;
 
 	local = (glslshaderbind_section*) mySection->vars;
 

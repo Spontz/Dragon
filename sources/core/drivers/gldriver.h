@@ -60,7 +60,7 @@ typedef struct {
 	char texture_env_add;
 	char texture_env_combine;
 	char texture_env_dot3;
-	char glslshaders; // GLSL shaders support (vertex & pixel shader 2.0)
+//	char glslshaders; // GLSL shaders support (vertex & pixel shader 2.0)
 
 	// EXT extensions
 	char anisotropic;

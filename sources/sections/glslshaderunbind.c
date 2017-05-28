@@ -31,8 +31,8 @@ void init_glslshaderunbind () {
 
 void render_glslshaderunbind () {
 	// Exit, if demo is being run without shaders
-	if (!glDriver.ext.glslshaders)
-		return;
+//	if (!glDriver.ext.glslshaders)
+	//	return;
 		
 	// local = (glslshaderunbind_section *) mySection->vars;
 		

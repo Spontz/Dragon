@@ -17,7 +17,7 @@ void load_renderBuffer()
 	char OGLError[1024];
 
 	char *positionEquation;
-	int theSize;
+	size_t theSize;
 	
 	pLocal = malloc(sizeof(renderBuffer_section));
 
@@ -125,8 +125,8 @@ void render_renderBuffer()
 		glClear(GL_DEPTH_BUFFER_BIT);
 	
 	// Exit if shaders not supported (param==-1 when we want to use renderbuffer for shaders)
-	if (!glDriver.ext.glslshaders && (int)mySection->param[0]==-1)
-		return;
+	//if (!glDriver.ext.glslshaders && (int)mySection->param[0]==-1)
+		//return;
 	
 	// Enable the buffer in which we are going to paint
 	if ((int)mySection->param[0]>=0)

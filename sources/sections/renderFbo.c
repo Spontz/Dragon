@@ -34,8 +34,8 @@ void render_renderFbo () {
 	if (fabs(mySection->param[2] - 1.0f) < FLT_EPSILON) glClear (GL_DEPTH_BUFFER_BIT);
 	
 	// Exit if shaders not supported (param==-1 when we want to use renderfbo for shaders)
-	if (!glDriver.ext.glslshaders && (int)mySection->param[0]==-1)
-		return;
+	//if (!glDriver.ext.glslshaders && (int)mySection->param[0]==-1)
+		//return;
 	
 	// Enable the buffer in which we are going to paint
 	if ((int)mySection->param[0]>=0)

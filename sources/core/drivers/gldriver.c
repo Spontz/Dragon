@@ -152,6 +152,7 @@ void gldrv_initEXT()
 	#endif
 	}*/
 
+	/*
 	// glsl shaders support
 	if (gldrv_checkEXT("GL_ARB_vertex_program") && gldrv_checkEXT("GL_ARB_vertex_shader") &&
 		gldrv_checkEXT("GL_ARB_fragment_program") && gldrv_checkEXT("GL_ARB_fragment_shader")) {
@@ -159,6 +160,7 @@ void gldrv_initEXT()
 	}
 	else
 		glDriver.ext.glslshaders = FALSE;
+	*/
 	
 	// multisample
 	if (gldrv_checkEXT("GL_ARB_multisample")) {
@@ -248,7 +250,7 @@ void gldrv_initEXT()
 		dkernel_trace("Max draw buffers: %d\n",glDriver.ext.max_draw_buffers);
 		dkernel_trace("\n%s", log_separator);
 		dkernel_trace("GL_ARB_multitexture: %s\n",glDriver.ext.multitexture ? "yes" : "no");
-		dkernel_trace("GL_ARB_vertex/program: %s\n",glDriver.ext.glslshaders ? "yes" : "no");
+//		dkernel_trace("GL_ARB_vertex/program: %s\n",glDriver.ext.glslshaders ? "yes" : "no");
 		dkernel_trace("GL_ARB_multisample: %s\n",glDriver.ext.multisample ? "yes" : "no");
 		dkernel_trace("GL_ARB_texture_compression: %s\n",glDriver.ext.texture_compression ? "yes" : "no");
 		dkernel_trace("GL_ARB_texture_cube_map: %s\n",glDriver.ext.texture_cube_map ? "yes" : "no");
@@ -271,11 +273,13 @@ void gldrv_initEXT()
 		dkernel_error("Required extension not available. OpenGL 1.5 required");
 	}
 	
+	/*
 	if (!glDriver.ext.glslshaders) {
 		SpzMessageBox("GLSL shader support not available", "Pixel shader 2.0 support not available.\nThe demo will run with disabled shaders, so aome scenes may appear badly.");
 		
 		dkernel_warn("Vertex/Pixel shader support not available, running demo with disabled shaders.");
 	}
+	*/
 }
 
 
@@ -327,7 +331,8 @@ void gldrv_saveInfo() {
 int gl_drv_check_for_gl_errors(char* pOut)
 	{
 	GLenum err = glGetError();
-	strcpy(pOut, (const char*)gluErrorString(err));
+	if (pOut)
+		strcpy(pOut, (const char*)gluErrorString(err));
 	if (err == GL_NO_ERROR)
 		return 0;
 	return 1;
@@ -468,15 +473,11 @@ void gldrv_initViewport()
 
 void gldrv_init()
 	{
-	// information about the current video settings
-	//const SDL_VideoInfo* info = NULL;
+	GLenum			GLEWError;
+	SDL_GLContext*	pSDLContext;
+	SDL_Window*		pSDLWindow;
+	uint32_t		SDLWindowFlags;
 
-	#ifdef _WIN32
-		unsigned int err;
-	#endif
-
-	SDL_Window*	pSDLWindow;
-	uint32_t	SDLWindowFlags;
 
 	dkernel_trace("Initializing SVE OpenGL driver...");
 
@@ -547,7 +548,12 @@ void gldrv_init()
 		SDLWindowFlags
 	);
 
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
+	pSDLContext = SDL_GL_CreateContext(pSDLWindow);
 
 /*
 	if (!demoSystem.debug)
@@ -583,23 +589,27 @@ void gldrv_init()
 	//dkernel_trace("Setting gamma...");
 	//SDL_SetGamma(glDriver.gamma, glDriver.gamma, glDriver.gamma);
 
+	// init glew
+	dkernel_trace("Initializing glew...");
+	GLEWError = glewInit();
+	if (GLEWError != GLEW_OK)
+		dkernel_error("glewInit failed:\n\n%s", glewGetErrorString(GLEW_OK));
+
+	/*
+	gl_drv_check_for_gl_errors(0);
+
 	// clear buffers
 	if (glDriver.stencil > 0)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	else
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
 
-	// init extensions
-	dkernel_trace("Initializing extensions (HACK)...");
-	gldrv_initEXT();
+	gl_drv_check_for_gl_errors(0);
+	*/
 
-	// init win32 glew
-	#ifdef _WIN32
-		dkernel_trace("Initializing glew...");
-		err = glewInit();
-		if (GLEW_OK != err)
-			dkernel_error("glewInit failed:\n\n%s", glewGetErrorString(err));
-	#endif
+	// init extensions
+	//dkernel_trace("Initializing extensions (HACK)...");
+	//gldrv_initEXT();
 
 	// save opengl strings
 	dkernel_trace("Saving ogl info...");
