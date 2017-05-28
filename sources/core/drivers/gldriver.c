@@ -101,15 +101,18 @@ int gldrv_checkEXT(const char *ext) {
 
 	const char *s = NULL;
 
-	s = (char*) glGetString(GL_EXTENSIONS);
-	if (strstr(s, ext)) return TRUE;
 
-#ifdef WIN32
-	if (glDriver.ext.ext_extensions_string) {
-		s = wglGetExtensionsStringARB(wglGetCurrentDC());
-		if (strstr(s, ext)) return TRUE;
-	}
-#endif
+	s = (const char*) glGetString(GL_EXTENSIONS);
+	if (strstr(s, ext))
+		return TRUE;
+
+	#ifdef WIN32
+		if (glDriver.ext.ext_extensions_string) {
+			s = wglGetExtensionsStringARB(wglGetCurrentDC());
+			if (strstr(s, ext))
+				return TRUE;
+		}
+	#endif
 
 	return FALSE;
 }
@@ -466,13 +469,14 @@ void gldrv_initViewport()
 void gldrv_init()
 	{
 	// information about the current video settings
-	assert(0); 
-
-	/*const SDL_VideoInfo* info = NULL;
+	//const SDL_VideoInfo* info = NULL;
 
 	#ifdef _WIN32
 		unsigned int err;
 	#endif
+
+	SDL_Window*	pSDLWindow;
+	uint32_t	SDLWindowFlags;
 
 	dkernel_trace("Initializing SVE OpenGL driver...");
 
@@ -483,9 +487,11 @@ void gldrv_init()
 
 	dkernel_trace("Getting video info...");
 	// get some video information
+	/*
 	info = SDL_GetVideoInfo();
 	if (!info)
 		dkernel_error("Get video info failed: %s", SDL_GetError());
+	*/
 
 	dkernel_trace("Setting cursor settings...");
 	if (demoSystem.debug)
@@ -525,20 +531,40 @@ void gldrv_init()
 		}
 
 	// set window properties
-	SDL_WM_SetCaption(demoSystem.demoName, NULL);
+	//SDL_WM_SetCaption(demoSystem.demoName, NULL);
 
+	SDLWindowFlags = SDL_WINDOW_OPENGL;
+	if (glDriver.fullScreen)
+		SDLWindowFlags |= SDL_WINDOW_FULLSCREEN;
+
+	// TODO: glDriver.bpp = info->vfmt->BitsPerPixel;
+	pSDLWindow = SDL_CreateWindow(
+		demoSystem.demoName,
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
+		glDriver.width,
+		glDriver.height,
+		SDLWindowFlags
+	);
+
+
+
+/*
 	if (!demoSystem.debug)
 		{
 		// Enable double buffering in order to avoid screen tearing
 		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
 		}
+	*/
 	
+	/*
 	if (glDriver.fullScreen)
 		{
 		// go to fullscreen
 		dkernel_trace("Going fulscreen...");
-		if (SDL_SetVideoMode(glDriver.width, glDriver.height, glDriver.bpp, SDL_HWSURFACE | SDL_OPENGL | SDL_FULLSCREEN) == 0)
+		if (VideoMode(glDriver.width, glDriver.height, glDriver.bpp, SDL_HWSURFACE | SDL_OPENGL | SDL_FULLSCREEN) == 0)
 			dkernel_error("Set video mode failed: %s", SDL_GetError());
+			
 		}
 	else
 		{
@@ -551,10 +577,11 @@ void gldrv_init()
 			dkernel_error("Set video mode failed: %s", SDL_GetError());
 		}
 	}
-	
+	*/
+
 	// set gamma correction
-	dkernel_trace("Setting gamma...");
-	SDL_SetGamma(glDriver.gamma, glDriver.gamma, glDriver.gamma);
+	//dkernel_trace("Setting gamma...");
+	//SDL_SetGamma(glDriver.gamma, glDriver.gamma, glDriver.gamma);
 
 	// clear buffers
 	if (glDriver.stencil > 0)
@@ -587,7 +614,7 @@ void gldrv_init()
 	dkernel_trace("Initializing viewport, rtts and fbos...");
 	gldrv_initViewport();
 
-	dkernel_trace("SVE OpenGL Driver initialized.");*/
+	dkernel_trace("SVE OpenGL Driver initialized.");
 }
 
 /* *************************************************************
@@ -688,7 +715,7 @@ void gldrv_endRender()
 void gldrv_swap()
 	{
 	glFlush();
-	SDL_GL_SwapBuffers();
+	SDL_GL_SwapWindow(0);
 	}
 
 /* *************************************************************

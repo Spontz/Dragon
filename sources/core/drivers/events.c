@@ -106,7 +106,7 @@ int eventHandler(SDL_Event event) {
 					}
 					theResponse = process_message(buf);
 
-					if (NET2_TCPSend(NET2_GetSocket(&event), theResponse, strlen(theResponse)) == -1)
+					if ( NET2_TCPSend(NET2_GetSocket(&event), theResponse, (int)strlen(theResponse)) == -1 )
 						dkernel_trace("Net2: NET2_TCPSend: Error: %s", NET2_GetError());
 
 					NET2_TCPClose(NET2_GetSocket(&event));
@@ -146,7 +146,7 @@ int eventHandler(SDL_Event event) {
 
 				case NET2_ERROREVENT:
 					dkernel_trace("Net2: Error: %s(%d)\n", NET2_GetEventError(&event), NET2_GetSocket(&event));
-					printNET2Event(&event);
+					//printNET2Event(&event);
 					break;
 
 				default:

@@ -358,11 +358,13 @@ void load_glslshaderbind () {
 			pVariableMatrix4x4->m_ShaderUniformID = glslshad_getUniformLocation(local->program, pVariableMatrix4x4->m_name);
 				
 			// check whether the requested SVE Matrix4x4 variable exists
+			/*
 			if (get_sve_variable_type(pVariableMatrix4x4->m_SVEVariableID) != sve_variable_type_matrix_4x4f)
 				{
 				section_error("\"%s\" is not a valid SVE Engine Matrix4x4 variable", string_value);
 				return;
 				}
+			*/
 			}
 	}
 	

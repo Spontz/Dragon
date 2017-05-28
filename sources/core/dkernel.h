@@ -254,7 +254,7 @@ typedef struct {
 // state variable access
 const matrix_t*			get_sve_variable_matrix_4x4f(enum_sve_variable id);
 enum_sve_variable		get_sve_variable_id(const char* pString);
-enum_sve_variable_type	get_sve_variable_type(enum_sve_variable id);
+//enum_sve_variable_type	get_sve_variable_type(enum_sve_variable id);
 void					set_sve_variable_matrix_4x4f(enum_sve_variable id, const matrix_t* pValue);
 
 // sections functions references

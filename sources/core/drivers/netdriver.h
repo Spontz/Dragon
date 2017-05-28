@@ -1,6 +1,10 @@
 #ifndef __NETDRIVER_H
 #define __NETDRIVER_H
 
+#ifdef WIN32
+	#pragma comment( lib, "SDL2_net" )
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

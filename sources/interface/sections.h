@@ -1,15 +1,17 @@
 #ifndef __SECTIONS_H
 #define __SECTIONS_H
 
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void preload_sound();
 void load_sound();
 void init_sound();
 void render_sound();
 void end_sound();
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 // ******************************************************************
 

@@ -39,12 +39,11 @@ static sound_section* local;
 void sound_error(FMOD_RESULT const& Value){
 	section_error("FMod: %s", FMOD_ErrorString(Value));}
 
-
-void preload_sound(){
+extern "C" void preload_sound(){
 }
 
 
-void load_sound(){
+extern "C" void load_sound(){
 	if (!demoSystem.sound)
 		return;
 
@@ -73,7 +72,7 @@ void load_sound(){
 	mySection->loaded = 1;}
 
 
-void init_sound(){
+extern "C" void init_sound(){
 	if (!demoSystem.sound)
 		return;
 
@@ -133,7 +132,7 @@ void init_sound(){
 }
 
 
-void render_sound() {
+extern "C" void render_sound() {
 	float *spectrum, instant, avg;
 	int i;
 			
@@ -241,7 +240,7 @@ void render_sound() {
 }
 
 
-void end_sound(){
+extern "C" void end_sound(){
 	if (!demoSystem.sound)
 		return;
 

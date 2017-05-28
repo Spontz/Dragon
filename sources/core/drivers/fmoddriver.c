@@ -71,7 +71,7 @@ void sound_play() {
 
 void sound_update() {
 		
-	FSOUND_Update();
+	//FSOUND_Update();
 }
 
 // ******************************************************************
@@ -92,19 +92,19 @@ void sound_stop() {
 
 void sound_end() {
 
-	FSOUND_Close();
+	//FSOUND_Close();
 }
 
 // ******************************************************************
 
 float sound_cpu() {
-
-	return (float) FSOUND_GetCPUUsage();
+	return 0;
+	//return (float) FSOUND_GetCPUUsage();
 }
 
 // ******************************************************************
 
 int sound_channels() {
-
-	return FSOUND_GetChannelsPlaying();
+	return 0;
+	//return FSOUND_GetChannelsPlaying();
 }

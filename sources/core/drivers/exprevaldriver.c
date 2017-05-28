@@ -3,6 +3,7 @@
 */
 
 #include <float.h>
+#include <stdio.h>
 
 #include "exprevaldriver.h"
 #include "gldriver.h"

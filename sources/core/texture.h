@@ -1,6 +1,10 @@
 #ifndef __TEXTURE_H
 #define __TEXTURE_H
 
+#ifdef WIN32
+	#pragma comment( lib, "SDL2_image" )
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

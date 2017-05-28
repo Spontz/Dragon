@@ -660,7 +660,7 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 					if (section->stringNum >= SECTION_STRINGS)
 						parse_error(name, lineNum, "Too many strings");
 
-					section->strings[section->stringNum] = strdup(value);
+					section->strings[section->stringNum] = _strdup(value);
 					section->stringNum++;
 					
 					dkernel_trace("found string \"%s\"", value);
@@ -687,7 +687,7 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 							break;
 						}
 
-					section->splineFiles[section->splineNum] = strdup(tmp);
+					section->splineFiles[section->splineNum] = _strdup(tmp);
 					section->splineDuration[section->splineNum] = fvalue;
 					section->splineNum++;
 					dkernel_trace("section: found spline");
@@ -743,7 +743,7 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 							sscanf(value,"%f",(float *)((char**)scriptCommand[i].vAddr));
 							break;
 						case VTYPE_STRING:
-							*((char**)scriptCommand[i].vAddr) = strdup(value);
+							*((char**)scriptCommand[i].vAddr) = _strdup(value);
 							break;
 						default:
 							parse_error(name, lineNum, "%d is not a valid variable type id.", scriptCommand[i].vType);
@@ -1560,7 +1560,7 @@ void dkernel_toggleSection(const char* identifiers) {
 	
 	// Get a copy of the oiginal variable to work with it
 	//identifier = calloc(strlen(identifiers) + 1, sizeof(char)); << this is a leak, strdup allocates memory
-	identifier = strdup(identifiers);
+	identifier = _strdup(identifiers);
 	
 	for (identifier = strtok(identifier, ",");
 		identifier != NULL;
@@ -1599,7 +1599,7 @@ void dkernel_setSectionsStartTime(char* amount, char* identifiers) {
 
 	// Get a copy of the original variable to work with it
 	// identifier = calloc(strlen(identifiers) + 1, sizeof(char));
-	identifier = strdup(identifiers);
+	identifier = _strdup(identifiers);
 	
 	for (identifier = strtok(identifier, ",");
 		identifier != NULL;
@@ -1682,7 +1682,7 @@ void dkernel_setSectionsEndTime(char* amount, char* identifiers) {
 
 	// Get a copy of the original variable to work with it
 	// identifier = calloc(strlen(identifiers) + 1, sizeof(char));
-	identifier = strdup(identifiers);
+	identifier = _strdup(identifiers);
 	
 	for (identifier = strtok(identifier, ",");
 		identifier != NULL;
@@ -2024,9 +2024,11 @@ const matrix_t*			get_sve_variable_matrix_4x4f(enum_sve_variable id) {
 enum_sve_variable		get_sve_variable_id(const char* pString) {
 	if (strcmp(pString, "World"))
 		return sve_variable_matrix_world;
-	else if (strcmp(pString, "View"))
+
+	if (strcmp(pString, "View"))
 		return sve_variable_matrix_view;
-	else return sve_variable_unknown;
+
+	return sve_variable_unknown;
 }
 
 /*
@@ -2050,12 +2052,12 @@ enum_sve_variable_type	get_sve_variable_type(enum_sve_variable id)
 }
 */
 
-/*
+
 void					invalidate_sve_variable(enum_sve_variable id)
 {
 	//SL_NOT_IMPLEMENTED;
 }
-*/
+
 
 void					set_sve_variable_matrix_4x4f(enum_sve_variable id, const matrix_t* pValue)
 {

@@ -11,6 +11,10 @@ extern "C" {
 
 #include "gl/glew.h"
 
+#ifdef WIN32
+	#include "gl/wglew.h"
+#endif
+
 #include <SDL.h>
 #include <SDL_endian.h>
 #include <SDL_opengl.h>
@@ -21,7 +25,6 @@ extern "C" {
 
 #pragma comment( lib, "opengl32" )
 #pragma comment( lib, "glu32" )
-#pragma comment( lib, "opengl32" )
 #pragma comment( lib, "sdl2" )
 #pragma comment( lib, "sdl2main" )
 #pragma comment( lib, "glew32s" )
