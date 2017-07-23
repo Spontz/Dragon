@@ -1391,8 +1391,7 @@ void dkernel_doExec() {
 	if (demoSystem.mouseButtons & SDL_BUTTON(1)) {
 		SDL_ShowCursor(FALSE);
 		
-		assert(FALSE);
-		// SDL_WarpMouse(glDriver.width / 2, glDriver.height / 2);
+		SDL_WarpMouseInWindow(glDriver.pSDLWindow, glDriver.width / 2, glDriver.height / 2);
 
 	} else if (demoSystem.debug) {
 		SDL_ShowCursor(TRUE);
