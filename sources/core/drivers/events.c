@@ -26,22 +26,22 @@ int eventHandler(SDL_Event event) {
 			break;
 
 		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == KEY_EXIT) {
+			if (event.key.keysym.scancode == KEY_EXIT) {
 				demoSystem.exitDemo = 1;
 				break;
 			}
 			
-			if (event.key.keysym.sym == KEY_SCREENSHOT) {
+			if (event.key.keysym.scancode == KEY_SCREENSHOT) {
 				gldrv_screenshot();
 				break;
 			}
 
 			if (demoSystem.debug) {
 
-				if (event.key.keysym.sym == KEY_TIME) {
+				if (event.key.keysym.scancode == KEY_TIME) {
 					fprintf(stdout, "%f\n", demoSystem.runTime);
 
-				} else if (event.key.keysym.sym == KEY_PLAY_PAUSE) {
+				} else if (event.key.keysym.scancode == KEY_PLAY_PAUSE) {
 					if (demoSystem.state == DEMO_PLAY) {
 						dkernel_pause();
 					}
@@ -49,16 +49,16 @@ int eventHandler(SDL_Event event) {
 						dkernel_play();
 					}
 
-				} else if (event.key.keysym.sym == KEY_REWIND) {
+				} else if (event.key.keysym.scancode == KEY_REWIND) {
 					dkernel_rewind();
 
-				} else if (event.key.keysym.sym == KEY_FASTFORWARD) {
+				} else if (event.key.keysym.scancode == KEY_FASTFORWARD) {
 					dkernel_fastforward();
 
-				} else if (event.key.keysym.sym == KEY_STOP) {
+				} else if (event.key.keysym.scancode == KEY_STOP) {
 					demoSystem.exitDemo = 1;
 
-				} else if (event.key.keysym.sym == KEY_RESTART) {
+				} else if (event.key.keysym.scancode == KEY_RESTART) {
 					dkernel_restart();
 				}
 			}
@@ -68,8 +68,8 @@ int eventHandler(SDL_Event event) {
 			break;
 
 		case SDL_KEYUP:
-			if ((event.key.keysym.sym == KEY_REWIND) ||
-				(event.key.keysym.sym == KEY_FASTFORWARD)) {
+			if ((event.key.keysym.scancode == KEY_REWIND) ||
+				(event.key.keysym.scancode == KEY_FASTFORWARD)) {
 
 				if (demoSystem.state & DEMO_PAUSE) dkernel_pause();
 				else dkernel_play();
