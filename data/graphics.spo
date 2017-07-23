@@ -1,0 +1,54 @@
+gl_fullscreen 0
+gl_panoramic 1
+gl_info 0
+gl_accum 0
+gl_width 640
+gl_height 480
+gl_bpp 32
+gl_zbuffer 16
+gl_stencil 0
+gl_multisampling 0
+gl_rttWidth 512
+gl_rttHeight 256
+gl_lowquality 0
+texture_detail 5
+
+fbo_0_width 64
+fbo_0_height 64
+fbo_0_format RGB
+
+fbo_1_width 64
+fbo_1_height 64
+fbo_1_format RGB
+
+fbo_2_width 64
+fbo_2_height 64
+fbo_2_format RGB
+
+fbo_3_width 64
+fbo_3_height 64
+fbo_3_format RGB
+
+fbo_4_width 512
+fbo_4_height 256
+fbo_4_format RGB
+
+fbo_5_width 512
+fbo_5_height 256
+fbo_5_format RGB
+
+fbo_6_width 512
+fbo_6_height 256
+fbo_6_format RGB
+
+fbo_7_width 512
+fbo_7_height 256
+fbo_7_format RGB
+
+fbo_8_width 1024
+fbo_8_height 512
+fbo_8_format RGB
+
+fbo_9_width 1024
+fbo_9_height 512
+fbo_9_format RGB

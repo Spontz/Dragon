@@ -1,0 +1,54 @@
+uniform vec3 fvLightPosition;
+uniform vec3 fvEyePosition;
+uniform float fTime0_X;
+//uniform float mult;
+uniform float vfreq;     // 0.15 (cada cuantas unidades hay una onda continua)
+uniform float vfreq2;    // 0.01 (modificador de forma de la explosion, mantener MUY bajo, realiza cambios bruscos)
+uniform float vamp;      // 4 (altura maxima de la onda continua)
+uniform float vspeed;    // 3 (velocidad de la onda continua)
+uniform vec3 center;     // centro geometrico de la explosion
+uniform float explode;   // 0-1 ... o mas (cantidad de la explosion)
+uniform float rotation;  // 0.6 grado de rotacion de la explosion en el exterior
+
+varying vec2 Texcoord;
+varying vec3 ViewDirection;
+varying vec3 LightDirection;
+varying vec3 Normal;
+   
+void main( void )
+{
+   vec4 pos = ftransform();
+   
+   Texcoord    = gl_MultiTexCoord0.xy;
+    
+   vec4 vert = gl_Vertex;
+    
+   vec4 fvObjectPosition = gl_ModelViewMatrix * vert;
+   
+   ViewDirection  = fvEyePosition - fvObjectPosition.xyz;
+   LightDirection = fvLightPosition - fvObjectPosition.xyz;
+   Normal         = gl_NormalMatrix * gl_Normal;
+      
+  float mx = sin(gl_Vertex.x*vfreq+fTime0_X*vspeed)*vamp ;  
+  float my = sin(gl_Vertex.y*vfreq+fTime0_X*vspeed)*vamp;
+      
+   vert = vec4
+      (
+      vert.xyz + (vert.xyz-center) *
+         (
+         1.0+sin
+            (
+            ((vert.x+vert.y+vert.z)*vfreq2)
+            )
+         )*explode
+      ,1.0
+      );
+      
+   vec4 vert2;
+   vert2.x = sin(vert.x/100.0*rotation)*vert.x-cos(vert.x/100.0*rotation)*vert.y;
+   vert2.y = cos(vert.x/100.0*rotation)*vert.x+sin(vert.x/100.0*rotation)*vert.y;
+   vert2.z = vert.z;
+   vert2.w = vert.w;
+      
+   gl_Position = gl_ModelViewProjectionMatrix * vert2+vec4(mx,my,0.0,0.0);
+}

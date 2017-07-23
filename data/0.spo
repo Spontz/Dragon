@@ -1,0 +1,15 @@
+[efxFader]
+id 8
+start 0
+end 10
+enabled 1
+layer 2
+blend ONE ONE
+; The Fader is an useful effect to synchronize
+; the demo with the music. It draws the entire
+; screen with a color that fades to another one
+; between the start and end effect times
+
+; The start and end colors and alpha values
+fStartRGBA 1 1 1 1
+fEndRGBA 1 0 0 1
