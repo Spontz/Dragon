@@ -1,9 +1,0 @@
-uniform float fscale;
-varying vec4 pos;
-
-						 
-void main(void)
-{
-   float color = pos.z*fscale;
-   gl_FragColor = vec4(color, color, color, 1.0);
-}

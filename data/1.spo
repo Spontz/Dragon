@@ -1,0 +1,11 @@
+[sound]
+id 1
+start 0
+end 12
+enabled 1
+layer 0
+
+; This element reproduces the sound passed as
+; argument mixing it with the current sound
+; output.
+sSoundFile data/pool/music/biomechanical.mp3

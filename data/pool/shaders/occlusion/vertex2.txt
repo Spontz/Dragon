@@ -1,9 +1,0 @@
-varying vec4 pos;
-
-void main (void)
-{
-    gl_TexCoord[0] = gl_MultiTexCoord0;
-    pos = ftransform();
-    gl_Position    = pos;
-    gl_FrontColor = gl_Color;
-}

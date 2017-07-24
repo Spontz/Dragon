@@ -1,0 +1,18 @@
+[efxGlow2]
+id 7
+start 6
+end 12
+enabled 1
+layer 5
+
+; ************************
+; * Causes a Glow effect *
+; ************************
+
+sRedHighPassColor     red = 0.2;
+sGreenHighPassColor green = sin(360*t);
+sBlueHighPassCOlor   blue = cos(360*t);
+
+sAccumulation accumulation = 1;
+
+sRadius radius = 10+10*beat*sin(t*10);

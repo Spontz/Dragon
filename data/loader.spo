@@ -1,8 +1,8 @@
 [loading]
-string data/pool/loadingfront.jpg
 string data/pool/loadingback.jpg
-fProgressBarColor 0.2 0.2 0.498 0.52
-fProgressBarPosition 0.42 0.29 0.61 0.42 
+string data/pool/loadingfront.jpg
+fProgressBarColor 1 1 1 1
+fProgressBarPosition 0.4 0.3 0.6 0.4 
 fProgressBarBorderColor 0 0 0 0
 fProgressBarBorderPosition 0.25 0.10 0.75 0.12
 fBorderWidth 0.002

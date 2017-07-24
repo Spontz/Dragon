@@ -1,21 +1,0 @@
-uniform sampler2D color;
-uniform float x_r; // R displacement in X axis
-uniform float x_g; // G displacement in X axis
-uniform float x_b; // B displacement in X axis
-uniform float y_r; // R displacement in Y axis
-uniform float y_g; // G displacement in Y axis
-uniform float y_b; // B displacement in Y axis
-
-void main(){
-	vec2 pos = vec2(gl_TexCoord[0]);
-	vec2 pos_r = vec2(x_r+pos.x, y_r+pos.y);
-	vec2 pos_g = vec2(x_g+pos.x, y_g+pos.y);
-	vec2 pos_b = vec2(x_b+pos.x, y_b+pos.y);
-
-	float colR = texture2D(color, pos_r).r;
-	float colG = texture2D(color, pos_g).g;
-	float colB = texture2D(color, pos_b).b;
-	if (pos.x<0.5)
-		gl_FragColor = texture2D(color, pos);
-	else		gl_FragColor = vec4(colR, colG, colB,1.0);
-}
