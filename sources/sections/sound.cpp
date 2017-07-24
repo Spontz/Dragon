@@ -54,6 +54,15 @@ extern "C" void load_sound(){
 	local = new sound_section();
 	mySection->vars = local;
 
+	FMOD_System_Create(&local->m_pFMODSystem);
+
+	auto p = FMOD_System_Init(
+		local->m_pFMODSystem,
+		64,
+		FMOD_INIT_NORMAL,
+		nullptr
+	);
+
 	const auto res = FMOD_System_CreateSound(
 		local->m_pFMODSystem,
 		mySection->strings[0],
@@ -146,6 +155,9 @@ extern "C" void render_sound() {
 		nullptr,
 		nullptr,
 		0);
+
+
+	return;
 
 	for (int c = 0; c < local->m_pFFT->numchannels; ++c)
 		for (int i = 0; i < local->m_pFFT->length; ++i)

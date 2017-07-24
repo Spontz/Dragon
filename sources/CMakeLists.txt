@@ -30,6 +30,7 @@ add_executable(sve WIN32 ${SRCS})
 configure_file(${CMAKE_SOURCE_DIR}/dependencies/vs/fmod10903/lowlevel/lib/fmod64.dll       ${CMAKE_CURRENT_BINARY_DIR}/debug/fmod64.dll COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2-2.0.5/lib/x64/SDL2.dll             ${CMAKE_CURRENT_BINARY_DIR}/debug/SDL2.dll COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2_image-2.0.1/lib/x64/SDL2_Image.dll ${CMAKE_CURRENT_BINARY_DIR}/debug/SDL2_Image.dll COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2_image-2.0.1/lib/x64/libjpeg-9.dll ${CMAKE_CURRENT_BINARY_DIR}/debug/libjpeg-9.dll COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2_net-2.0.1/lib/x64/SDL2_Net.dll     ${CMAKE_CURRENT_BINARY_DIR}/debug/SDL2_Net.dll COPYONLY)
 
 set_target_properties(sve PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
