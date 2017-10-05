@@ -14,3 +14,5 @@ mkdir sve_vs15_x86_64
 cd sve_vs15_x86_64
 start cmake.exe -G "Visual Studio 15 Win64" -DBUILD_SHARED_LIBS:BOOL=FALSE -DBUILD_UNICODE:BOOL=TRUE ..\
 cd..
+
+pause
