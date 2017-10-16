@@ -213,7 +213,7 @@ extern "C" void render_sound() {
 		
 		camera_set2d();
 
-		glDisable(GL_TEXTURE_2D);
+		/*glDisable(GL_TEXTURE_2D);
 			glColor4f(1,1,1,1);
 			
 			glBegin(GL_LINES);
@@ -224,7 +224,7 @@ extern "C" void render_sound() {
 				}
 			
 			glEnd ();
-		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);*/
 
 		/* if (local->intensity > 0) {
 			glColor4f(local->intensity, local->intensity, local->intensity, local->intensity);
