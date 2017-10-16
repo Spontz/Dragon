@@ -262,7 +262,4 @@ extern "C" void end_sound(){
 	if (r != FMOD_OK)
 		sound_error(r);
 
-	FMOD_System_Close(local->m_pFMODSystem);
-
-	delete local;
 }
