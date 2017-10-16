@@ -1039,12 +1039,10 @@ int NET2_Init()
   return 0;
 }
 
-void NET2_Quit()
-{
+void NET2_Quit() {
   SDL_Event event;
 
-  if (!initialized)
-  {
+  if (!initialized) {
     return;
   }
 
@@ -1079,55 +1077,42 @@ void NET2_Quit()
 // input and converts it to events.
 //
 
-static int PumpNetworkEvents(void *nothing)
-{
+static int PumpNetworkEvents(void *nothing) {
   int i = 0;
 
 #define timeOut (10)
 
-  while (!doneYet)
-  {
-    if (-1 == snCheckSockets(socketSet, timeOut))
-    {
+  while (!doneYet) {
+    if (-1 == snCheckSockets(socketSet, timeOut)) {
       setError("NET2: the CheckSockets call failed", -1);
     }
 
     lockData();
-    while ((!doneYet) && waitForRead)
-    {
+    while ((!doneYet) && waitForRead) {
       waitUntilRead();
     }
 
-    for (i = 0; ((!doneYet) && (i < lastHeapSocket)); i++)
-    {
-      if (addState == socketHeap[i]->state)
-      {
-        switch(socketHeap[i]->type)
-        {
+    for (i = 0; ((!doneYet) && (i < lastHeapSocket)); i++) {
+      if (addState == socketHeap[i]->state) {
+        switch(socketHeap[i]->type) {
         case unusedSocket:
           sendError("NET2: trying to add an unused socket", i);
           break;
 
         case TCPServerSocket:
         case TCPClientSocket:
-          if (-1 != snTCPAddSocket(socketHeap[i]->s.tcpSocket))
-          {
+          if (-1 != snTCPAddSocket(socketHeap[i]->s.tcpSocket)) {
             socketHeap[i]->state = readyState;
-          }
-          else
-          {
+          } else {
             socketHeap[i]->state = delState;
             sendError("NET2: can't add a TCP socket to the socket set", i);
           }
           break;
 
         case UDPServerSocket:
-          if (-1 != snUDPAddSocket(socketHeap[i]->s.udpSocket))
-          {
+          if (-1 != snUDPAddSocket(socketHeap[i]->s.udpSocket)) {
             socketHeap[i]->state = readyState;
-          }
-          else
-          {
+          } else {
             socketHeap[i]->state = delState;
             sendError("NET2: can't add a UDP socket to the socket set", i);
           }
