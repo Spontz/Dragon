@@ -259,6 +259,7 @@ extern "C" void end_sound(){
 	local = reinterpret_cast<sound_section*>(mySection->vars);
 
 	const auto r = FMOD_Channel_Stop(local->m_pChannel);
+	
 	if (r != FMOD_OK)
 		sound_error(r);
 
