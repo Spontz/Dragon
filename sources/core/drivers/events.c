@@ -63,7 +63,8 @@ int eventHandler(SDL_Event event) {
 				}
 			}
 
-			demoSystem.keys[event.key.keysym.sym] = TRUE; 
+			//TODO: Al comentar esta linea, dejan de funcionar las teclas que no estan mapeadas explicitamente
+			//demoSystem.keys[event.key.keysym.sym] = TRUE; 
 			
 			break;
 
@@ -75,7 +76,8 @@ int eventHandler(SDL_Event event) {
 				else dkernel_play();
 			}
 
-			demoSystem.keys[event.key.keysym.sym] = FALSE;
+			//TODO: Al comentar esta linea, dejan de funcionar las teclas que no estan mapeadas explicitamente
+			//demoSystem.keys[event.key.keysym.sym] = FALSE;
 			break;
 
 		case SDL_QUIT:

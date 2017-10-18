@@ -204,7 +204,7 @@ typedef struct {
 	float accumFrameTime; // time since last fps calculation
 	float fps; // frames per second
 
-	SDL_Keycode keys[323]; // keyboard control (SDL handles 323 diferent key types)
+	SDL_Keycode keys[323]; // keyboard control (SDL handles 323 diferent key types) //TODO: Revisar si con SDL2 siguen siendo 323 tipos de tecla
 	char mouseButton; // left mouse button status
 	char exitDemo; // exits demo at next loop if true
 
