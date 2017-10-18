@@ -269,15 +269,16 @@ typedef struct {
 
 // ******************************************************************
 
-#define TEXTURE_MODE 5
+#define TEXTURE_MODE 6
 
 glTexTable_t textureModes[TEXTURE_MODE] = {
-	{ "RGBA_UI8",		GL_RGBA,		GL_UNSIGNED_INT_8_8_8_8,	GL_UNSIGNED_BYTE },
-	//{ "R8G8B8_UI",			GL_RGB,			GL_UNSIGNED_INT_8_8_8_8_REV,			GL_UNSIGNED_BYTE },
-	{ "RGBA_F16",		GL_RGBA,		GL_FLOAT,		GL_FLOAT },
-	{ "RGB_F16",		GL_RGB,			GL_FLOAT,		GL_FLOAT },
-	{ "RGBA_F32",		GL_RGBA,		GL_DOUBLE,		GL_DOUBLE},
-	{ "RGB_F32",		GL_RGB,			GL_DOUBLE,		GL_DOUBLE},
+	{ "RGBA_UI8",		GL_RGBA,		GL_RGBA,	GL_UNSIGNED_BYTE },
+	{ "RGB_UI8",		GL_RGB,			GL_RGB,		GL_UNSIGNED_BYTE },
+	{ "RGBA_F16",		GL_RGBA,		GL_RGBA,	GL_FLOAT },
+	{ "RGB_F16",		GL_RGB,			GL_RGB,		GL_FLOAT },
+	//{ "RGB_F16",		GL_RGBA8,		GL_BGRA,	GL_UNSIGNED_BYTE }, //TEST PERE
+	{ "RGBA_F32",		GL_RGBA,		GL_RGBA,	GL_DOUBLE},
+	{ "RGB_F32",		GL_RGB,			GL_RGB,		GL_DOUBLE},
 };
 
 // ******************************************************************

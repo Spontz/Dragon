@@ -109,18 +109,19 @@ void fbo_upload(int index, int cache)
 		dkernel_error("fbo_upload: Error before upload fbo '%d': %s", fbo->id_fbo, gluErrorString(error));
 
 	// Setup our FBO
-	glGenFramebuffersEXT(1, &(fbo->id_fbo));
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo->id_fbo);
+	glGenFramebuffers(1, &(fbo->id_fbo));
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo->id_fbo);
 
 	// Create the render buffer for depth	
-	glGenRenderbuffersEXT(1, &(fbo->id_depthBuffer));
-	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, fbo->id_depthBuffer);
-	glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, fbo->width, fbo->height);
+	glGenRenderbuffers(1, &(fbo->id_depthBuffer));
+	glBindRenderbuffer(GL_RENDERBUFFER, fbo->id_depthBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, fbo->width, fbo->height);
 
 	// Setup a texture to render to
 	glGenTextures(1, &(fbo->id_tex));
 	glBindTexture(GL_TEXTURE_2D, fbo->id_tex);
 	glTexImage2D(GL_TEXTURE_2D, 0, fbo->iformat,  fbo->width, fbo->height, 0, fbo->format, fbo->ttype, NULL);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fbo->width, fbo->height, 0,  GL_BGRA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -128,38 +129,37 @@ void fbo_upload(int index, int cache)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)fbo->mipmap);
 
 	// Bind buffers
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo->id_fbo);
-	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, fbo->id_depthBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo->id_fbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, fbo->id_depthBuffer);
+
 	// And attach it to the FBO so we can render to it
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, fbo->id_tex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo->id_tex, 0);
 	// Attach the depth render buffer to the FBO as it's depth attachment
-	glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, fbo->id_depthBuffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo->id_depthBuffer);
 
 	while( gl_drv_check_for_gl_errors(OGLError))
 		dkernel_error("OGL Error inside fbo_upload (0) :\n\n%s", OGLError);
 
-	#ifndef WIN32
-		// hack : hasta las pelotas de ver este error
-		status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-		if (status != GL_FRAMEBUFFER_COMPLETE_EXT)
+	// hack: Para ver el error de una textura mal subida
+	int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (status != GL_FRAMEBUFFER_COMPLETE)
+		{
+		switch(status)
 			{
-			switch(status)
-				{
-				case GL_FRAMEBUFFER_COMPLETE_EXT:
-					break;
-				case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
-					dkernel_error("fbo_upload: Error uploading fbo '%d' (id='%d'): glCheckFramebufferStatusEXT returned GL_FRAMEBUFFER_UNSUPPORTED_EXT. Choose other format, this is not supported in the current system.", index, fbo->id_fbo);
-					break;
-				default:
-					dkernel_error("fbo_upload: Error uploading fbo '%d' (id='%d'): Invalid framebuffer status.", index, fbo->id_fbo);
-					break;
-				}
+			case GL_FRAMEBUFFER_COMPLETE:
+				break;
+			case GL_FRAMEBUFFER_UNSUPPORTED:
+				dkernel_error("fbo_upload: Error uploading fbo '%d' (id='%d'): glCheckFramebufferStatus returned GL_FRAMEBUFFER_UNSUPPORTED. Choose other format, this is not supported in the current system.", index, fbo->id_fbo);
+				break;
+			default:
+				dkernel_error("fbo_upload: Error uploading fbo '%d' (id='%d'): Invalid framebuffer status.", index, fbo->id_fbo);
+				break;
 			}
-	#endif
+		}
 
 	// Unbind buffers
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-	glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	// the binded texture has changed
 	fbo_reset_bind();
 
@@ -181,12 +181,11 @@ void fbo_bind (int index) {
 	fbo_t *fbo = fbo_array[index];
 
 	if (fbo->id_fbo != fbo_current) {
-		//glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo->id_fbo);
 		// Bind buffers and make attachments
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo->id_fbo);
-		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, fbo->id_depthBuffer);
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, fbo->id_tex, 0);
-		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, fbo->id_depthBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo->id_fbo);
+		glBindRenderbuffer(GL_RENDERBUFFER, fbo->id_depthBuffer);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo->id_tex, 0);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo->id_depthBuffer);
 
 		// Save the view port and set it to the size of the texture
 		glPushAttrib(GL_VIEWPORT_BIT);
@@ -225,8 +224,8 @@ void fbo_unbind () {
 
 	if (fbo_bind_count>0)
 	{
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		fbo_current = -1;
 		// Restore old view port and set rendering back to default frame buffer
 		glPopAttrib();
@@ -243,8 +242,8 @@ void fbo_free (int index) {
 	fbo_t *fbo = fbo_array[index];
 
 	if (fbo) {
-		if (fbo->id_fbo != -1)			glDeleteFramebuffersEXT(1, &(fbo->id_fbo));
-		if (fbo->id_depthBuffer != -1)	glDeleteRenderbuffersEXT(1, &(fbo->id_depthBuffer));
+		if (fbo->id_fbo != -1)			glDeleteFramebuffers(1, &(fbo->id_fbo));
+		if (fbo->id_depthBuffer != -1)	glDeleteRenderbuffers(1, &(fbo->id_depthBuffer));
 		if (fbo->id_tex != -1)			glDeleteTextures(1, &(fbo->id_tex));
 	}
 }
