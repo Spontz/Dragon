@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(Inferno)
+project(Dragon)
 
 SET(BUILD_UNICODE ON CACHE BOOL "Unicode")
 SET(BUILD_DYNAMIC_CRT OFF CACHE BOOL "Dynamic CRT")
