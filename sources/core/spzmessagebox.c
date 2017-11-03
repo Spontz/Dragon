@@ -1,6 +1,6 @@
 /*
  *  spzmessagebox.c : Window Management
- *  Inferno
+ *  Dragon
  *
  *
  */
