@@ -74,7 +74,6 @@ void draw_fucking_quad()
 	{
 	unsigned int i;
 	float x0, y0, x1, y1;
-	float fx, fy;
 	rect2d_t quad;
 
 	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
@@ -90,13 +89,10 @@ void draw_fucking_quad()
 	quad.pc[2][1] = y1;
 	quad.pc[3][1] = y1;
 
-	fx = (float)glDriver.vpWidth / (float)get_closest_power_of_two(glDriver.vpWidth);
-	fy = (float)glDriver.vpHeight / (float)get_closest_power_of_two(glDriver.vpHeight);
-
 	quad.tc[0][0] = 0;	quad.tc[0][1] = 0;
-	quad.tc[1][0] = fx;	quad.tc[1][1] = 0;
-	quad.tc[2][0] = fx;	quad.tc[2][1] = fy;
-	quad.tc[3][0] = 0;	quad.tc[3][1] = fy;
+	quad.tc[1][0] = 1;	quad.tc[1][1] = 0;
+	quad.tc[2][0] = 1;	quad.tc[2][1] = 1;
+	quad.tc[3][0] = 0;	quad.tc[3][1] = 1;
 
 	camera_set2d();
 

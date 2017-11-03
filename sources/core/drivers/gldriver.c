@@ -75,11 +75,11 @@ void gldrv_create()
 	int i;
 
 	glDriver.fullScreen = 0;
-	glDriver.AspectRatio = 16.0f / 10.0f;
+	glDriver.AspectRatio = 16.0f / 9.0f;
 	glDriver.saveInfo   = 0;
 
 	glDriver.width   = 640;
-	glDriver.height  = 480;
+	glDriver.height  = 360;
 	glDriver.bpp     = 32;
 	glDriver.zbuffer = 16;
 	glDriver.stencil = 0;
@@ -341,7 +341,7 @@ int gl_drv_check_for_gl_errors(char* pOut)
 void gldrv_initState()
 	{
 	char OGLError[1024];
-	const float WindowAspect = ((float)glDriver.width) / ((float)(glDriver.height));
+	const float WindowAspect = (float)glDriver.width / (float)(glDriver.height);
 	int x, y, width, height;
 
 	// Check for ogl errors
@@ -390,31 +390,31 @@ void gldrv_initState()
 		dkernel_warn("OpenGL Error while setting the default state in gldrv_initState:\n\n%s", OGLError);
 
 	// Rebuild viewport data.
-		{
+	{
 		// 16/9 = 1.777, 4/3 = 1.333
 		if (glDriver.AspectRatio > WindowAspect)
-			{
+		{
 			// we need to cut tops and downs
 			x = 0;
 			width = glDriver.width;
-			height = (int)(  ((float)glDriver.height) / glDriver.AspectRatio * WindowAspect );
+			height = (int)(((float)glDriver.height) / glDriver.AspectRatio * WindowAspect);
 			y = (glDriver.height - height) / 2;
-			}
+		}
 		else
-			{
+		{
 			// we need to cut sides
 			y = 0;
 			height = glDriver.height;
-			width = (int)(  ((float)glDriver.width) * glDriver.AspectRatio / WindowAspect );
+			width = (int)(((float)glDriver.width) * glDriver.AspectRatio / WindowAspect);
 			x = (glDriver.width - width) / 2;
-			}
+		}
 
 		glDriver.vpXOffset = x;
 		glDriver.vpYOffset = y;
 		glDriver.vpWidth = width;
 		glDriver.vpHeight = height;
-		}
 	}
+}
 
 unsigned int get_closest_power_of_two(unsigned int value)
 	{
@@ -438,19 +438,19 @@ void gldrv_initViewport()
 	glDriver.vpXOffset = 0;
 
 	// init shared rtt textures
-	demoSystem.rtt = tex_new(get_closest_power_of_two(glDriver.vpWidth), get_closest_power_of_two(glDriver.vpHeight), GL_RGB, 3);
+	demoSystem.rtt = tex_new(glDriver.vpWidth, glDriver.vpHeight, GL_RGB, 3);
 	tex_properties(demoSystem.rtt, NO_MIPMAP | CLAMP_TO_EDGE);
 	tex_properties(demoSystem.rtt, NO_MIPMAP);
 	tex_upload(demoSystem.rtt, NO_CACHE);
 
-	demoSystem.backup = tex_new(get_closest_power_of_two(glDriver.vpWidth), get_closest_power_of_two(glDriver.vpHeight), GL_RGB, 3);
+	demoSystem.backup = tex_new(glDriver.vpWidth, glDriver.vpHeight, GL_RGB, 3);
 
 	tex_properties(demoSystem.backup, NO_MIPMAP);
 	tex_upload(demoSystem.backup, NO_CACHE);
 
 	for (i=0; i<RENDERING_BUFFERS; i++)
 		{
-		demoSystem.texRenderingBuffer[i] = tex_new(get_closest_power_of_two(glDriver.vpWidth), get_closest_power_of_two(glDriver.vpHeight), GL_RGB, 3);
+		demoSystem.texRenderingBuffer[i] = tex_new(glDriver.vpWidth, glDriver.vpHeight, GL_RGB, 3);
 
 		while( gl_drv_check_for_gl_errors(OGLError))
 			section_error("OGL Error creating texRenderingBuffer:\n\n%s", OGLError);
@@ -664,8 +664,8 @@ void gldrv_screenquad()
 
 	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
 
-	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)get_closest_power_of_two(glDriver.vpWidth);
-	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)get_closest_power_of_two(glDriver.vpHeight);
+	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)glDriver.vpWidth;
+	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)glDriver.vpHeight;
 
 	glBegin (GL_QUADS);
 		glVertex2f (x0-GL_EPSILON, y0-GL_EPSILON);
@@ -682,8 +682,8 @@ void gldrv_texscreenquad()
 		
 		camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
 		
-		x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)get_closest_power_of_two(glDriver.vpWidth);
-		y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)get_closest_power_of_two(glDriver.vpHeight);
+		x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)(glDriver.vpWidth);
+		y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)(glDriver.vpHeight);
 		
 		glBegin (GL_QUADS);
 		glTexCoord2f (0,0);glVertex2f (x0-GL_EPSILON, y0-GL_EPSILON);
