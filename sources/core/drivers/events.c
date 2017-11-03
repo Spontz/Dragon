@@ -18,7 +18,7 @@ int eventHandler(SDL_Event event) {
                                              // which is also the
                                              // number of connected
                                              // clients.
-
+  
 	switch (event.type) {
 
 		case SDL_MOUSEMOTION:
@@ -37,7 +37,6 @@ int eventHandler(SDL_Event event) {
 			}
 
 			if (demoSystem.debug) {
-
 				if (event.key.keysym.scancode == KEY_TIME) {
 					fprintf(stdout, "%f\n", demoSystem.runTime);
 
@@ -55,16 +54,15 @@ int eventHandler(SDL_Event event) {
 				} else if (event.key.keysym.scancode == KEY_FASTFORWARD) {
 					dkernel_fastforward();
 
-				} else if (event.key.keysym.scancode == KEY_STOP) {
-					demoSystem.exitDemo = 1;
-
 				} else if (event.key.keysym.scancode == KEY_RESTART) {
 					dkernel_restart();
 				}
 			}
 
-			demoSystem.keys[event.key.keysym.sym] = TRUE; 
-			
+			if (event.key.keysym.scancode<512)
+				demoSystem.keys[event.key.keysym.scancode] = TRUE;
+			else
+				dkernel_warn("events.c: %s", "Key not supported");
 			break;
 
 		case SDL_KEYUP:
@@ -75,7 +73,8 @@ int eventHandler(SDL_Event event) {
 				else dkernel_play();
 			}
 
-			demoSystem.keys[event.key.keysym.sym] = FALSE;
+			if (event.key.keysym.scancode<512)
+				demoSystem.keys[event.key.keysym.scancode] = FALSE;
 			break;
 
 		case SDL_QUIT:
