@@ -5,14 +5,10 @@
 #include <fmod.h>
 #include <fmod_errors.h>
 
-//
-
 const unsigned int	BUFFER_SAMPLES	= 512;
 const float			DEFAULT_ENERGY	= 0.0f;
 const float			BEAT_RATIO		= 1.4f;
 const float			FADE_OUT		= 4.0f;
-
-//
 
 struct sound_section
 	{
@@ -34,22 +30,21 @@ struct sound_section
 
 static sound_section* local;
 
-//
-
 void sound_error(FMOD_RESULT const& Value){
 	section_error("FMod: %s", FMOD_ErrorString(Value));}
 
 extern "C" void preload_sound(){
 }
 
-
 extern "C" void load_sound(){
-	if (!demoSystem.sound)
+	if (!demoSystem.sound) {
 		return;
+	}
 
 	if (mySection->stringNum != 1){
 		section_error("1 string needed");
-		return;}
+		return;
+	}
 	
 	local = new sound_section();
 	mySection->vars = local;
@@ -79,7 +74,6 @@ extern "C" void load_sound(){
 		return;}
 
 	mySection->loaded = 1;}
-
 
 extern "C" void init_sound(){
 	if (!demoSystem.sound)
@@ -139,7 +133,6 @@ extern "C" void init_sound(){
 	local->intensity = 0;
 	local->position = 1;
 }
-
 
 extern "C" void render_sound() {
 	float *spectrum, instant, avg;
@@ -251,7 +244,6 @@ extern "C" void render_sound() {
 	}
 }
 
-
 extern "C" void end_sound(){
 	if (!demoSystem.sound)
 		return;
@@ -260,7 +252,7 @@ extern "C" void end_sound(){
 
 	const auto r = FMOD_Channel_Stop(local->m_pChannel);
 	
-	if (r != FMOD_OK)
+	if (r != FMOD_OK) {
 		sound_error(r);
-
+	}
 }
