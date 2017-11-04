@@ -13,7 +13,7 @@ void camera_reset(camera_t *cam) {
 	camera_locate(cam, 0, 0, 0);
 	camera_angle(cam, 0, 0, 0);
 	camera_target(cam, 0,  0,  -100);
-	camera_fov_aspect(cam, 90.0f, gldrv_get_aspect_ratio());
+	camera_fov_aspect(cam, 90.0f, gldrv_get_viewport_aspect_ratio());
 	camera_zplanes(cam, 0.1f, 1000.0f);
 	camera_roll(cam, 0);
 }

@@ -114,7 +114,6 @@ typedef struct
 	SDL_Window*		pSDLWindow;
 	} tGlDriver;
 
-float	gldrv_get_aspect_ratio();
 float	gldrv_get_viewport_aspect_ratio();
 
 extern tGlDriver glDriver;

@@ -47,7 +47,7 @@ static void interpolate_camera (float step, camera_t *cam) {
 	camera_locate (cam, resVec[0], resVec[1], resVec[2]);
 	camera_angle (cam, resVec[3], resVec[4], resVec[5]);
 	camera_target (cam, resVec[6], resVec[7], resVec[8]);
-	camera_fov_aspect (cam, resVec[9], gldrv_get_aspect_ratio());
+	camera_fov_aspect (cam, resVec[9], gldrv_get_viewport_aspect_ratio());
 	camera_zplanes (cam, resVec[10], resVec[11]);
 	
 	if (mySection->splines[0]->channels == 13) {

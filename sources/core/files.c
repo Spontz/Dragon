@@ -5,19 +5,17 @@
 
 // File loader
 // Returns a pointer to an array with the file contents loaded in memory
-char* loadFile (const char *path)
-	{
+char* loadFile (const char *path) {
 	FILE * pFile;
 	char *buffer;
 	long lSize;
 	size_t result;
 
 	pFile = fopen ( path , "rb" );
-	if (pFile == NULL)
-		{
+	if (pFile == NULL) {
 		dkernel_error("loadFile: File error: '%s'", path);
 		return 0;
-		}
+	}
 
 	// obtain file size:
 	fseek (pFile , 0 , SEEK_END);

@@ -155,7 +155,7 @@ void render_image2D () {
 		glPushMatrix ();
 		glLoadIdentity ();
 				
-		glOrtho (-1.0f * gldrv_get_aspect_ratio(), 1.0f * gldrv_get_aspect_ratio(), -1.0f, 1.0f, -1,1);
+		glOrtho (-1.0f * gldrv_get_viewport_aspect_ratio(), 1.0f * gldrv_get_viewport_aspect_ratio(), -1.0f, 1.0f, -1,1);
 		glMatrixMode (GL_MODELVIEW);
 		glPushMatrix ();
 		glLoadIdentity ();

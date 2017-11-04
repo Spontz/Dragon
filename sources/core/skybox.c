@@ -170,7 +170,7 @@ void skybox_render (skybox_t *skybox, camera_t *cam, int texBuffer) {
 			
 			if (texBuffer >= 0) {
 				// We are using a screen buffer, so use corected texture coordinates
-				glTexCoord2f(quad->u[j] / gldrv_get_aspect_ratio(), quad->v[j] / gldrv_get_aspect_ratio());
+				glTexCoord2f(quad->u[j] / gldrv_get_viewport_aspect_ratio(), quad->v[j] / gldrv_get_viewport_aspect_ratio());
 			} else {
 				// We are using a static texture, so use coordinates from 0 to 1
 				glTexCoord2f(quad->u[j], quad->v[j]);

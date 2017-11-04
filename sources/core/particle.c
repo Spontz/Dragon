@@ -97,7 +97,7 @@ void particles_render (tParticleSystem *myParticleSystem) {
 		myParticle = pSortedParticles[i].m_pParticle;
 		
 		if (myParticle->aspectRatio <= 0.0) {
-			vector_scale(&side0, (float)myParticle->size * gldrv_get_aspect_ratio(), &side);
+			vector_scale(&side0, (float)myParticle->size * gldrv_get_viewport_aspect_ratio(), &side);
 			
 		} else {
 			vector_scale(&side0, (float)(myParticle->size * myParticle->aspectRatio), &side);

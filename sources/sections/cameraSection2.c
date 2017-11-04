@@ -57,7 +57,7 @@ void load_camera2() {
 	camera_locate(local->cam, 0, 0, 0);
 	camera_angle(local->cam, 0, 0, 0);
 	camera_target(local->cam, 0,  0,  -100);
-	camera_fov_aspect(local->cam, 90.0f, gldrv_get_aspect_ratio());
+	camera_fov_aspect(local->cam, 90.0f, gldrv_get_viewport_aspect_ratio());
 	camera_zplanes(local->cam, 0.1f, 500.0f);
 	camera_roll(local->cam, 0);
 	mySection->loaded=1;
@@ -114,7 +114,7 @@ void render_camera2 () {
 	camera_angle (local->cam, (float)angleX,    (float)angleY,    (float)angleZ   );
 	camera_target(local->cam, (float)targetX,   (float)targetY,   (float)targetZ  );
 	
-	camera_fov_aspect(local->cam, (float)fov, gldrv_get_aspect_ratio());
+	camera_fov_aspect(local->cam, (float)fov, gldrv_get_viewport_aspect_ratio());
 	camera_zplanes(local->cam, (float)zNear, (float)zFar);
 	camera_roll(local->cam, (float)roll);
 	

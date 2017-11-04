@@ -221,5 +221,5 @@ void insertSectionVariables(tExpression *expression)
 	exprValListAdd(expression->v , "vpWidth"    , (EXPRTYPE)glDriver.vpWidth    );
 	exprValListAdd(expression->v , "vpHeight"   , (EXPRTYPE)glDriver.vpHeight   );
 
-	exprValListAdd(expression->v , "aspectRatio", (EXPRTYPE)gldrv_get_aspect_ratio());
+	exprValListAdd(expression->v , "aspectRatio", (EXPRTYPE)gldrv_get_viewport_aspect_ratio());
 	}

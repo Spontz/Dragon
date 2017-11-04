@@ -24,7 +24,7 @@ static void interpolate_camera (float step, camera_t *cam) {
 	camera_locate (cam, resVec[0], resVec[1], resVec[2]);
 	camera_angle (cam, resVec[3], resVec[4], resVec[5]);
 	camera_target (cam, resVec[6], resVec[7], resVec[8]);
-	camera_fov_aspect (cam, resVec[9], gldrv_get_aspect_ratio());
+	camera_fov_aspect (cam, resVec[9], gldrv_get_viewport_aspect_ratio());
 	camera_zplanes (cam, resVec[10], resVec[11]);
 	
 	if (mySection->splines[0]->channels == 13) {
@@ -158,7 +158,7 @@ void render_camera3 () {
 	camera_angle (local->cam, (float)angleX   , (float)angleY   , (float)angleZ    );
 	camera_target(local->cam, (float)targetX  , (float)targetY  , (float)targetZ   );
 	
-	camera_fov_aspect(local->cam, (float)fov, gldrv_get_aspect_ratio());
+	camera_fov_aspect(local->cam, (float)fov, gldrv_get_viewport_aspect_ratio());
 	camera_zplanes(local->cam, (float)zNear, (float)zFar);
 	camera_roll(local->cam, (float)roll);
 

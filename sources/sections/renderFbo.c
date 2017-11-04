@@ -71,10 +71,10 @@ void render_renderFbo () {
 			glVertex2f (0,0);
 
 			glTexCoord2f (gldrv_get_viewport_aspect_ratio(),0);
-			glVertex2f (gldrv_get_aspect_ratio(),0);
+			glVertex2f (gldrv_get_viewport_aspect_ratio(),0);
 
 			glTexCoord2f (gldrv_get_viewport_aspect_ratio(),(1 / gldrv_get_viewport_aspect_ratio()));
-			glVertex2f (gldrv_get_aspect_ratio(),1);
+			glVertex2f (gldrv_get_viewport_aspect_ratio(),1);
 
 			glTexCoord2f (0,(1 / gldrv_get_viewport_aspect_ratio()));
 			glVertex2f (0,1);
