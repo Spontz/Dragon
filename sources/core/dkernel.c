@@ -8,6 +8,7 @@
 #endif
 
 #include <cassert>
+#include "getopt.h"
 
 #include "../main.h"
 #include "timing.h"
@@ -48,7 +49,6 @@ typedef struct {
 static tScriptCommand scriptCommand[] = {
 
 	{"demo_name",		VTYPE_STRING,		&demoSystem.demoName		},
-	{"config_dialog",	VTYPE_INT,			&demoSystem.configDialog	},
 	{"debug",			VTYPE_INT,			&demoSystem.debug			},
 	{"record",			VTYPE_INT,			&demoSystem.record			},
 	{"record_fps",		VTYPE_FLOAT,		&demoSystem.recordFps		},
@@ -395,18 +395,14 @@ int getSectionByName(char *name) {
 
 // ******************************************************************
 
-void dkernel_getArguments(int argc, char *argv[])
-	{
-	// deprecated
-
-	/*
+void dkernel_getArguments(int argc, char *argv[]) {
 	char *lastSlash;
 	int chars;
 
 	demoSystem.argc = argc;
 	demoSystem.argv = argv;
 
-	if (argc > 1) {
+	/*if (argc > 1) {
 		demoSystem.demoDir = argv[1];
 	}
 	else {
@@ -420,9 +416,10 @@ void dkernel_getArguments(int argc, char *argv[])
 			demoSystem.demoDir[chars] = 0;
 		}
 	}
-	*/
+	
 
 	demoSystem.demoDir = ".";
+	*/
 
 	#ifdef WIN32
 		demoSystem.hInstance = GetModuleHandle(NULL);
@@ -524,10 +521,8 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 
 			// if the command is not recognized
 			// look at the first character (fColor, cSpline, sTexture)
-			if (com == -1)
-				{
-				switch (key[0])
-					{
+			if (com == -1) {
+				switch (key[0]) {
 					case 'f':
 						com = SECTION_PARAM;
 						break;
@@ -850,11 +845,10 @@ void load_spos(char *dir)
 void dkernel_loadScripts()
 	{
 	// initialize global kernel variables
-	demoSystem.demoName = "Spontz Visuals Engine";
-	demoSystem.configDialog = FALSE;
+	demoSystem.demoName = "Dragon";
 	demoSystem.debug = FALSE;
 	demoSystem.record = FALSE;
-	demoSystem.recordFps = 25.0f;
+	demoSystem.recordFps = 60.0f;
 	demoSystem.loop = TRUE;
 	demoSystem.sound = TRUE;
 	demoSystem.bench = FALSE;
@@ -881,21 +875,24 @@ void dkernel_loadScripts()
 	// load all scripts
 	load_spos("data");
 	
-	dkernel_trace("Scripts loaded\n");
-
-}
-
-// ******************************************************************
-
-void dkernel_configDialog() {
-
-	if (demoSystem.configDialog) {
-		// call to a procedure inside dialog.c
-		// that displays the dialog and change config
-#ifdef WIN32
-		// dialogDisplay();
-#endif
+	// Overwrite variables with command line arguments
+	if (demoSystem.argc > 1) {
+		int option = 0;
+		//Specifying the expected options
+		//The two options l and b expect numbers as argument
+		while ((option = getopt(demoSystem.argc, demoSystem.argv, "w:h:")) != -1) {
+			switch (option) {
+			case 'w': glDriver.width = atoi(optarg);
+				break;
+			case 'h': glDriver.height = atoi(optarg);
+				break;
+			default: dkernel_trace("Usage: dragon -w width -h height");	
+				exit(EXIT_FAILURE);
+			}
+		}
 	}
+
+	dkernel_trace("Scripts loaded\n");
 }
 
 // ******************************************************************

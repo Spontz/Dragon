@@ -164,7 +164,6 @@ typedef struct {
 	char *demoName;
 
 	// misc
-	int configDialog;
 	int debug;
 	int record;
 	float recordFps;
