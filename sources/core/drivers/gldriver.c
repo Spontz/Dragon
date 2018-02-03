@@ -77,8 +77,8 @@ void gldrv_create()
 	glDriver.fullScreen  = 0;
 	glDriver.saveInfo    = 0;
 
-	glDriver.width  = 0;
-	glDriver.height = 0;
+	glDriver.width  = 640;
+	glDriver.height = 480;
 
 	glDriver.AspectRatio = 0;
 
