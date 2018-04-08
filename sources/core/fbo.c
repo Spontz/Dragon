@@ -121,7 +121,6 @@ void fbo_upload(int index, int cache)
 	glGenTextures(1, &(fbo->id_tex));
 	glBindTexture(GL_TEXTURE_2D, fbo->id_tex);
 	glTexImage2D(GL_TEXTURE_2D, 0, fbo->iformat,  fbo->width, fbo->height, 0, fbo->format, fbo->ttype, NULL);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fbo->width, fbo->height, 0,  GL_BGRA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 

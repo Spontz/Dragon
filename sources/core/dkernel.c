@@ -72,86 +72,62 @@ static tScriptCommand scriptCommand[] = {
 
 	{"gl_gamma",		VTYPE_FLOAT,		&glDriver.gamma				},
 
-	{"fbo_0_width",		VTYPE_INT,			&glDriver.fbo[0].width		},
-	{"fbo_0_height",	VTYPE_INT,			&glDriver.fbo[0].height		},
+	{"fbo_0_ratio",		VTYPE_INT,			&glDriver.fbo[0].ratio		},
 	{"fbo_0_format",	VTYPE_STRING,		&glDriver.fbo[0].format		},
-
-	{"fbo_1_width",		VTYPE_INT,			&glDriver.fbo[1].width		},
-	{"fbo_1_height",	VTYPE_INT,			&glDriver.fbo[1].height		},
+	{"fbo_1_ratio",		VTYPE_INT,			&glDriver.fbo[1].ratio		},
 	{"fbo_1_format",	VTYPE_STRING,		&glDriver.fbo[1].format		},
-
-	{"fbo_2_width",		VTYPE_INT,			&glDriver.fbo[2].width		},
-	{"fbo_2_height",	VTYPE_INT,			&glDriver.fbo[2].height		},
+	{"fbo_2_ratio",		VTYPE_INT,			&glDriver.fbo[2].ratio		},
 	{"fbo_2_format",	VTYPE_STRING,		&glDriver.fbo[2].format		},
-
-	{"fbo_3_width",		VTYPE_INT,			&glDriver.fbo[3].width		},
-	{"fbo_3_height",	VTYPE_INT,			&glDriver.fbo[3].height		},
+	{"fbo_3_ratio",		VTYPE_INT,			&glDriver.fbo[3].ratio		},
 	{"fbo_3_format",	VTYPE_STRING,		&glDriver.fbo[3].format		},
-
-	{"fbo_4_width",		VTYPE_INT,			&glDriver.fbo[4].width		},
-	{"fbo_4_height",	VTYPE_INT,			&glDriver.fbo[4].height		},
+	{"fbo_4_ratio",		VTYPE_INT,			&glDriver.fbo[4].ratio		},
 	{"fbo_4_format",	VTYPE_STRING,		&glDriver.fbo[4].format		},
-
-	{"fbo_5_width",		VTYPE_INT,			&glDriver.fbo[5].width		},
-	{"fbo_5_height",	VTYPE_INT,			&glDriver.fbo[5].height		},
+	{"fbo_5_ratio",		VTYPE_INT,			&glDriver.fbo[5].ratio		},
 	{"fbo_5_format",	VTYPE_STRING,		&glDriver.fbo[5].format		},
-
-	{"fbo_6_width",		VTYPE_INT,			&glDriver.fbo[6].width		},
-	{"fbo_6_height",	VTYPE_INT,			&glDriver.fbo[6].height		},
+	{"fbo_6_ratio",		VTYPE_INT,			&glDriver.fbo[6].ratio		},
 	{"fbo_6_format",	VTYPE_STRING,		&glDriver.fbo[6].format		},
-
-	{"fbo_7_width",		VTYPE_INT,			&glDriver.fbo[7].width		},
-	{"fbo_7_height",	VTYPE_INT,			&glDriver.fbo[7].height		},
+	{"fbo_7_ratio",		VTYPE_INT,			&glDriver.fbo[7].ratio		},
 	{"fbo_7_format",	VTYPE_STRING,		&glDriver.fbo[7].format		},
-
-	{"fbo_8_width",		VTYPE_INT,			&glDriver.fbo[8].width		},
-	{"fbo_8_height",	VTYPE_INT,			&glDriver.fbo[8].height		},
+	{"fbo_8_ratio",		VTYPE_INT,			&glDriver.fbo[8].ratio		},
 	{"fbo_8_format",	VTYPE_STRING,		&glDriver.fbo[8].format		},
-
-	{"fbo_9_width",		VTYPE_INT,			&glDriver.fbo[9].width		},
-	{"fbo_9_height",	VTYPE_INT,			&glDriver.fbo[9].height		},
+	{"fbo_9_ratio",		VTYPE_INT,			&glDriver.fbo[9].ratio		},
 	{"fbo_9_format",	VTYPE_STRING,		&glDriver.fbo[9].format		},
-
-	{"fbo_10_width",	VTYPE_INT,			&glDriver.fbo[10].width		},
-	{"fbo_10_height",	VTYPE_INT,			&glDriver.fbo[10].height	},
+	{"fbo_10_ratio",	VTYPE_INT,			&glDriver.fbo[10].ratio		},
 	{"fbo_10_format",	VTYPE_STRING,		&glDriver.fbo[10].format	},
-
-	{"fbo_11_width",	VTYPE_INT,			&glDriver.fbo[11].width		},
-	{"fbo_11_height",	VTYPE_INT,			&glDriver.fbo[11].height	},
+	{"fbo_11_ratio",	VTYPE_INT,			&glDriver.fbo[11].ratio		},
 	{"fbo_11_format",	VTYPE_STRING,		&glDriver.fbo[11].format	},
-
-	{"fbo_12_width",	VTYPE_INT,			&glDriver.fbo[12].width		},
-	{"fbo_12_height",	VTYPE_INT,			&glDriver.fbo[12].height	},
+	{"fbo_12_ratio",	VTYPE_INT,			&glDriver.fbo[12].ratio		},
 	{"fbo_12_format",	VTYPE_STRING,		&glDriver.fbo[12].format	},
-
-	{"fbo_13_width",	VTYPE_INT,			&glDriver.fbo[13].width		},
-	{"fbo_13_height",	VTYPE_INT,			&glDriver.fbo[13].height	},
+	{"fbo_13_ratio",	VTYPE_INT,			&glDriver.fbo[13].ratio		},
 	{"fbo_13_format",	VTYPE_STRING,		&glDriver.fbo[13].format	},
-
-	{"fbo_14_width",	VTYPE_INT,			&glDriver.fbo[14].width		},
-	{"fbo_14_height",	VTYPE_INT,			&glDriver.fbo[14].height	},
+	{"fbo_14_ratio",	VTYPE_INT,			&glDriver.fbo[14].ratio		},
 	{"fbo_14_format",	VTYPE_STRING,		&glDriver.fbo[14].format	},
-
-	{"fbo_15_width",	VTYPE_INT,			&glDriver.fbo[15].width		},
-	{"fbo_15_height",	VTYPE_INT,			&glDriver.fbo[15].height	},
+	{"fbo_15_ratio",	VTYPE_INT,			&glDriver.fbo[15].ratio		},
 	{"fbo_15_format",	VTYPE_STRING,		&glDriver.fbo[15].format	},
-
-	{"fbo_16_width",	VTYPE_INT,			&glDriver.fbo[16].width		},
-	{"fbo_16_height",	VTYPE_INT,			&glDriver.fbo[16].height	},
+	{"fbo_16_ratio",	VTYPE_INT,			&glDriver.fbo[16].ratio		},
 	{"fbo_16_format",	VTYPE_STRING,		&glDriver.fbo[16].format	},
-
-	{"fbo_17_width",	VTYPE_INT,			&glDriver.fbo[17].width		},
-	{"fbo_17_height",	VTYPE_INT,			&glDriver.fbo[17].height	},
+	{"fbo_17_ratio",	VTYPE_INT,			&glDriver.fbo[17].ratio		},
 	{"fbo_17_format",	VTYPE_STRING,		&glDriver.fbo[17].format	},
-
-	{"fbo_18_width",	VTYPE_INT,			&glDriver.fbo[18].width		},
-	{"fbo_18_height",	VTYPE_INT,			&glDriver.fbo[18].height	},
+	{"fbo_18_ratio",	VTYPE_INT,			&glDriver.fbo[18].ratio		},
 	{"fbo_18_format",	VTYPE_STRING,		&glDriver.fbo[18].format	},
-
-	{"fbo_19_width",	VTYPE_INT,			&glDriver.fbo[19].width		},
-	{"fbo_19_height",	VTYPE_INT,			&glDriver.fbo[19].height	},
+	{"fbo_19_ratio",	VTYPE_INT,			&glDriver.fbo[19].ratio		},
 	{"fbo_19_format",	VTYPE_STRING,		&glDriver.fbo[19].format	},
 
+	{"fbo_20_width",	VTYPE_INT,			&glDriver.fbo[20].width		},
+	{"fbo_20_height",	VTYPE_INT,			&glDriver.fbo[20].height	},
+	{"fbo_20_format",	VTYPE_STRING,		&glDriver.fbo[20].format	},
+	{"fbo_21_width",	VTYPE_INT,			&glDriver.fbo[21].width		},
+	{"fbo_21_height",	VTYPE_INT,			&glDriver.fbo[21].height	},
+	{"fbo_21_format",	VTYPE_STRING,		&glDriver.fbo[21].format	},
+	{"fbo_22_width",	VTYPE_INT,			&glDriver.fbo[22].width		},
+	{"fbo_22_height",	VTYPE_INT,			&glDriver.fbo[22].height	},
+	{"fbo_22_format",	VTYPE_STRING,		&glDriver.fbo[22].format	},
+	{"fbo_23_width",	VTYPE_INT,			&glDriver.fbo[23].width		},
+	{"fbo_23_height",	VTYPE_INT,			&glDriver.fbo[23].height	},
+	{"fbo_23_format",	VTYPE_STRING,		&glDriver.fbo[23].format	},
+	{"fbo_24_width",	VTYPE_INT,			&glDriver.fbo[24].width		},
+	{"fbo_24_height",	VTYPE_INT,			&glDriver.fbo[24].height	},
+	{"fbo_24_format",	VTYPE_STRING,		&glDriver.fbo[24].format	},
 };
 
 #define COMMANDS_NUMBER (sizeof(scriptCommand) / sizeof(tScriptCommand))
@@ -269,17 +245,15 @@ typedef struct {
 
 // ******************************************************************
 
-#define TEXTURE_MODE 6
-
-glTexTable_t textureModes[TEXTURE_MODE] = {
-	{ "RGBA_UI8",		GL_RGBA,		GL_RGBA,	GL_UNSIGNED_BYTE },
-	{ "RGB_UI8",		GL_RGB,			GL_RGB,		GL_UNSIGNED_BYTE },
-	{ "RGBA_F16",		GL_RGBA,		GL_RGBA,	GL_FLOAT },
-	{ "RGB_F16",		GL_RGB,			GL_RGB,		GL_FLOAT },
-	//{ "RGB_F16",		GL_RGBA8,		GL_BGRA,	GL_UNSIGNED_BYTE }, //TEST PERE
-	{ "RGBA_F32",		GL_RGBA,		GL_RGBA,	GL_DOUBLE},
-	{ "RGB_F32",		GL_RGB,			GL_RGB,		GL_DOUBLE},
+glTexTable_t textureModes[] = {
+	{ "RGB",			GL_RGB8,				GL_RGB,				GL_UNSIGNED_BYTE },
+	{ "RGBA",			GL_RGBA8,				GL_RGBA,			GL_UNSIGNED_BYTE },
+	{ "RGB_16F",		GL_RGB16F,				GL_RGB,				GL_FLOAT },
+	{ "RGBA_16F",		GL_RGBA16F,				GL_RGBA,			GL_FLOAT },
+	{ "RGB_32F",		GL_RGB32F,				GL_RGB,				GL_FLOAT },
+	{ "RGBA_32F",		GL_RGBA32F,				GL_RGBA,			GL_FLOAT },
 };
+#define TEXTURE_MODE (sizeof(textureModes) / sizeof(glTexTable_t))
 
 // ******************************************************************
 

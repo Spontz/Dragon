@@ -84,6 +84,7 @@ typedef struct
 	int tex_iformat;
 	int tex_format;
 	int tex_type;
+	int ratio;
 	char *format;
 	} tGLFboFormat;
 	

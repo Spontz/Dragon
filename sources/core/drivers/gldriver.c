@@ -15,57 +15,6 @@
 
 tGlDriver glDriver;
 
-// ******************************************************************
-
-#ifdef WIN32
-/*
-// WGL_ARB_multitexture
-PFNGLACTIVETEXTUREARBPROC		glActiveTextureARB = NULL;
-PFNGLCLIENTACTIVETEXTUREARBPROC	glClientActiveTextureARB = NULL;
-PFNGLMULTITEXCOORD2FARBPROC		glMultiTexCoord2fARB = NULL;
-PFNGLMULTITEXCOORD2FVARBPROC	glMultiTexCoord2fvARB = NULL;
-PFNGLMULTITEXCOORD3FARBPROC		glMultiTexCoord3fARB = NULL;
-PFNGLMULTITEXCOORD3FVARBPROC	glMultiTexCoord3fvARB = NULL;
-
-// GL_ARB_texture_compression
-PFNGLCOMPRESSEDTEXIMAGE2DARBPROC glCompressedTexImage2DARB = NULL;
-
-// GL_EXT_compiled_vertex_array
-PFNGLLOCKARRAYSEXTPROC		glLockArraysEXT = NULL;
-PFNGLUNLOCKARRAYSEXTPROC	glUnlockArraysEXT = NULL;
-
-// GL_EXT_blend_subtract
-PFNGLBLENDEQUATIONEXTPROC glBlendEquationEXT = NULL;
-
-// WGL_EXT_extensions_string
-PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionsStringARB = NULL;
-
-// WGL_ARB_pbuffer
-PFNWGLCREATEPBUFFERARBPROC		wglCreatePbufferARB = NULL;
-PFNWGLGETPBUFFERDCARBPROC		wglGetPbufferDCARB = NULL;
-PFNWGLRELEASEPBUFFERDCARBPROC	wglReleasePbufferDCARB = NULL;
-PFNWGLDESTROYPBUFFERARBPROC		wglDestroyPbufferARB = NULL;
-PFNWGLQUERYPBUFFERARBPROC		wglQueryPbufferARB = NULL;
-
-// WGL_ARB_make_current_read
-PFNWGLMAKECONTEXTCURRENTARBPROC wglMakeContextCurrentARB = NULL;
-
-// WGL_ARB_pixel_format
-PFNWGLGETPIXELFORMATATTRIBIVARBPROC	wglGetPixelFormatAttribivARB = NULL;
-PFNWGLGETPIXELFORMATATTRIBFVARBPROC	wglGetPixelFormatAttribfvARB = NULL;
-PFNWGLCHOOSEPIXELFORMATARBPROC		wglChoosePixelFormatARB = NULL;
-
-// WGL_ARB_render_texture
-PFNWGLBINDTEXIMAGEARBPROC		wglBindTexImageARB = NULL;
-PFNWGLRELEASETEXIMAGEARBPROC	wglReleaseTexImageARB = NULL;
-PFNWGLSETPBUFFERATTRIBARBPROC	wglSetPbufferAttribARB = NULL;
-
-// GLSL SHADER
-// PFNWGLUSEPROGRAMOBJECTARBPROC		wglUseProgramObjectARB = NULL;
-*/
-#endif
-
-
 /* *************************************************************
  create gl driver and store default settings
 **************************************************************** */
@@ -92,7 +41,7 @@ void gldrv_create()
 	glDriver.gamma = 1.0f;
 
 	for (i = 0; i < FBO_BUFFERS; i++) {
-		glDriver.fbo[i].width = glDriver.fbo[i].height = 0;
+		glDriver.fbo[i].width = glDriver.fbo[i].height = glDriver.fbo[i].ratio = 0;
 	}
 }
 
@@ -248,6 +197,7 @@ void gldrv_initViewport()
 	tex_properties(demoSystem.backup, NO_MIPMAP);
 	tex_upload(demoSystem.backup, NO_CACHE);
 
+	//TODO: Eliminar los render buffers
 	for (i = 0; i < RENDERING_BUFFERS; i++)
 	{
 		demoSystem.texRenderingBuffer[i] = tex_new(glDriver.vpWidth, glDriver.vpHeight, GL_RGB, 3);
@@ -259,9 +209,14 @@ void gldrv_initViewport()
 		tex_upload(demoSystem.texRenderingBuffer[i], NO_CACHE);
 	}
 
-	// init shared fbo's
+	// init fbo
 	for (i = 0; i < FBO_BUFFERS; i++) {
-		if ((glDriver.fbo[i].width != 0) && (glDriver.fbo[i].height != 0)) {
+		if (((glDriver.fbo[i].width != 0) && (glDriver.fbo[i].height != 0)) || (glDriver.fbo[i].ratio != 0)) {
+			if (glDriver.fbo[i].ratio != 0) {
+				glDriver.fbo[i].width = (glDriver.width / glDriver.fbo[i].ratio);
+				glDriver.fbo[i].height = (glDriver.height / glDriver.fbo[i].ratio);
+			}
+
 			glDriver.fbo[i].tex_iformat = getTextureInternalFormatByName(glDriver.fbo[i].format);
 			glDriver.fbo[i].tex_format = getTextureFormatByName(glDriver.fbo[i].format);
 			glDriver.fbo[i].tex_type = getTextureTypeByName(glDriver.fbo[i].format);
@@ -343,7 +298,7 @@ void gldrv_init()
 //		if (!SDL_GetCurrentDisplayMode(0, &current))
 //			dkernel_error("gldriver.c: Cannot get the current Display Mode: %s", SDL_GetError());
 		// Get the current aspect ratio before setting new resolution
-		glDriver.AspectRatio = glDriver.width / glDriver.height;
+		glDriver.AspectRatio = (float)glDriver.width / (float)glDriver.height;
 
 		// TODO: Hack guarro para ver si funciona
 		glDriver.width = 1366; // current.w;

@@ -33,8 +33,8 @@ typedef struct {
 #define SECTION_MODIFIERS	32
 
 #define RENDERING_BUFFERS	10
-#define FBO_BUFFERS			20
-// Warning! 'FBO_BUFFERS' should not be less than 20, if you want to set less than 20,
+#define FBO_BUFFERS			25
+// Warning! 'FBO_BUFFERS' should not be less than 25, if you want to set less than 25,
 // please check the variable 'scriptCommand' contents in 'dkernel.c' file.
 
 // ******************************************************************
