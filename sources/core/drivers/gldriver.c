@@ -294,16 +294,13 @@ void gldrv_init()
 	if (glDriver.fullScreen)
 	{
 		SDLWindowFlags |= SDL_WINDOW_FULLSCREEN;
-//		SDL_DisplayMode current;
-//		if (!SDL_GetCurrentDisplayMode(0, &current))
-//			dkernel_error("gldriver.c: Cannot get the current Display Mode: %s", SDL_GetError());
-		// Get the current aspect ratio before setting new resolution
-		glDriver.AspectRatio = (float)glDriver.width / (float)glDriver.height;
-
-		// TODO: Hack guarro para ver si funciona
-		glDriver.width = 1366; // current.w;
-		glDriver.height = 768; // current.h;
+		//		SDL_DisplayMode current;
+		//		if (!SDL_GetCurrentDisplayMode(0, &current))
+		//			dkernel_error("gldriver.c: Cannot get the current Display Mode: %s", SDL_GetError());
 	}
+	// Get the current aspect ratio before setting new resolution
+	glDriver.AspectRatio = (float)glDriver.width / (float)glDriver.height;
+	
 	// TODO: glDriver.bpp = info->vfmt->BitsPerPixel;
 	glDriver.pSDLWindow = SDL_CreateWindow(
 		demoSystem.demoName,
@@ -387,7 +384,11 @@ void gldrv_screenquad()
 
 void gldrv_texscreenquad()
 {
-
+	// TODO: ASK IVAN
+	// 1- ¿Porque a veces se usa la función "gldrv_get_viewport_aspect_ratio" y otras "gldrv_get_aspect_ratio"??
+	//     ¿No sería mas facil calcularlo una vez y usarlo siempre? son un mogollon de divisiones!!! --> He puesto el cálculo del AspectRatio al principio,
+	//		Como la resolución no cambia, yo CREO que la fucnión de gldrv_get_aspect_ratio no debería existir, y siempre q se quiera el aspect ratio, solo hay q mirar el valor de la variable "glDriver.AspectRatio"
+	// 2- ¿porque tenemos tantas funciones para pintar quads? por ejemplo....  en redenrfbo.c -> render_renderFbo () se pinta un quan en el code... y tambien en renderBuffer.c -> draw_fucking_quad ()
 	float x0, y0, x1, y1;
 
 	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
@@ -400,6 +401,7 @@ void gldrv_texscreenquad()
 	glTexCoord2f(1, 0); glVertex2f(x1 + GL_EPSILON, y0 - GL_EPSILON);
 	glTexCoord2f(1, 1); glVertex2f(x1 + GL_EPSILON, y1 + GL_EPSILON);
 	glTexCoord2f(0, 1); glVertex2f(x0 - GL_EPSILON, y1 + GL_EPSILON);
+	
 	glEnd();
 }
 

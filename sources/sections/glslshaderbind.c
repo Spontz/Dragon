@@ -392,10 +392,12 @@ void render_glslshaderbind()
 	varSamplerCube*	samplerCube;
 	int				i;
 	double			d;
-
+	
 	// Exit if shaders not supported
 	//if (!glDriver.ext.glslshaders)
 		//return;
+
+
 
 	local = (glslshaderbind_section*) mySection->vars;
 
@@ -426,7 +428,7 @@ void render_glslshaderbind()
 			// Retrieve the values and assign them
 			exprValListGet(vec2->eva.v, "v1", &d); vec2->value[0] = (float)d;
 			exprValListGet(vec2->eva.v, "v2", &d); vec2->value[1] = (float)d;
-			glUniform2fv(vec2->loc, 2, (GLfloat*)vec2->value);
+			glUniform2fv(vec2->loc, 1, (GLfloat*)vec2->value);
 			}
 	
 	for (i = 0; i < local->vec3_num; i++)
@@ -441,7 +443,7 @@ void render_glslshaderbind()
 			exprValListGet(vec3->eva.v, "v1", &d); vec3->value[0] = (float)d;
 			exprValListGet(vec3->eva.v, "v2", &d); vec3->value[1] = (float)d;
 			exprValListGet(vec3->eva.v, "v3", &d); vec3->value[2] = (float)d;
-			glUniform3fv(vec3->loc, 3, (GLfloat*)vec3->value);
+			glUniform3fv(vec3->loc, 1, (GLfloat*)vec3->value);
 			}
 
 	for (i = 0; i < local->vec4_num; i++)
@@ -457,7 +459,7 @@ void render_glslshaderbind()
 			exprValListGet(vec4->eva.v, "v2", &d); vec4->value[1] = (float)d;
 			exprValListGet(vec4->eva.v, "v3", &d); vec4->value[2] = (float)d;
 			exprValListGet(vec4->eva.v, "v4", &d); vec4->value[3] = (float)d;
-			glUniform4fv(vec4->loc, 4, (GLfloat*)vec4->value);
+			glUniform4fv(vec4->loc, 1, (GLfloat*)vec4->value);
 			}
 
 	for (i = 0; i < local->matrix4x4_num; ++i)
@@ -483,6 +485,7 @@ void render_glslshaderbind()
 			{
 			sampler2D = &(local->sampler2D[i]);
 			glActiveTexture (GL_TEXTURE0 + i);
+
 			tex_bind (sampler2D->texture);
 			glUniform1i(sampler2D->loc, (GLuint)i);
 			}
