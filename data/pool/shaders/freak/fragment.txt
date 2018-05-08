@@ -1,0 +1,64 @@
+uniform vec4 fvAmbient;
+uniform vec4 fvSpecular;
+uniform vec4 fvDiffuse;
+uniform float fSpecularPower;
+uniform float colors;         // 2-5, 3 es un buen valor (numero de colores del banding)
+uniform sampler2D baseMap;
+uniform vec4 artifactcolor;   // color de las lineas de dibujo
+uniform float banding;        // -1 a 1 (deformador del contraste del area exterior)
+
+varying vec2 Texcoord;
+varying vec3 ViewDirection;
+varying vec3 LightDirection;
+varying vec3 Normal;
+
+vec4 grade(vec4 color)
+   {
+   float lum = dot(vec3(0.3,0.59,0.11),color.xyz);
+   
+   int a = int(color.x*colors);
+   int b = int(color.y*colors);
+   int c = int(color.z*colors);
+   
+  
+   return vec4(float(a)/colors,float(b)/colors,float(c)/colors,color.w);
+   
+//   ddx
+   }
+
+float luminance(vec4 color)
+   {
+   return dot(vec3(0.3,0.59,0.11),color.xyz);   
+   }
+
+void main( void )
+{
+   vec3  fvLightDirection = normalize( LightDirection );
+   vec3  fvNormal         = normalize( Normal );
+   float fNDotL           = dot( fvNormal, fvLightDirection ); 
+   
+   vec3  fvReflection     = normalize( ( ( 2.0 * fvNormal ) * fNDotL ) - fvLightDirection ); 
+   vec3  fvViewDirection  = normalize( ViewDirection );
+   float fRDotV           = max( 0.0, dot( fvReflection, fvViewDirection ) );
+   
+   vec4  fvBaseColor      = texture2D( baseMap, Texcoord );
+   vec4  fvBaseColorx      = texture2D( baseMap, Texcoord + vec2(0.01,0.0));   
+   vec4  fvBaseColory      = texture2D( baseMap, Texcoord + vec2(0.0, 0.01));      
+   
+   vec4  fvTotalAmbient   = fvAmbient * fvBaseColor; 
+   vec4  fvTotalAmbientx   = fvAmbient * fvBaseColorx; 
+   vec4  fvTotalAmbienty   = fvAmbient * fvBaseColory; 
+   vec4  fvTotalDiffuse   = fvDiffuse * fNDotL * fvBaseColor; 
+   vec4  fvTotalSpecular  = fvSpecular * ( pow( fRDotV, fSpecularPower ) );
+  
+   vec4 color = ( fvTotalAmbient + fvTotalDiffuse + fvTotalSpecular );
+   vec4 colorx = ( fvTotalAmbientx + fvTotalDiffuse + fvTotalSpecular );
+   vec4 colory = ( fvTotalAmbienty + fvTotalDiffuse + fvTotalSpecular );
+   
+ 
+   vec4 retcol = grade(color);
+  
+   if (abs(colorx.x - colory.x) > banding)
+      retcol = artifactcolor;
+   gl_FragColor = retcol;
+}

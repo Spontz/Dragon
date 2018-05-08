@@ -1,18 +1,23 @@
-[efxGlow2]
-id 5
+[renderfbo]
+id 6
 start 0
-end 12
-enabled 1
-layer 4
+end 4
+enabled 0
+layer 10
+blend ONE ZERO
+; Recovers the previously saved fbo and puts it
+; on the screen with the desired parameters
 
-; ************************
-; * Causes a Glow effect *
-; ************************
+; Integer representing the fbo unit that will be
+; recovered over the current screen contents (0 to 11)
+; if '-1' is passed, no fbo is binded (useful for glsl)
+param 1
 
-sRedHighPassColor     red = 0.2;
-sGreenHighPassColor green = sin(360*t);
-sBlueHighPassCOlor   blue = cos(360*t);
+; Clear the screen buffer before restoring? (1=yes, 0=no)
+fClearScreenBuffer 1
 
-sAccumulation accumulation = 1;
+; Clear the depth buffer after restoring? (1=yes, 0=no)
+fClearDepthBuffer 1
 
-sRadius radius = 10+10*beat*sin(t*10);
+; Fullscreen restore? 0 = no; 1 = yes
+fFullScreenRestore 1

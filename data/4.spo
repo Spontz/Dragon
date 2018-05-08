@@ -1,18 +1,23 @@
-[efxGlow2]
-id 4
+[glslshaderbind]
+id 5
 start 0
-end 12
+end 4
 enabled 1
-layer 3
+layer 9
+blend ONE ZERO
+; VERTEX SHADER
+string data/pool/shaders/merge/vertex.txt
 
-; ************************
-; * Causes a Glow effect *
-; ************************
+; FRAGMENT SHADER
+string data/pool/shaders/merge/fragment.txt
 
-sRedHighPassColor     red = sin(360*t);
-sGreenHighPassColor green = cos(360*t);
-sBlueHighPassCOlor   blue = 0.2;
+; PARAMETERS
+;string float mix v1=0.0;
+;string sampler2D iChannel0 data/pool/models/lamborgini/em-sunset.jpg
+string sampler2D iChannel1 data/pool/models/lamborgini/_Charcoa.jpg
+;string sampler2D iChannel0 fbo0
+;string sampler2D iChannel1 fbo1
 
-sAccumulation accumulation = 3;
-
-sRadius radius=10+10*beat*sin(t*10);
+;string vec2 iResolution v1=512;v2=256;
+;string float sample v1=4.0;
+;string sampler2D iChannel0 fbo1

@@ -58,8 +58,14 @@ void glslshad_upload (int index) {
 	glslshad->id_vertex = glCreateShader(GL_VERTEX_SHADER);
 	glslshad->id_fragment = glCreateShader(GL_FRAGMENT_SHADER);
 	// Specify the sources of the shaders
-	glShaderSource(glslshad->id_vertex, 1, (const GLchar**)&glslshad->data_v, (const GLint*)&glslshad->size_v);
-	glShaderSource(glslshad->id_fragment, 1, (const GLchar**)&glslshad->data_f, (const GLint*)&glslshad->size_f);
+
+	GLchar* vertex_programs[] = { glslshad->data_v };
+	GLint vertex_sizes[] = { glslshad->size_v };
+	GLchar* pixel_programs[] = { glslshad->data_f };
+	GLint pixel_sizes[] = { glslshad->size_f };
+
+	glShaderSource(glslshad->id_vertex, 1, vertex_programs, vertex_sizes);
+	glShaderSource(glslshad->id_fragment, 1, pixel_programs, pixel_sizes);
 	// Compile the shaders
 	glCompileShader(glslshad->id_vertex);
 	glCompileShader(glslshad->id_fragment);

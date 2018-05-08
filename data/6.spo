@@ -1,18 +1,38 @@
-[efxGlow2]
-id 6
+[objectShader]
+id 7
 start 0
-end 6
+end 4
 enabled 1
-layer 5
+layer 6
+blend ONE ZERO
+sModelDirectory data/pool/models/torus/
+sModelFileName torus.3ds
+shaders data/pool/models/torus/torus.shader
+sSourcesPosition default
+fEnableDepthBufferClearing 0
 
-; ************************
-; * Causes a Glow effect *
-; ************************
+; **********************
+; * OBJECT POSITIONING *
+; **********************
 
-sRedHighPassColor     red = 0.2;
-sGreenHighPassColor green = sin(360*t);
-sBlueHighPassCOlor   blue = cos(360*t);
+; Position for object n
+string tx=0; ty=0; tz=0;
 
-sAccumulation accumulation = 1;
+; Rotation for object n
+string rx=0; ry=180*(tend-t)/tend; rz=0;
 
-sRadius radius = 10+10*beat*sin(t*10);
+; Scale for object n
+string sx=1; sy=1; sz=1;
+
+; ***********************
+; * SOURCES POSITIONING *
+; ***********************
+
+; Sources Position
+string tx=0; ty=0; tz=0;
+
+; Sources Rotation
+string rx=0; ry=0; rz=0;
+
+; Sources scale
+string sx=1; sy=1; sz=1;

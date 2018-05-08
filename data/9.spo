@@ -1,0 +1,16 @@
+[background]
+id 12
+start 0
+end 4
+enabled 1
+layer 1
+blend ONE ZERO
+; This effect draws the specified
+; image over the screen, covering
+; the previous content
+
+; Useful if it is the first painted section
+; To set the screen background
+
+sBackgroundPicture data/pool/models/lamborgini/em-sunset.jpg
+fFitToContent 0

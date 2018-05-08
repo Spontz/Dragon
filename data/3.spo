@@ -1,38 +1,12 @@
-[objectShader]
-id 3
+[fbounbind]
+id 4
 start 0
-end 12
+end 4
 enabled 1
-layer 2
+layer 7
+blend ZERO ZERO
+; Clear the screen buffer after capturing? (1=yes, 0=no)
+fClearScreenBuffer 1
 
-sModelDirectory data/pool/models/cube/
-sModelFileName cube.lwo
-shaders data/pool/models/cube/cube.shader
-sSourcesPosition data/pool/models/cube/cube.lwo
-fEnableDepthBufferClearing 0
-
-; **********************
-; * OBJECT POSITIONING *
-; **********************
-
-; Position for object n
-string tx=0; ty=0; tz=0;
-
-; Rotation for object n
-string angle=180*n; rx=angle*t/tend; ry=angle*t/tend; rz=angle*t/tend;
-
-; Scale for object n
-string sx=n*0.2+0.1*cos(n*t*10); sy=0.2+beat*0.4+0.1*sin(n*t); sz=0.4+0.1*cos(n*t);
-
-; ***********************
-; * SOURCES POSITIONING *
-; ***********************
-
-; Sources Position
-string tx=0; ty=0; tz=0;
-
-; Sources Rotation
-string angle=360; rx=angle*t/tend; ry=angle*t/tend; rz=angle*t/tend;
-
-; Sources scale
-string sx=1.3; sy=1.3; sz=1.3;
+; Clear the depth buffer after capturing? (1=yes, 0=no)
+fClearDepthBuffer 1

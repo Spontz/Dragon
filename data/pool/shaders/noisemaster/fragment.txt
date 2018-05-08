@@ -1,0 +1,24 @@
+uniform sampler2D Source;
+uniform sampler2D Texture0;
+uniform float value;
+uniform float contribution;
+uniform vec2 offset;
+uniform float speed;
+uniform vec4 adjust;
+
+uniform float fTime0_X;
+
+varying vec2 texCoord;
+
+void main(void)
+   {
+   vec2 noise = texture2D( Texture0,texCoord+fTime0_X*0.01*speed).xy;
+   noise += texture2D( Texture0,texCoord*vec2(-2.0,2.0)+fTime0_X*0.02*speed).xy;  
+   noise += texture2D( Texture0,texCoord*vec2(0.5,-0.5)+fTime0_X*0.04*speed).xy;   
+
+   noise = (noise-offset)*0.01*value;
+ 
+   vec4 col = texture2D( Source,texCoord+noise);
+   gl_FragColor = col*texture2D( Source,texCoord)*contribution*adjust;
+   // gl_FragColor = texture2D( Texture0,texCoord);
+}

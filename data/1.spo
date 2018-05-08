@@ -1,11 +1,8 @@
-[sound]
-id 1
+[glslshaderunbind]
+id 2
 start 0
-end 12
-enabled 1
-layer 0
-
-; This element reproduces the sound passed as
-; argument mixing it with the current sound
-; output.
-sSoundFile data/pool/music/biomechanical.mp3
+end 4
+enabled 0
+layer 11
+blend ONE ZERO
+; This section disables the active shader and takes no parameters

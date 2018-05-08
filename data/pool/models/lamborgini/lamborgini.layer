@@ -1,0 +1,11 @@
+{
+	blend ONE ZERO
+	mode shaded
+	color 1.000000 1.000000 0.000000 1.000000
+}
+{
+	blend SRC_COLOR DST_COLOR
+	mode environment
+	color 0.749020 0.749020 0.749020 1.000000
+	texture data/pool/models/lamborgini/em-sunset.jpg
+}

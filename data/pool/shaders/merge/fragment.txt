@@ -1,0 +1,11 @@
+#version 120
+uniform float mix;
+uniform sampler2D iChannel0;
+uniform sampler2D iChannel1;
+
+void main(void)
+{
+	iChannel0;
+	iChannel1;
+	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+}

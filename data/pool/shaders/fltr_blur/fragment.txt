@@ -1,0 +1,23 @@
+uniform sampler2D color;
+uniform float intensity; // Good value: 0.1
+uniform float radius; // Good value: 0.002
+float samples[11];
+
+void main(){
+	vec4 sum = vec4(0);	vec2 texcoord = vec2(gl_TexCoord[0]);
+	int j;	int i;	samples[0] = 0.0222244;
+	samples[1] = 0.0378346;
+	samples[2] = 0.0755906;
+	samples[3] = 0.1309775;
+	samples[4] = 0.1756663;
+	samples[5] = 0.1974126;
+	samples[6] = 0.1756663;
+	samples[7] = 0.1309775;
+	samples[8] = 0.0755906;
+	samples[9] = 0.0378346;
+	samples[10] = 0.0222244;
+
+	for( i= -5 ;i < 5; i++)	{		for( j= -5 ;j < 5; j++)		{			sum += texture2D(color, texcoord + vec2(j, i)*radius) * samples[j+5];		}	}	vec4 col =texture2D(color, texcoord);	col=col*col;	if (texcoord.x<0.5)
+		gl_FragColor = texture2D(color, texcoord);
+	else		gl_FragColor = sum*intensity;
+}

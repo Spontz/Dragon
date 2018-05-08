@@ -1,0 +1,12 @@
+{
+	blend ONE ZERO
+	mode wireframe
+	cullface front
+	color 1.000000 0.000000 1.000000 1.000000
+	linewidth 3.000000
+}
+{
+	blend ONE ZERO
+	mode flat
+	color 0.000000 0.803922 0.960784 1.000000
+}

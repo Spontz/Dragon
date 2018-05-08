@@ -1,4 +1,4 @@
-demo_name Biomechanical Bastards
+demo_name Spontz Visuals Editor
 debug 1
 record 0
 record_fps 25.0
@@ -6,6 +6,6 @@ compress_tga 0
 loop 1
 sound 1
 bench 0
-demo_start 0
-demo_end 12
-slave 1
+demo_start 0.00
+demo_end 3.5
+slave 0

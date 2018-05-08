@@ -1,24 +1,30 @@
-[camera3]
-id 2
+[fbobind]
+id 3
 start 0
-end 12
+end 4
 enabled 1
-layer 1
+layer 4
+blend ZERO ZERO
+; Stores the buffer in the video
+; card memory as a texture,
+; for a later use
 
-; **************************
-; * Equation-driven camera *
-; **************************
+; Integer representing the FBO texture unit
 
-spline data/pool/cameras/default.cam
+; That will store the current screen contents
+; 0 to 3 uses a SMALL resolution texture (64 x 64)
+; 4 to 7 uses a MEDIUM resolution texture (512 x 256)
+; 8 to 11 uses a FULL resolution texture (rttWidth x rttHeight)
 
-fInteractiveCamera 1
+fFboUnit 1
 
-; Positioning
-sPosition  posX=cam_eye_x;  posY=cam_eye_y;  posZ=cam_eye_z;
-sAngle     angX=cam_angle_x;  angY=cam_angle_y;  angZ=cam_angle_z;
-sTarget   lookX=cam_target_x; lookY=cam_target_y; lookZ=cam_target_z;
 
-; Other parameters
-sFov fov=90;
-sZplanez zNear=0.1; zFar=5000;
-sRoll roll=0;
+; Clear the screen buffer after capturing? (1=yes, 0=no)
+
+fClearScreenBuffer 1
+
+
+
+; Clear the depth buffer after capturing? (1=yes, 0=no)
+
+fClearDepthBuffer 1

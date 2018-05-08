@@ -2,8 +2,25 @@ gl_fullscreen 0
 gl_info 0
 gl_accum 0
 gl_width 640
-gl_height 400
+gl_height 480
 gl_bpp 32
 gl_zbuffer 16
 gl_stencil 0
 gl_multisampling 0
+
+fbo_0_ratio 1
+fbo_0_format RGB
+fbo_1_ratio 1
+fbo_1_format RGB
+fbo_2_ratio 2
+fbo_2_format RGB
+fbo_3_ratio 3
+fbo_3_format RGB
+fbo_4_ratio 8
+fbo_4_format RGB
+fbo_5_ratio 2
+fbo_5_format RGB
+
+fbo_21_width 64
+fbo_21_height 64
+fbo_21_format RGB

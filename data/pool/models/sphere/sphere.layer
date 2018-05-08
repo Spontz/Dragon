@@ -1,0 +1,7 @@
+{
+	blend ONE ZERO
+	mode environment
+	cullface back
+	color 0.749020 0.749020 0.749020 1.000000
+	texture data/pool/models/sphere/back_2.jpg
+}

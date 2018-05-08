@@ -1,18 +1,29 @@
-[efxGlow2]
-id 7
-start 6
-end 12
+[fbobind]
+id 10
+start 0
+end 4
 enabled 1
-layer 5
+layer 0
+blend ONE ZERO
+; Stores the buffer in the video
+; card memory as a texture,
+; for a later use
 
-; ************************
-; * Causes a Glow effect *
-; ************************
+; Integer representing the FBO texture unit
 
-sRedHighPassColor     red = 0.2;
-sGreenHighPassColor green = sin(360*t);
-sBlueHighPassCOlor   blue = cos(360*t);
+; That will store the current screen contents
+; 0 to 3 uses a SMALL resolution texture (64 x 64)
+; 4 to 7 uses a MEDIUM resolution texture (512 x 256)
+; 8 to 11 uses a FULL resolution texture (rttWidth x rttHeight)
 
-sAccumulation accumulation = 1;
+fFboUnit 0
 
-sRadius radius = 10+10*beat*sin(t*10);
+; Clear the screen buffer after capturing? (1=yes, 0=no)
+
+fClearScreenBuffer 1
+
+
+
+; Clear the depth buffer after capturing? (1=yes, 0=no)
+
+fClearDepthBuffer 1
