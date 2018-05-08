@@ -128,7 +128,7 @@ layer_t *layers_load(char *name) {
 			// node where layer will be applied
 			else if (spz_strcmpi(key, "node") == 0)
 				{
-				layer->node = strdup(value);
+				layer->node = _strdup(value);
 				}
 
 			else

@@ -63,7 +63,7 @@ int getopt(int nargc, char * const nargv[], const char *ostr) ;
 * POSSIBILITY OF SUCH DAMAGE.
 */
 
-#pragma warning(disable:4996);
+#pragma warning(disable:4996)
 
 #define __GETOPT_H__
 

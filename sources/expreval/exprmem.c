@@ -11,9 +11,9 @@
 #include "exprincl.h"
 
 /* Allocate memory */
-void* exprAllocMem(unsigned long size)
+void* exprAllocMem(size_t size)
     {
-    return malloc((size_t)size);
+    return malloc(size);
     }
 
 /* Free memory */

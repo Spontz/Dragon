@@ -3,8 +3,19 @@ cmake_minimum_required(VERSION 2.6)
 project(Dragon)
 
 SET(BUILD_UNICODE ON CACHE BOOL "Unicode")
-SET(BUILD_DYNAMIC_CRT OFF CACHE BOOL "Dynamic CRT")
-SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Shared Libs")
+
+if(MSVC)
+	option(STATIC_CRT "Statically link MSVC CRT" ON)
+endif()
+
+if(MSVC AND STATIC_CRT)
+    add_compile_options(
+        "$<$<CONFIG:Debug>:/MTd>"
+        "$<$<CONFIG:RelWithDebInfo>:/MT>"
+        "$<$<CONFIG:Release>:/MT>"
+        "$<$<CONFIG:MinSizeRel>:/MT>"
+    )
+endif()
 
 IF(BUILD_UNICODE)
 	add_definitions(-DUNICODE -D_UNICODE)
@@ -28,25 +39,37 @@ endif ()
 
 
 # SDL2
-include_directories(dependencies/vs/SDL2-2.0.5/include)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2-2.0.5/lib/x64)
+include_directories(dependencies/vc141/SDL2-2.0.5/include)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2-2.0.5/lib/x64)
 
 # SDL2 Image
-include_directories(dependencies/vs/SDL2_image-2.0.1/include)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2_image-2.0.1/lib/x64)
+include_directories(dependencies/vc141/SDL2_image-2.0.1/include)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_image-2.0.1/lib/x64)
 
 # SDL2 Net
-include_directories(dependencies/vs/SDL2_net-2.0.1/include)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/SDL2_net-2.0.1/lib/x64)
+include_directories(dependencies/vc141/SDL2_net-2.0.1/include)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_net-2.0.1/lib/x64)
 
 # FMOD
-include_directories(dependencies/vs/fmod10903/lowlevel/inc)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/fmod10903/lowlevel/lib)
+include_directories(dependencies/vc141/fmod10903/lowlevel/inc)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/fmod10903/lowlevel/lib)
 
 # GLEW
 add_definitions(-DGLEW_STATIC)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/glew-2.0.0/include)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vs/glew-2.0.0/lib/Release/x64)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/glew-2.1.0/include)
+if(CMAKE_CL_64)
+	if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
+		link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/glew-2.1.0/lib/Debug/x64)
+	else()
+		link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/glew-2.1.0/lib/Release/x64)
+	endif()
+else()
+	if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
+		link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/glew-2.1.0/lib/Debug/Win32)
+	else()
+		link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/glew-2.1.0/lib/Release/Win32)
+	endif()
+endif()
 
 add_subdirectory(sources)
 

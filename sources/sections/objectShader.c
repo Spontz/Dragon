@@ -70,7 +70,7 @@ void preload_objectShader () {
 void load_objectShader () {
 	char *fullName;
 	char *positionEquation;
-	int theSize;
+	size_t theSize;
 	
 	// script validation
 	if ((mySection->paramNum  != 1)||(mySection->stringNum <  10)) {

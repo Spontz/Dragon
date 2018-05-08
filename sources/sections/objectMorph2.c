@@ -28,7 +28,7 @@ void preload_objectMorph2 () {
 void load_objectMorph2 ()
 {
 	char *equation;
-	int equationSize;
+	size_t equationSize;
 	char fullName[256];
 	
 	// script validation

@@ -40,8 +40,10 @@
 #include "trace.h"
 
 #ifdef WIN32
-#include <windows.h>
+	#pragma warning(disable:4311 4312) // HACK: Check out why the code reinterpret casts char*'s to int's and viceversa.
 #endif
+
+
 
 //----------------------------------------
 //
@@ -67,29 +69,29 @@
 // Forward Declarations
 //
 
-static __inline__ int PumpNetworkEvents(); // thread
+static int __inline__ SDLCALL PumpNetworkEvents(void*); // thread
 
-static __inline__ int InitSockets(int incr);
-static __inline__ void FinitSockets();
+static int __inline__ InitSockets(int incr);
+static void __inline__ FinitSockets();
 
-static __inline__ int AllocSocket(int type);
-static __inline__ void FreeSocket(int socket);
+static int __inline__ AllocSocket(int type);
+static void __inline__ FreeSocket(int socket);
 
-static __inline__ int raw_NET2_TCPAcceptOn(int port);
-static __inline__ int raw_NET2_TCPAcceptOnIP(IPaddress *ip);
-static __inline__ int raw_NET2_TCPConnectTo(char *host, int port);
-static __inline__ int raw_NET2_TCPConnectToIP(IPaddress *ip);
-static __inline__ void raw_NET2_TCPClose(int socket);
-static __inline__ int raw_NET2_TCPSend(int socket, char *buf, int len);
-static __inline__ int raw_NET2_TCPRead(int socket, char *buf, int len);
-static __inline__ IPaddress *raw_NET2_TCPGetPeerAddress(int socket);
+static int __inline__ raw_NET2_TCPAcceptOn(int port);
+static int __inline__ raw_NET2_TCPAcceptOnIP(IPaddress *ip);
+static int __inline__ raw_NET2_TCPConnectTo(char *host, int port);
+static int __inline__ raw_NET2_TCPConnectToIP(IPaddress *ip);
+static void __inline__ raw_NET2_TCPClose(int socket);
+static int __inline__ raw_NET2_TCPSend(int socket, char *buf, int len);
+static int __inline__ raw_NET2_TCPRead(int socket, char *buf, int len);
+static IPaddress __inline__ * raw_NET2_TCPGetPeerAddress(int socket);
 
-static __inline__ int sendEvent(Uint8 code, int data1, int data2);
+static int __inline__ sendEvent(Uint8 code, int data1, int data2);
 
-static __inline__ void lockData();
-static __inline__ void unlockData();
-static __inline__ void lockSDLNet();
-static __inline__ void unlockSDLNet();
+static void __inline__ lockData();
+static void __inline__ unlockData();
+static void __inline__ lockSDLNet();
+static void __inline__ unlockSDLNet();
 
 //----------------------------------------
 // 
@@ -169,13 +171,13 @@ static int errorSocket = -1;
 //
 //
 
-static __inline__ void setError(char *err, int socket)
+static void __inline__ setError(char *err, int socket)
 {
   error = err;
   errorSocket = socket;
 }
 
-static __inline__ int sendError(char *err, int socket)
+static int __inline__ sendError(char *err, int socket)
 {
   int val = -1;
 
@@ -199,31 +201,21 @@ static SDL_Thread *processSockets = NULL;
 static int doneYet = 0;
 static int waitForRead = 0;
 
-static __inline__ int sendEvent(Uint8 code, int data1, int data2)
-{
-  SDL_Event event;
+static __inline__ int sendEvent(Uint8 code, int data1, int data2) {
+	SDL_Event event;
 
-  event.type = SDL_USEREVENT;
-  event.user.code = code;
-  event.user.data1 = (void *)data1;
-  event.user.data2 = (void *)data2;
+	event.type = SDL_USEREVENT;
+	event.user.code = code;
+	event.user.data1 = (void *)data1;
+	event.user.data2 = (void *)data2;
 
-  if (dataLocked)
-  {
-    unlockData();
-    FE_PushEvent(&event);
-    lockData();
-  }
-  else
-  {
-    //printf("this should not happen\n"); fflush(NULL);
-	#ifdef WIN32
-		MessageBox(0, "This should not happen", "ERROR",0);
-	#endif
-    exit(1);
-  }
+	SDL_assert(dataLocked);
 
-  return 0;
+	unlockData();
+	FE_PushEvent(&event);
+	lockData();
+
+	return 0;
 }
 
 static __inline__ void signalRead()
@@ -1077,7 +1069,7 @@ void NET2_Quit() {
 // input and converts it to events.
 //
 
-static int PumpNetworkEvents(void *nothing) {
+static int SDLCALL PumpNetworkEvents(void* _) {
   int i = 0;
 
 #define timeOut (10)

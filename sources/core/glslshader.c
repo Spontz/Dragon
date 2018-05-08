@@ -209,8 +209,8 @@ int glslshad_load (char *fname_vert, char *fname_frag) {
 	glslshad = glslshad_array[glslshad_number];
 
 	// Upload the text shaders to memory
-	glslshad->name_v = strdup (fname_vert);
-	glslshad->name_f = strdup (fname_frag);
+	glslshad->name_v = _strdup (fname_vert);
+	glslshad->name_f = _strdup (fname_frag);
 	glslshad->data_v = vertex;
 	glslshad->data_f = fragment;
 	glslshad->size_v = size_v;

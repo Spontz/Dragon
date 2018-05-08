@@ -40,7 +40,7 @@
 // SDL helper functions
 //
 
-void mySDL_Quit()
+void mySDL_Quit(void)
 {
   NET2_Quit();
   FE_Quit();
@@ -48,7 +48,7 @@ void mySDL_Quit()
   SDL_Quit();
 }
 
-char *mySDL_Init(Uint32 flags)
+const char *mySDL_Init(Uint32 flags)
 {
   if (-1 == SDL_Init(flags))
   {
@@ -75,14 +75,14 @@ char *mySDL_Init(Uint32 flags)
 
 void mySDLInitOrQuit(Uint32 flags)
 {
-  char *message = NULL;
+  const char *message = NULL;
 
 
   if (NULL != (message = mySDL_Init(flags)))
   {
     printf("Failed to initialize SDL error=%s\n", message);
 	#ifdef WIN32
-		MessageBox(0, "Failed to initialize SDL", "ERROR",0);
+		MessageBoxA(0, "Failed to initialize SDL", "ERROR", 0);
 	#endif
     exit(1);
   }

@@ -20,7 +20,7 @@ void preload_rayMatrix() {
 void load_rayMatrix() {
 	char *evalEquation;
 	char *evalSources;
-	int equationSize;
+	size_t equationSize;
 	H3dsMeshObj *mesh;
 	int i;
 

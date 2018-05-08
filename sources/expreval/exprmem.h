@@ -10,8 +10,8 @@
 #ifndef __BAVII_EXPRMEM_H
 #define __BAVII_EXPRMEM_H
 
-void* exprAllocMem(unsigned long size);
-void exprFreeMem(void *data);
+void* exprAllocMem(size_t size);
+void exprFreeMem(void* pData);
 
 
 #endif /* __EXPR_MEM_H */

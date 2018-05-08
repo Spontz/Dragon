@@ -6,6 +6,8 @@
 #include "netdriver.h"
 #include "../dkernel.h"
 
+#include <stdio.h>
+
 static network_connection *local;
 // static char *additionalData;
 

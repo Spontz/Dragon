@@ -14,7 +14,7 @@
 
 void sound_init() {
 
-	int i, driver, numDrivers;
+	//int i, driver, numDrivers;
 
     /*FMOD::System     *system;
     FMOD_RESULT       result;

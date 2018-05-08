@@ -41,7 +41,7 @@ void preload_camera3() {
 
 void load_camera3() {
 	char *equation;
-	int equationSize;
+	size_t equationSize;
 	
 	// script validation
 	if ((mySection->stringNum != 6)||(mySection->paramNum  != 1)) {

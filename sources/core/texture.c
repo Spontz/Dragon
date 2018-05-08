@@ -288,7 +288,7 @@ int tex_load(const char* fname, int cache, int ForcePowerOfTwo)
 	tex_number = tex_init();
 	tex = tex_array[tex_number];
 
-	tex->name = strdup (fname);
+	tex->name = _strdup (fname);
 	tex->data = TextureImage->pixels;
 	tex->SDL_surface = (void *) TextureImage;
 

@@ -125,7 +125,7 @@ void update_sources(tParticleSystem* myParticleSystem, int threshold) {
 void load_particleTex2 () {
 	char *evalEquation;
 	char *evalSources;
-	int equationSize;
+	size_t equationSize;
 
 	// script validation
 	if ((mySection->paramNum < 3) || (mySection->stringNum != 10)) {

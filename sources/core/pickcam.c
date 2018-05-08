@@ -54,7 +54,7 @@ pickcam_t *pickcam_load(char *name) {
 
 			// camera
 			if (spz_strcmpi(key,"camera") == 0) {
-				cam->camera = strdup(value);
+				cam->camera = _strdup(value);
 			}
 
 			// start

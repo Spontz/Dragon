@@ -19,7 +19,7 @@ void preload_image2 () {
 
 void load_image2 () {
 	char *evalEquation;
-	int equationSize;
+	size_t equationSize;
 
 	// script validation
 	if ((mySection->stringNum != 5)||(mySection->paramNum   > 2)) {

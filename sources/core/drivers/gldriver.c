@@ -11,6 +11,8 @@
 #include "../glslshader.h"
 #include "../tga.h"
 
+#define GL_DRV__SUBPIXEL_BIAS 0.005f // hack
+
 // ******************************************************************
 
 tGlDriver glDriver;
@@ -375,10 +377,10 @@ void gldrv_screenquad()
 	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)glDriver.vpHeight;
 
 	glBegin(GL_QUADS);
-	glVertex2f(x0 - GL_EPSILON, y0 - GL_EPSILON);
-	glVertex2f(x1 + GL_EPSILON, y0 - GL_EPSILON);
-	glVertex2f(x1 + GL_EPSILON, y1 + GL_EPSILON);
-	glVertex2f(x0 - GL_EPSILON, y1 + GL_EPSILON);
+	glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
+	glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
+	glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
+	glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
 	glEnd();
 }
 
@@ -397,10 +399,10 @@ void gldrv_texscreenquad()
 	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)(glDriver.vpHeight);
 
 	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0); glVertex2f(x0 - GL_EPSILON, y0 - GL_EPSILON);
-	glTexCoord2f(1, 0); glVertex2f(x1 + GL_EPSILON, y0 - GL_EPSILON);
-	glTexCoord2f(1, 1); glVertex2f(x1 + GL_EPSILON, y1 + GL_EPSILON);
-	glTexCoord2f(0, 1); glVertex2f(x0 - GL_EPSILON, y1 + GL_EPSILON);
+	glTexCoord2f(0, 0); glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
+	glTexCoord2f(1, 0); glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
+	glTexCoord2f(1, 1); glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
+	glTexCoord2f(0, 1); glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
 	
 	glEnd();
 }
@@ -464,10 +466,17 @@ void gldrv_copyColorBuffer()
 {
 	char OGLError[1024];
 
-	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, glDriver.vpXOffset, glDriver.vpYOffset, glDriver.vpWidth, glDriver.vpHeight);
+	GLenum target = GL_TEXTURE_2D;
+	GLint level = 0;
+	GLint xoffset = 0;
+	GLint yoffset = 0;
+	GLint x = glDriver.vpXOffset;
+	GLint y = glDriver.vpYOffset;
+	GLsizei width = glDriver.vpWidth;
+	GLsizei height = glDriver.vpHeight;
 
-	while (gl_drv_check_for_gl_errors(OGLError))
-		section_error("OGL Error in gldrv_copyColorBuffer:\n\n%s", OGLError);
+	glCopyTexSubImage2D(target, level, xoffset, xoffset, x, y, width, height);
+	GL_DRV__CHECK_FOR_GL_ERRORS;
 }
 
 /* *************************************************************

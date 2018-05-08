@@ -21,7 +21,7 @@ void preload_efxRadialBlur2 () {
 
 void load_efxRadialBlur2 () {
 	char *equation;
-	int equationSize;
+	size_t equationSize;
 	
 	// script validation
 	if (mySection->stringNum != 5) {

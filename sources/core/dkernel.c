@@ -370,8 +370,8 @@ int getSectionByName(char *name) {
 // ******************************************************************
 
 void dkernel_getArguments(int argc, char *argv[]) {
-	char *lastSlash;
-	int chars;
+	//char *lastSlash;
+	//int chars;
 
 	demoSystem.argc = argc;
 	demoSystem.argv = argv;

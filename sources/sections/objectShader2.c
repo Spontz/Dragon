@@ -24,7 +24,7 @@ void preload_objectShader2 () {
 
 void load_objectShader2 () {
 	char *equation;
-	int equationSize;
+	size_t equationSize;
 	char fullName[256];
 
 	// script validation

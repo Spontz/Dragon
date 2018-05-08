@@ -286,7 +286,7 @@ void processTAGS(long dwSize, H3dsScene *scene) {
 
 		// store tag
 		tag = (H3dsTag *) malloc(sizeof(H3dsTag));
-		tag->name = strdup(name);
+		tag->name = _strdup(name);
 		tag->mat = NULL;
 		tag->next = (H3dsTag *) scene->taglist;
 		scene->taglist = tag;
@@ -508,7 +508,7 @@ void processPTAG(long dwSize, H3dsMeshObj *meshobj) {
 void strdelpath (char *mypath)
 {	
 	int lastdash = 0;
-	int mysize = strlen(mypath);
+	int mysize = (int)strlen(mypath);
 	int i=0;
 	for (i=0; i<mysize; i++)
 	{
@@ -540,7 +540,7 @@ void processCLIP(long dwSize, H3dsScene *scene) {
 		strdelpath (text);
 		clip = (H3dsClip *) malloc(sizeof(H3dsClip));
 		clip->index = dwIndex;
-		clip->name = strdup(text);
+		clip->name = _strdup(text);
 		clip->next = (H3dsClip *) scene->cliplist;
 		scene->cliplist = clip;
 		scene->clips++;
@@ -561,7 +561,7 @@ void processSURF(long dwSize, H3dsScene *scene) {
 	opos = ftell(inFile);
 
 	readS(text);
-	mat->Matname = strdup(text);
+	mat->Matname = _strdup(text);
 	c = 0;
 	while (c == 0) {
 		c = readB();
@@ -688,7 +688,7 @@ void updateSurfaces(H3dsScene *scene) {
 			}
 			if (clip) {
 				if (clip->index == mat->hTex) {
-					mat->TexFilename = strdup(clip->name);
+					mat->TexFilename = _strdup(clip->name);
 				}
 			}
 			if (!mat->TexFilename) mat->hTex = 0;

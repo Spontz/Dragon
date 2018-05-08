@@ -22,7 +22,7 @@ void load_particleMatrix3() {
 	char *evalSources;
 	char *rateEquation;
 	
-	int equationSize;
+	size_t equationSize;
 	H3dsMeshObj *mesh;
 	int i;
 	int i2;

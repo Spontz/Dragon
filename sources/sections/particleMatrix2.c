@@ -20,7 +20,7 @@ void preload_particleMatrix2 () {
 void load_particleMatrix2() {
 	char *evalEquation;
 	char *evalSources;
-	int equationSize;
+	size_t equationSize;
 	H3dsMeshObj *mesh;
 	int i;
 	int i2;

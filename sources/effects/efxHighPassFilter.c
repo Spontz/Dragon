@@ -23,7 +23,7 @@ void preload_efxHighPassFilter () {
 
 void load_efxHighPassFilter () {
 	char *equation;
-	int equationSize;
+	size_t equationSize;
 	
 	// script validation
 	if (mySection->stringNum != 2) {

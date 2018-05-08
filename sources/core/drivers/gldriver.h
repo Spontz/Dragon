@@ -121,7 +121,7 @@ extern tGlDriver glDriver;
 
 // ******************************************************************
 
-#define GL_EPSILON 0.005f
+#define GL_DRV__CHECK_FOR_GL_ERRORS while (gl_drv_check_for_gl_errors(OGLError)) section_error("OGL Error in %s:\n\n%s", __FUNCTION__, OGLError);
 
 // ******************************************************************
 

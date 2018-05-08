@@ -34,7 +34,7 @@ extern "C" {
 #endif
 
   void mySDLInitOrQuit(Uint32 flags);   // Initialize SDL and networking or die trying
-  char *mySDL_Init(Uint32 flags);       // Initialize networking and the rest of SDL
+  const char *mySDL_Init(Uint32 flags);       // Initialize networking and the rest of SDL
   void mySDL_Quit();                    // Quit networking and the rest of SDL
 
 #ifdef __cplusplus
