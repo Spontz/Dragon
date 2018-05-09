@@ -11,7 +11,7 @@ blend ONE ZERO
 ; Integer representing the fbo unit that will be
 ; recovered over the current screen contents (0 to 11)
 ; if '-1' is passed, no fbo is binded (useful for glsl)
-param 1
+param -1
 
 ; Clear the screen buffer before restoring? (1=yes, 0=no)
 fClearScreenBuffer 1

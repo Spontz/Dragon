@@ -299,13 +299,14 @@ void load_glslshaderbind () {
 			{
 				int fbonum;
 				sscanf(string_value, "fbo%d",&fbonum);
-				if (fbonum<0 || fbonum> (FBO_BUFFERS-1))
+				if (fbonum<0 || fbonum>(FBO_BUFFERS - 1))
 				{
-					section_error("sampler2D fbo not correct, it should be 'fboX', where X=>0 and X<=%d, you chose: %s", (FBO_BUFFERS-1), string_value);
+					section_error("sampler2D fbo not correct, it should be 'fboX', where X=>0 and X<=%d, you chose: %s", (FBO_BUFFERS - 1), string_value);
 					return;
 				}
 				else
-					sampler2D->texture = demoSystem.fboRenderingBuffer[fbonum];
+					//sampler2D->texture = demoSystem.fboRenderingBuffer[fbonum];
+					sampler2D->texture = fbo_get_texbind_id(demoSystem.fboRenderingBuffer[fbonum]);
 			}
 			else
 			{
@@ -393,20 +394,13 @@ void render_glslshaderbind()
 	int				i;
 	double			d;
 	
-	// Exit if shaders not supported
-	//if (!glDriver.ext.glslshaders)
-		//return;
-
-
-
 	local = (glslshaderbind_section*) mySection->vars;
 
 	// Choose the proper program shader
 	glslshad_bind(local->program);
 	
 	for (i = 0; i < local->vfloat_num; i++)
-		if (local->vfloat[i].loc>-1)
-			{
+		if (local->vfloat[i].loc>-1) {
 			vfloat = &(local->vfloat[i]);
 			insertSectionVariables(&vfloat->eva);
 			vfloat->eva.err = exprEval(vfloat->eva.o, &vfloat->eva.result);	// Evaluate the equations
@@ -415,11 +409,10 @@ void render_glslshaderbind()
 			// Retrieve the values and assign them
 			exprValListGet(vfloat->eva.v, "v1", &vfloat->value);
 			glUniform1f(vfloat->loc, (float)vfloat->value);
-			}
+		}
 
 	for (i = 0; i < local->vec2_num; i++)
-		if (local->vec2[i].loc>-1)
-			{
+		if (local->vec2[i].loc>-1) {
 			vec2 = &(local->vec2[i]);
 			insertSectionVariables(&vec2->eva);
 			vec2->eva.err = exprEval(vec2->eva.o, &vec2->eva.result);		// Evaluate the equations
@@ -429,11 +422,10 @@ void render_glslshaderbind()
 			exprValListGet(vec2->eva.v, "v1", &d); vec2->value[0] = (float)d;
 			exprValListGet(vec2->eva.v, "v2", &d); vec2->value[1] = (float)d;
 			glUniform2fv(vec2->loc, 1, (GLfloat*)vec2->value);
-			}
+		}
 	
 	for (i = 0; i < local->vec3_num; i++)
-		if (local->vec3[i].loc>-1)
-			{
+		if (local->vec3[i].loc>-1) {
 			vec3 = &(local->vec3[i]);
 			insertSectionVariables(&vec3->eva);
 			vec3->eva.err = exprEval(vec3->eva.o, &vec3->eva.result);		// Evaluate the equations
@@ -444,11 +436,10 @@ void render_glslshaderbind()
 			exprValListGet(vec3->eva.v, "v2", &d); vec3->value[1] = (float)d;
 			exprValListGet(vec3->eva.v, "v3", &d); vec3->value[2] = (float)d;
 			glUniform3fv(vec3->loc, 1, (GLfloat*)vec3->value);
-			}
+		}
 
 	for (i = 0; i < local->vec4_num; i++)
-		if (local->vec4[i].loc>-1)
-			{
+		if (local->vec4[i].loc>-1) {
 			vec4 = &(local->vec4[i]);
 			insertSectionVariables(&vec4->eva);
 			vec4->eva.err = exprEval(vec4->eva.o, &vec4->eva.result);		// Evaluate the equations
@@ -460,12 +451,10 @@ void render_glslshaderbind()
 			exprValListGet(vec4->eva.v, "v3", &d); vec4->value[2] = (float)d;
 			exprValListGet(vec4->eva.v, "v4", &d); vec4->value[3] = (float)d;
 			glUniform4fv(vec4->loc, 1, (GLfloat*)vec4->value);
-			}
+		}
 
 	for (i = 0; i < local->matrix4x4_num; ++i)
-		{
-		if (local->matrix4x4[i].m_ShaderUniformID>-1)
-			{
+		if (local->matrix4x4[i].m_ShaderUniformID>-1) {
 			glUniformMatrix4fv
 				(
 				// Shader Uniform Variable ID
@@ -477,28 +466,30 @@ void render_glslshaderbind()
 				// request to the engine the matrix value and pass it to the shader
 				(GLfloat*)get_sve_variable_matrix_4x4f(local->matrix4x4[i].m_SVEVariableID)
 				);
-			}
 		}
 
-	for (i = local->sampler2D_num-1; i >= 0; i--)
-		if (local->sampler2D[i].loc>-1)
-			{
+	for (i = 0; i<local->sampler2D_num; i++)
+		if (local->sampler2D[i].loc>-1) {
 			sampler2D = &(local->sampler2D[i]);
 			glActiveTexture (GL_TEXTURE0 + i);
-
-			tex_bind (sampler2D->texture);
+			// AQUI ESTA EL PUTO ERROR!!!
+			// el Bind se ha de hacer de lo que hay en el "fboRenderingBuffer" no del Sampler2D->texture
+			// so... el sampler2D>texture no es correcto
+			fbo_bind_tex(demoSystem.fboRenderingBuffer[i]); // Esto funciona
+			//tex_bind (sampler2D->texture); // Esto no funciona
+			// Solo con esto ya debería funcionar....
+			//glBindTexture(GL_TEXTURE_2D, sampler2D->texture);
 			glUniform1i(sampler2D->loc, (GLuint)i);
-			}
+		}
 		
-	for (i = local->samplerCube_num-1; i >= 0; i--)
-		if (local->samplerCube[i].loc>-1)
-			{
+	for (i = 0; i<local->samplerCube_num; i++)
+		if (local->samplerCube[i].loc>-1) {
 			samplerCube = &(local->samplerCube[i]);
 			glActiveTexture (GL_TEXTURE0 + i);
 			tex_bind (samplerCube->texture);
 			glUniform1i(samplerCube->loc, (GLuint)i);
-			}
-	}
+		}
+}
 
 // ******************************************************************
 

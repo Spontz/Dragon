@@ -120,10 +120,11 @@ void fbo_upload(int index, int cache)
 	// Setup a texture to render to
 	glGenTextures(1, &(fbo->id_tex));
 	glBindTexture(GL_TEXTURE_2D, fbo->id_tex);
+	
 	glTexImage2D(GL_TEXTURE_2D, 0, fbo->iformat,  fbo->width, fbo->height, 0, fbo->format, fbo->ttype, NULL);
+	
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)fbo->mipmap);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)fbo->mipmap);
 
@@ -175,6 +176,17 @@ void fbo_reset_bind () {
 
 // ******************************************************************
 
+int fbo_get_texbind_id(int index) {
+
+	if (index < MAX_FBO) {
+		return fbo_array[index]->id_tex;
+	}
+	else
+		return -1;
+}
+
+// ******************************************************************
+
 void fbo_bind (int index) {
 
 	fbo_t *fbo = fbo_array[index];
@@ -203,8 +215,8 @@ void fbo_bind_tex (int index) {
 	if (fbo->id_tex != fbo_current_tex) {
 		glBindTexture (GL_TEXTURE_2D, fbo->id_tex);
 		// Podem aplicar el filre aqui tambe, segons com volguem
-		// glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, fbo->mipmap);
-		// glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, fbo->mipmap);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, fbo->mipmap);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, fbo->mipmap);
 		tex_reset_bind ();	// Me must advise to the texture array that an fbo has been used 
 		fbo_current_tex = fbo->id_tex;
 	}

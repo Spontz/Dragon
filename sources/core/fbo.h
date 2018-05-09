@@ -46,6 +46,7 @@ void fbo_bind (int index);
 void fbo_bind_tex (int index);
 void fbo_reset_bind_tex ();
 void fbo_unbind ();
+int fbo_get_texbind_id(int index);
 
 // ******************************************************************
 
