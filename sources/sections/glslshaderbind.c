@@ -468,17 +468,17 @@ void render_glslshaderbind()
 				);
 		}
 
-	for (i = 0; i<local->sampler2D_num; i++)
+	for (i = local->sampler2D_num-1; i>=0; i--)
 		if (local->sampler2D[i].loc>-1) {
 			sampler2D = &(local->sampler2D[i]);
 			glActiveTexture (GL_TEXTURE0 + i);
 			// AQUI ESTA EL PUTO ERROR!!!
 			// el Bind se ha de hacer de lo que hay en el "fboRenderingBuffer" no del Sampler2D->texture
 			// so... el sampler2D>texture no es correcto
-			fbo_bind_tex(demoSystem.fboRenderingBuffer[i]); // Esto funciona
+			//fbo_bind_tex(demoSystem.fboRenderingBuffer[i]); // Esto funciona
 			//tex_bind (sampler2D->texture); // Esto no funciona
 			// Solo con esto ya debería funcionar....
-			//glBindTexture(GL_TEXTURE_2D, sampler2D->texture);
+			glBindTexture(GL_TEXTURE_2D, sampler2D->texture);
 			glUniform1i(sampler2D->loc, (GLuint)i);
 		}
 		
