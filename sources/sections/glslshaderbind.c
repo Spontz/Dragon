@@ -39,7 +39,8 @@ typedef struct {
 typedef struct {
 	char		name[128];
 	GLint		loc;
-	int			texture;
+	int			texture;	// Engine internal texture ID
+	int			texGLid;	// Texture ID (for binding it)
 } varSampler2D;				// Structure for a evaluation Sampler2D (TEXTURE)
 
 typedef struct
@@ -49,12 +50,6 @@ typedef struct
 	enum_sve_variable	m_SVEVariableID;
 	}
 script_variable_matrix_4x4;	// Structure for common matrixes (mat4)
-
-typedef struct {
-	char		name[128];
-	GLint		loc;
-	int			texture;
-} varSamplerCube;				// Structure for a evaluation samplerCube (TEXTURE)
 
 typedef struct {
 	int							program;
@@ -74,87 +69,20 @@ typedef struct {
 	varSampler2D				sampler2D[MAX_SHADER_VARS];
 	int							sampler2D_num;
 
-	varSamplerCube				samplerCube[MAX_SHADER_VARS];
-	int							samplerCube_num;
-
 	script_variable_matrix_4x4	matrix4x4[MAX_SHADER_VARS];
 	int							matrix4x4_num;
 
 } glslshaderbind_section;
 
 static glslshaderbind_section *local;
-/*
-// ********** COMIENZO DEL CODIGO INCOMPRENSIBLE DE ISAAC ********** //
-enum_sve_variable		get_sve_variable_id(const char* pString)
-	{
-	if (strcmp(pString, "World")==0)
-		return sve_variable_matrix_world;
-	else if (strcmp(pString, "View")==0)
-		return sve_variable_matrix_view;
-	else return sve_variable_unknown;
-	}
-
-const matrix_t*			get_sve_variable_matrix_4x4f(enum_sve_variable id) {
-	return &demoSystem.m_VariableMatrix[id];
-}
-
-enum_sve_variable_type	get_sve_variable_type(enum_sve_variable id)
-{
-	static enum_sve_variable_type VariableType[MAX_SVE_VARIABLE_ID+1];
-	// static bool initialized = 0;
-	
-	//if (!initialized)
-	//{
-		VariableType[sve_variable_unknown] = sve_variable_type_unknown;
-		VariableType[sve_variable_matrix_world] = sve_variable_type_matrix_4x4f;
-		VariableType[sve_variable_matrix_view] = sve_variable_type_matrix_4x4f;
-		VariableType[sve_variable_matrix_projection] = sve_variable_type_matrix_4x4f;
-		VariableType[sve_variable_matrix_world_view] = sve_variable_type_matrix_4x4f;
-		VariableType[sve_variable_matrix_world_projection] = sve_variable_type_matrix_4x4f;
-		//initialized = 1;
-	//}
-	
-	return VariableType[id];
-}
-
-void invalidate_sve_variable(enum_sve_variable id)
-{
-	//SL_NOT_IMPLEMENTED;
-}
-
-void					set_sve_variable_matrix_4x4f(enum_sve_variable id, const matrix_t* pValue)
-{
-	//invalidate_sve_variable(
-	memcpy(&demoSystem.m_VariableMatrix[id], pValue, sizeof(matrix_t));
-	
-	switch(id)
-	{
-		case sve_variable_matrix_world:
-			invalidate_sve_variable(sve_variable_matrix_world_inverse);
-			invalidate_sve_variable(sve_variable_matrix_world_transpose);
-			break;
-		case sve_variable_matrix_view:
-			invalidate_sve_variable(sve_variable_matrix_view_inverse);
-			invalidate_sve_variable(sve_variable_matrix_view_transpose);
-			break;
-		case sve_variable_matrix_projection:
-			invalidate_sve_variable(sve_variable_matrix_projection_inverse);
-			invalidate_sve_variable(sve_variable_matrix_projection_transpose);
-			break;
-	}
-}
-
-
-// ********** FIN DEL CODIGO INCOMPRENSIBLE DE ISAAC ********** //
 
 // ******************************************************************
-*/
+
 void preload_glslshaderbind () {}
 
 // ******************************************************************
 
-int max_shader_reached (int val)
-{
+int max_shader_reached (int val) {
 	if (val>=(MAX_SHADER_VARS-1))
 	{
 		section_error("Too many variables! MAX_SHADER_VARS reached!! you need to recompile the engine or use less variables!");
@@ -165,22 +93,20 @@ int max_shader_reached (int val)
 
 // ******************************************************************
 
-void remove_spaces(char* pString)
-	{
+void remove_spaces(char* pString) {
 	unsigned int i;
 	unsigned int p = 0;
 
 	if (pString == 0)
 		return;
 
-	for (i = 0; pString[i] != '\0'; ++i)
-		{
+	for (i = 0; pString[i] != '\0'; ++i) {
 		if (pString[i] != ' ')
 			pString[p++] = pString[i];
-		}
+	}
 
 	pString[p] = '\0';
-	}
+}
 
 void load_glslshaderbind () {
 
@@ -195,12 +121,8 @@ void load_glslshaderbind () {
 	varVec3*					vec3;
 	varVec4*					vec4;
 	varSampler2D*				sampler2D;
-	varSamplerCube*				samplerCube;
 	script_variable_matrix_4x4*	pVariableMatrix4x4;
 
-	// Exit if shaders not supported
-//	if (!glDriver.ext.glslshaders)
-	//	return;
 	
 	// script validation
 	// 2 strings needed: Vertex and fragment shader path
@@ -225,19 +147,15 @@ void load_glslshaderbind () {
 	local->vec3_num			= 0;
 	local->vec4_num			= 0;
 	local->sampler2D_num	= 0;
-	local->samplerCube_num	= 0;
 	local->matrix4x4_num	= 0;
 	num = 0;
 	
 	// Read the variables
-	for (i=2; i<mySection->stringNum; i++)
-	{
+	for (i=2; i<mySection->stringNum; i++) {
 		sscanf ( mySection->strings[i], "%s %s %s", string_type, string_name, string_value);	// Read one string and store values on temporary strings for frther evaluation
 		dkernel_trace("glslshaderbind: string_type [%s], string_name [%s], string_value [%s]", string_type, string_name, string_value);
 		remove_spaces(string_value);
 
-		// TODO: convert 'string_type' to low chars, to prevent errors (passar a minœscules)
-		// TODO: Com ja obenim el location de la variable, no Žs necessari guardar el "name", o sigui que el podem treure i ens estalviarem mem˜ria
 		if (strcmp(string_type,"float")==0)	// FLOAT detected
 		{
 			num = max_shader_reached ( local->vfloat_num++ );
@@ -283,70 +201,32 @@ void load_glslshaderbind () {
 			num = max_shader_reached ( local->sampler2D_num++ );
 			sampler2D = &(local->sampler2D[num]);
 			strcpy (sampler2D->name, string_name);
-			if (0 == strncmp("rtt",string_value,3))	// Si volem que la textura sigui un buffer...
-			{
-				int rttnum;
-				sscanf(string_value, "rtt%d",&rttnum);
-				if (rttnum<0 || rttnum> (RENDERING_BUFFERS-1))
-				{
-					section_error("sampler2D buffer not correct, it should be 'rttX', where X=>0 and X<=%d, you chose: %s", (RENDERING_BUFFERS-1), string_value);
-					return;
-				}
-				else
-					sampler2D->texture = demoSystem.texRenderingBuffer[rttnum];
-			}
-			else if (0 == strncmp("fbo",string_value,3))	// Si volem que la textura sigui una fbo...
-			{
+			// If sampler2D is a fbo...
+			if (0 == strncmp("fbo",string_value,3))	{
 				int fbonum;
 				sscanf(string_value, "fbo%d",&fbonum);
-				if (fbonum<0 || fbonum>(FBO_BUFFERS - 1))
-				{
-					section_error("sampler2D fbo not correct, it should be 'fboX', where X=>0 and X<=%d, you chose: %s", (FBO_BUFFERS - 1), string_value);
+				if (fbonum<0 || fbonum>(FBO_BUFFERS - 1)) {
+					section_error("sampler2D fbo not correct, it should be 'fboX', where X=>0 and X<=%d, you choose: %s", (FBO_BUFFERS - 1), string_value);
 					return;
 				}
-				else
-					//sampler2D->texture = demoSystem.fboRenderingBuffer[fbonum];
-					sampler2D->texture = fbo_get_texbind_id(demoSystem.fboRenderingBuffer[fbonum]);
+				else {
+					sampler2D->texture = demoSystem.fboRenderingBuffer[fbonum];
+					sampler2D->texGLid = fbo_get_texbind_id(sampler2D->texture);
+				}
 			}
-			else
-			{
+			// Is it s a normal texture...
+			else {
 				sampler2D->texture = tex_load (string_value, USE_CACHE, 0);
 				if (sampler2D->texture == -1)
 					return;
 				tex_properties(sampler2D->texture, NO_MIPMAP);
 				tex_upload (sampler2D->texture, USE_CACHE);
+				sampler2D->texGLid = tex_get_OpenGLid(sampler2D->texture);
 			}
 			sampler2D->loc = glslshad_getUniformLocation (local->program, sampler2D->name);
+			glUniform1i(sampler2D->loc, (GLuint)num);
 		}
-		else if (strcmp(string_type,"samplerCube")==0)	// Texture (samplerCube) detected - TODO: Fix!! is this workingÀ?
-		{
-			num = max_shader_reached ( local->samplerCube_num++ );
-			samplerCube = &(local->samplerCube[num]);
-			strcpy (samplerCube->name, string_name);
-			if (0 == strncmp("rtt",string_value,3))	// Si volem que la textura sigui una layer del sistema...
-			{
-				int rttnum;
-				sscanf(string_value, "rtt%d",&rttnum);
-				if (rttnum<0 || rttnum> (RENDERING_BUFFERS-1))
-				{
-					section_error("SamplerCube buffer not correct, it should be 'rttX', where X=>0 and X<=%d, you chose: %s", (RENDERING_BUFFERS-1), string_value);
-					return;
-				}
-				else
-					samplerCube->texture = demoSystem.texRenderingBuffer[rttnum];
-			}
-			else
-			{
-				samplerCube->texture = tex_load (string_value, USE_CACHE, 0);
-				if (samplerCube->texture == -1)
-					return;
-				tex_properties(samplerCube->texture, NO_MIPMAP);
-				tex_upload (samplerCube->texture, USE_CACHE);
-			}
-			samplerCube->loc = glslshad_getUniformLocation (local->program, samplerCube->name);
-		}
-		else if (strcmp(string_type,"mat4")==0)
-			{
+		else if (strcmp(string_type,"mat4")==0)	{
 			num = max_shader_reached( local->matrix4x4_num++ );
 			pVariableMatrix4x4 = &local->matrix4x4[num];
 			strcpy(pVariableMatrix4x4->m_name, string_name);
@@ -366,7 +246,7 @@ void load_glslshaderbind () {
 				return;
 				}
 			*/
-			}
+		}
 	}
 	
 	// Unbind any shader used
@@ -390,7 +270,6 @@ void render_glslshaderbind()
 	varVec3*		vec3;
 	varVec4*		vec4;
 	varSampler2D*	sampler2D;
-	varSamplerCube*	samplerCube;
 	int				i;
 	double			d;
 	
@@ -453,41 +332,20 @@ void render_glslshaderbind()
 			glUniform4fv(vec4->loc, 1, (GLfloat*)vec4->value);
 		}
 
-	for (i = 0; i < local->matrix4x4_num; ++i)
-		if (local->matrix4x4[i].m_ShaderUniformID>-1) {
-			glUniformMatrix4fv
-				(
-				// Shader Uniform Variable ID
-				local->matrix4x4[i].m_ShaderUniformID,
-				// 4x4 floats, 16 elements
-				16,
-				// do not transpose
-				0,
-				// request to the engine the matrix value and pass it to the shader
-				(GLfloat*)get_sve_variable_matrix_4x4f(local->matrix4x4[i].m_SVEVariableID)
-				);
-		}
-
 	for (i = local->sampler2D_num-1; i>=0; i--)
+	//for (i = 0; i<local->sampler2D_num; i++)
 		if (local->sampler2D[i].loc>-1) {
 			sampler2D = &(local->sampler2D[i]);
 			glActiveTexture (GL_TEXTURE0 + i);
-			// AQUI ESTA EL PUTO ERROR!!!
-			// el Bind se ha de hacer de lo que hay en el "fboRenderingBuffer" no del Sampler2D->texture
-			// so... el sampler2D>texture no es correcto
-			//fbo_bind_tex(demoSystem.fboRenderingBuffer[i]); // Esto funciona
-			//tex_bind (sampler2D->texture); // Esto no funciona
-			// Solo con esto ya debería funcionar....
-			glBindTexture(GL_TEXTURE_2D, sampler2D->texture);
-			glUniform1i(sampler2D->loc, (GLuint)i);
+			glBindTexture(GL_TEXTURE_2D, sampler2D->texGLid);			
 		}
-		
-	for (i = 0; i<local->samplerCube_num; i++)
-		if (local->samplerCube[i].loc>-1) {
-			samplerCube = &(local->samplerCube[i]);
-			glActiveTexture (GL_TEXTURE0 + i);
-			tex_bind (samplerCube->texture);
-			glUniform1i(samplerCube->loc, (GLuint)i);
+	for (i = 0; i < local->matrix4x4_num; ++i)
+		if (local->matrix4x4[i].m_ShaderUniformID>-1) {
+			// cal->matrix4x4[i].m_ShaderUniformID -> Shader Uniform Variable ID
+			// 16 ->  4x4 floats, 16 elements
+			// 0 -> do not transpose
+			// request to the engine the matrix value and pass it to the shader
+			glUniformMatrix4fv(local->matrix4x4[i].m_ShaderUniformID, 16, 0, (GLfloat*)get_sve_variable_matrix_4x4f(local->matrix4x4[i].m_SVEVariableID));
 		}
 }
 

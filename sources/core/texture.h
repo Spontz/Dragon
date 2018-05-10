@@ -80,6 +80,7 @@ int		tex_load(const char* pFilename, int cache, int ForcePowerOfTwo);
 
 void	tex_free(int index);
 int		tex_get_used_memory();
+int		tex_get_OpenGLid(int index);
 
 void	load_palette(const char* pFilename, palette pal);
 

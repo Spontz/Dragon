@@ -12,9 +12,9 @@ string data/pool/shaders/merge/vertex.txt
 string data/pool/shaders/merge/fragment.txt
 
 ; PARAMETERS
-;string float mix v1=0.0;
+string float mix v1=sin(t);
 ;string sampler2D iChannel0 data/pool/models/lamborgini/em-sunset.jpg
-;string sampler2D iChannel1 data/pool/models/lamborgini/_Charcoa.jpg
+;string sampler2D iChannel0 data/pool/models/lamborgini/_Charcoa.jpg
 string sampler2D iChannel0 fbo0
 string sampler2D iChannel1 fbo1
 

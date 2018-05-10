@@ -375,6 +375,14 @@ int tex_load(const char* fname, int cache, int ForcePowerOfTwo)
 
 // ******************************************************************
 
+int tex_get_OpenGLid(int index) {
+
+	texture_t *tex = tex_array[index];
+	return tex->id;
+}
+
+// ******************************************************************
+
 void tex_free (int index) {
 
 	texture_t *tex = tex_array[index];
@@ -518,9 +526,10 @@ int getCompressedFormat(texture_t *tex) {
 
 	// get new format for compressed texture
 	switch (tex->iformat) {
-		case 3: return GL_COMPRESSED_RGB_ARB;
-		case 4: return GL_COMPRESSED_RGBA_ARB;
+		case 3: return GL_COMPRESSED_RGB;
+		case 4: return GL_COMPRESSED_RGBA;
 	}
 
 	return tex->iformat;
 }
+

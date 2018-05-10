@@ -211,7 +211,7 @@ void gldrv_initViewport()
 		tex_upload(demoSystem.texRenderingBuffer[i], NO_CACHE);
 	}
 
-	// init fbo
+	// init fbo's
 	for (i = 0; i < FBO_BUFFERS; i++) {
 		if (((glDriver.fbo[i].width != 0) && (glDriver.fbo[i].height != 0)) || (glDriver.fbo[i].ratio != 0)) {
 			if (glDriver.fbo[i].ratio != 0) {

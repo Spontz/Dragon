@@ -1,14 +1,19 @@
 #version 120
+varying vec2 texCoord;
+
 uniform float mix;
 uniform sampler2D iChannel0;
 uniform sampler2D iChannel1;
 
 void main(void)
 {
-	vec4 colA = texture2D(iChannel0, 0.5*sin(gl_TexCoord[0].st*3.14));
-	vec4 colB = texture2D(iChannel1, 0.5*sin(gl_TexCoord[0].st*3.14));
+	vec4 colA = texture2D(iChannel0, texCoord)*mix;
+	vec4 colB = texture2D(iChannel1, texCoord)*(1.0-mix);
 
-	gl_FragColor = vec4(colA.rgb+colB.rgb, 0.0) + vec4(0.5, 0.3, 0.2 , 1.0);
+//	vec4 colA = texture2D(iChannel0, 0.5*sin(texCoord*3.14));
+//	vec4 colB = texture2D(iChannel1, 0.5*sin(texCoord*3.14));
+
+	gl_FragColor = vec4(colA.rgb+colB.rgb, 1.0);// + vec4(0.5, 0.3, 0.2 , 0.0);
 //	gl_FragColor = vec4(colA.rgb, 1.0);
 //	gl_FragColor = vec4(colB.rgb, 1.0);
 //	gl_FragColor = vec4(gl_TexCoord[0].rgb, 1.0);
