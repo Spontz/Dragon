@@ -101,12 +101,6 @@ void init_efxRenderMesh2();
 void render_efxRenderMesh2();
 void end_efxRenderMesh2();
 
-void preload_section_render_model();
-void load_section_render_model();
-void init_section_render_model();
-void render_section_render_model();
-void end_section_render_model();
-
 // ******************************************************************
 
 void preload_background();
@@ -204,13 +198,7 @@ void load_particleMatrix3();
 void init_particleMatrix3();
 void render_particleMatrix3();
 void end_particleMatrix3();
-	
-void preload_lorentzAttractor();
-void load_lorentzAttractor();
-void init_lorentzAttractor();
-void render_lorentzAttractor();
-void end_lorentzAttractor();
-	
+
 void preload_objectMatrix();
 void load_objectMatrix();
 void init_objectMatrix();
@@ -234,8 +222,6 @@ void load_rayMatrix();
 void init_rayMatrix();
 void render_rayMatrix();
 void end_rayMatrix();
-
-
 
 void preload_saveBuffer();
 void load_saveBuffer();
@@ -272,6 +258,13 @@ void load_fbounbind();
 void init_fbounbind();
 void render_fbounbind();
 void end_fbounbind();
+
+void preload_glslshaderquad();
+void load_glslshaderquad();
+void init_glslshaderquad();
+void render_glslshaderquad();
+void end_glslshaderquad();
+
 
 void preload_glslshaderbind();
 void load_glslshaderbind();
@@ -338,6 +331,7 @@ tSectionFunction sectionFunction[] = {
 	{"fbobind",				&preload_fbobind,				&load_fbobind,				&init_fbobind,				&render_fbobind,				&end_fbobind			},
 	{"fbounbind",			&preload_fbounbind,				&load_fbounbind,			&init_fbounbind,			&render_fbounbind,				&end_fbounbind			},
 	{"renderFbo",			&preload_renderFbo,				&load_renderFbo,			&init_renderFbo,			&render_renderFbo,				&end_renderFbo			},
+	{"glslshaderquad",		&preload_glslshaderquad,		&load_glslshaderquad,		&init_glslshaderquad,		&render_glslshaderquad,			&end_glslshaderquad		},
 	{"glslshaderbind",		&preload_glslshaderbind,		&load_glslshaderbind,		&init_glslshaderbind,		&render_glslshaderbind,			&end_glslshaderbind	    },
 	{"glslshaderunbind",	&preload_glslshaderunbind,		&load_glslshaderunbind,		&init_glslshaderunbind,		&render_glslshaderunbind,		&end_glslshaderunbind	},
 	{"renderShadowMapping",	&preload_renderShadowMapping,	&load_renderShadowMapping,	&init_renderShadowMapping,	&render_renderShadowMapping,	&end_renderShadowMapping}

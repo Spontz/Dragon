@@ -28,6 +28,7 @@ extern char *strDebugFont;
 
 void text_load_font (font *font_props, char *charset, int charX, int charY, char *fname);
 void glPrintf(font properties, const char *string, ...);
+extern void remove_spaces(char* pString);
 
 // ******************************************************************
 

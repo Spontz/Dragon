@@ -1,0 +1,27 @@
+[glslshaderquad]
+id 5
+start 0
+end 4
+enabled 1
+layer 15
+blend ONE ZERO
+
+; Clear the screen buffer before restoring? (1=yes, 0=no)
+fClearScreenBuffer 1
+; Clear the depth buffer after restoring? (1=yes, 0=no)
+fClearDepthBuffer 1
+
+; Vertex and Fragment Shader
+string data/pool/shaders/merge/vertex.txt
+string data/pool/shaders/merge/fragment.txt
+
+; VS and PS variables
+string float mix v1=sin(t);
+;string sampler2D iChannel0 data/pool/models/lamborgini/em-sunset.jpg
+;string sampler2D iChannel1 data/pool/models/lamborgini/_Charcoa.jpg
+string sampler2D iChannel0 fbo0
+string sampler2D iChannel1 fbo1
+
+;string vec2 iResolution v1=512;v2=256;
+;string float sample v1=4.0;
+;string sampler2D iChannel0 fbo1

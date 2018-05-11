@@ -42,14 +42,6 @@ typedef struct {
 	int			texGLid;	// Texture ID (for binding it)
 } varSampler2D;				// Structure for a evaluation Sampler2D (TEXTURE)
 
-typedef struct
-	{
-	char				m_name[128];
-	GLint				m_ShaderUniformID;
-	enum_sve_variable	m_SVEVariableID;
-	}
-script_variable_matrix_4x4;	// Structure for common matrixes (mat4)
-
 typedef struct {
 	int							program;
 
@@ -68,22 +60,18 @@ typedef struct {
 	varSampler2D				sampler2D[MAX_SHADER_VARS];
 	int							sampler2D_num;
 
-	script_variable_matrix_4x4	matrix4x4[MAX_SHADER_VARS];
-	int							matrix4x4_num;
+} glslshaderquad_section;
 
-} glslshaderbind_section;
-
-static glslshaderbind_section *local;
+static glslshaderquad_section *local;
 
 // ******************************************************************
 
-void preload_glslshaderbind () {}
+void preload_glslshaderquad () {}
 
 // ******************************************************************
 
 static int max_shader_reached (int val) {
-	if (val>=(MAX_SHADER_VARS-1))
-	{
+	if (val>=(MAX_SHADER_VARS-1)) {
 		section_error("Too many variables! MAX_SHADER_VARS reached!! you need to recompile the engine or use less variables!");
 		val = (MAX_SHADER_VARS-1);
 	}
@@ -92,7 +80,9 @@ static int max_shader_reached (int val) {
 
 // ******************************************************************
 
-void load_glslshaderbind () {
+
+
+void load_glslshaderquad () {
 
 	int		i;
 	int		num;
@@ -105,8 +95,6 @@ void load_glslshaderbind () {
 	varVec3*					vec3;
 	varVec4*					vec4;
 	varSampler2D*				sampler2D;
-	script_variable_matrix_4x4*	pVariableMatrix4x4;
-
 	
 	// script validation
 	// 2 strings needed: Vertex and fragment shader path
@@ -114,8 +102,13 @@ void load_glslshaderbind () {
 		section_error("At least 2 strings are needed: vertex and fragment shader files");
 		return;
 	}
+
+	if (mySection->paramNum < 2) {
+		section_error("glslshaderquad: 2 params required: 1-Clear Buffer / 2-Clear Depth");
+		return;
+	}
 	
-	local = malloc(sizeof(glslshaderbind_section));
+	local = malloc(sizeof(glslshaderquad_section));
 	mySection->vars = (void *) local;
 	
 	// load program, 2 first strings are vertex and fragment program paths
@@ -131,13 +124,12 @@ void load_glslshaderbind () {
 	local->vec3_num			= 0;
 	local->vec4_num			= 0;
 	local->sampler2D_num	= 0;
-	local->matrix4x4_num	= 0;
 	num = 0;
 	
 	// Read the variables
 	for (i=2; i<mySection->stringNum; i++) {
 		sscanf ( mySection->strings[i], "%s %s %s", string_type, string_name, string_value);	// Read one string and store values on temporary strings for frther evaluation
-		dkernel_trace("glslshaderbind: string_type [%s], string_name [%s], string_value [%s]", string_type, string_name, string_value);
+		dkernel_trace("glslshaderquad: string_type [%s], string_name [%s], string_value [%s]", string_type, string_name, string_value);
 		remove_spaces(string_value);
 
 		if (strcmp(string_type,"float")==0)	// FLOAT detected
@@ -210,27 +202,6 @@ void load_glslshaderbind () {
 			sampler2D->loc = glslshad_getUniformLocation (local->program, sampler2D->name);
 			glUniform1i(sampler2D->loc, (GLuint)num);
 		}
-		else if (strcmp(string_type,"mat4")==0)	{
-			num = max_shader_reached( local->matrix4x4_num++ );
-			pVariableMatrix4x4 = &local->matrix4x4[num];
-			strcpy(pVariableMatrix4x4->m_name, string_name);
-				
-			// remove the ';'
-			if (string_value[0] != '\0')
-				string_value[strlen(string_value)-1] = '\0';
-				
-			pVariableMatrix4x4->m_SVEVariableID = get_sve_variable_id(string_value);
-			pVariableMatrix4x4->m_ShaderUniformID = glslshad_getUniformLocation(local->program, pVariableMatrix4x4->m_name);
-				
-			// check whether the requested SVE Matrix4x4 variable exists
-			/*
-			if (get_sve_variable_type(pVariableMatrix4x4->m_SVEVariableID) != sve_variable_type_matrix_4x4f)
-				{
-				section_error("\"%s\" is not a valid SVE Engine Matrix4x4 variable", string_value);
-				return;
-				}
-			*/
-		}
 	}
 	
 	// Unbind any shader used
@@ -241,14 +212,12 @@ void load_glslshaderbind () {
 
 // ******************************************************************
 
-void init_glslshaderbind()
-	{
-	}
+void init_glslshaderquad() {
+}
 
 // ************************************************************
 
-void render_glslshaderbind()
-	{
+void render_glslshaderquad() {
 	varFloat*		vfloat;
 	varVec2*		vec2;
 	varVec3*		vec3;
@@ -257,7 +226,7 @@ void render_glslshaderbind()
 	int				i;
 	double			d;
 	
-	local = (glslshaderbind_section*) mySection->vars;
+	local = (glslshaderquad_section*) mySection->vars;
 
 	// Choose the proper program shader
 	glslshad_bind(local->program);
@@ -268,7 +237,7 @@ void render_glslshaderbind()
 			insertSectionVariables(&vfloat->eva);
 			vfloat->eva.err = exprEval(vfloat->eva.o, &vfloat->eva.result);	// Evaluate the equations
 			// Check for errors
-			if(vfloat->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderbind: [vfloat] Expression evaluation Error (%d): %s", vfloat->eva.err, vfloat->eva.equation);
+			if(vfloat->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderquad: [vfloat] Expression evaluation Error (%d): %s", vfloat->eva.err, vfloat->eva.equation);
 			// Retrieve the values and assign them
 			exprValListGet(vfloat->eva.v, "v1", &vfloat->value);
 			glUniform1f(vfloat->loc, (float)vfloat->value);
@@ -280,7 +249,7 @@ void render_glslshaderbind()
 			insertSectionVariables(&vec2->eva);
 			vec2->eva.err = exprEval(vec2->eva.o, &vec2->eva.result);		// Evaluate the equations
 			// Check for errors
-			if(vec2->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderbind: [vec2] Expression evaluation Error (%d): %s", vec2->eva.err, vec2->eva.equation);
+			if(vec2->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderquad: [vec2] Expression evaluation Error (%d): %s", vec2->eva.err, vec2->eva.equation);
 			// Retrieve the values and assign them
 			exprValListGet(vec2->eva.v, "v1", &d); vec2->value[0] = (float)d;
 			exprValListGet(vec2->eva.v, "v2", &d); vec2->value[1] = (float)d;
@@ -293,7 +262,7 @@ void render_glslshaderbind()
 			insertSectionVariables(&vec3->eva);
 			vec3->eva.err = exprEval(vec3->eva.o, &vec3->eva.result);		// Evaluate the equations
 			// Check for errors
-			if(vec3->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderbind: [vec3] Expression evaluation Error (%d): %s", vec3->eva.err, vec3->eva.equation);
+			if(vec3->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderquad: [vec3] Expression evaluation Error (%d): %s", vec3->eva.err, vec3->eva.equation);
 			// Retrieve the values and assign them
 			exprValListGet(vec3->eva.v, "v1", &d); vec3->value[0] = (float)d;
 			exprValListGet(vec3->eva.v, "v2", &d); vec3->value[1] = (float)d;
@@ -307,7 +276,7 @@ void render_glslshaderbind()
 			insertSectionVariables(&vec4->eva);
 			vec4->eva.err = exprEval(vec4->eva.o, &vec4->eva.result);		// Evaluate the equations
 			// Check for errors
-			if(vec4->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderbind: [vec4] Expression evaluation Error (%d): %s", vec4->eva.err, vec4->eva.equation);
+			if(vec4->eva.err != EXPR_ERROR_NOERROR) section_error("glslshaderquad: [vec4] Expression evaluation Error (%d): %s", vec4->eva.err, vec4->eva.equation);
 			// Retrieve the values and assign them
 			exprValListGet(vec4->eva.v, "v1", &d); vec4->value[0] = (float)d;
 			exprValListGet(vec4->eva.v, "v2", &d); vec4->value[1] = (float)d;
@@ -323,17 +292,44 @@ void render_glslshaderbind()
 			glActiveTexture (GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, sampler2D->texGLid);			
 		}
-	for (i = 0; i < local->matrix4x4_num; ++i)
-		if (local->matrix4x4[i].m_ShaderUniformID>-1) {
-			// cal->matrix4x4[i].m_ShaderUniformID -> Shader Uniform Variable ID
-			// 16 ->  4x4 floats, 16 elements
-			// 0 -> do not transpose
-			// request to the engine the matrix value and pass it to the shader
-			glUniformMatrix4fv(local->matrix4x4[i].m_ShaderUniformID, 16, 0, (GLfloat*)get_sve_variable_matrix_4x4f(local->matrix4x4[i].m_SVEVariableID));
-		}
+
+	/////////////////////////////////
+	// Render the Quad
+	// Clear the screen and depth buffers depending of the parameters passed by the user
+	if (fabs(mySection->param[0] - 1.0f) < FLT_EPSILON) glClear(GL_COLOR_BUFFER_BIT);
+	if (fabs(mySection->param[1] - 1.0f) < FLT_EPSILON) glClear(GL_DEPTH_BUFFER_BIT);
+
+	// Check if the user wants to use some kind of blending state or not
+	if (mySection->hasBlend) {
+		glEnable(GL_BLEND);
+		glBlendFunc(mySection->sfactor, mySection->dfactor);
+	}
+
+	// Deactivate the depth buffer calculations to avoid interferences with other objects
+	glDisable(GL_DEPTH_TEST);
+	camera_set2d();
+	// Paint a textured quad covering all the screen area
+	// The used texture will be the one corresponding to the previously used buffer
+	gldrv_texscreenquad();
+	// Restore the camera
+	camera_restore();
+
+	// Activate again the depth buffer calculation
+	glEnable(GL_DEPTH_TEST);
+
+	// If the section was using blending, deactivate the BLEND register
+	if (mySection->hasBlend) glDisable(GL_BLEND);
+
+
+	////////////////////////////////
+	// Unbind shader
+	glslshad_reset_bind();
+	glUseProgramObjectARB(0);
+
 }
 
 // ******************************************************************
 
-void end_glslshaderbind () {
+void end_glslshaderquad () {
+
 }

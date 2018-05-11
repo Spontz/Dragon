@@ -131,3 +131,20 @@ void ViewPerspective() {
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 }
+
+// ******************************************************************
+
+void remove_spaces(char* pString) {
+	unsigned int i;
+	unsigned int p = 0;
+
+	if (pString == 0)
+		return;
+
+	for (i = 0; pString[i] != '\0'; ++i) {
+		if (pString[i] != ' ')
+			pString[p++] = pString[i];
+	}
+
+	pString[p] = '\0';
+}

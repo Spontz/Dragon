@@ -2,7 +2,7 @@
 id 2
 start 0
 end 4
-enabled 1
+enabled 0
 layer 11
 blend ONE ZERO
 ; This section disables the active shader and takes no parameters
