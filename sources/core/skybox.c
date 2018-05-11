@@ -86,7 +86,7 @@ skybox_t *skybox_make (char *tex_name, char format, int multiple_tex) {
 	// single repeated texture skybox
 	if (!skybox->multiple_tex) {
 
-		t = tex_load (tex_name, USE_CACHE, 0);
+		t = tex_load (tex_name, USE_CACHE);
 		if (t < 0) return NULL;
 
 		tex_properties (t, NO_MIPMAP | CLAMP);
@@ -108,7 +108,7 @@ skybox_t *skybox_make (char *tex_name, char format, int multiple_tex) {
 			strcpy (buf, tex_name);
 			strcat (buf, buf2);
 
-			t = tex_load (buf, USE_CACHE, 0);
+			t = tex_load (buf, USE_CACHE);
 			if (t < 0) return NULL;
 
 			tex_properties (t, NO_MIPMAP | CLAMP);

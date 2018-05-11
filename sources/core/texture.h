@@ -72,9 +72,8 @@ void	tex_envmode(int mode);
 
 // cache == USE_CACHE : do not reload the same bitmap
 // cache == NOT_CACHE : reload
-// warning : USE_CACHE won't give you a power of two texture if you already loaded it without ForcePowerOfTwo == 0 or viceversa
 
-int		tex_load(const char* pFilename, int cache, int ForcePowerOfTwo);
+int		tex_load(const char* pFilename, int cache);
 
 // ******************************************************************
 
@@ -83,10 +82,6 @@ int		tex_get_used_memory();
 int		tex_get_OpenGLid(int index);
 
 void	load_palette(const char* pFilename, palette pal);
-
-void	scale_texture_24(const unsigned char* pSrc, int SrcX, int SrcY, int DstX, int DstY, unsigned char* pOut);
-void	scale_texture_32(const unsigned char* pSrc, int SrcX, int SrcY, int DstX, int DstY, unsigned char* pOut);
-void	scale_texture_8_to_24(const unsigned char* pSrc, int SrcX, int SrcY, int DstX, int DstY, unsigned char* pOut, palette pal);
 
 // ******************************************************************
 

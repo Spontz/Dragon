@@ -31,7 +31,7 @@ void load_imagePart () {
 	mySection->vars = (void *) local;
 
 	// load texture
-	local->texture = tex_load (mySection->strings[0], USE_CACHE, 0);
+	local->texture = tex_load (mySection->strings[0], USE_CACHE);
 	if (local->texture == -1)
 		return;
 	tex_properties(local->texture, CLAMP);

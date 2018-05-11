@@ -34,7 +34,7 @@ void load_image2 () {
 	if (mySection->paramNum == 2 && fabs(mySection->param[0] - 1.0f) < FLT_EPSILON) {
 		local->texture = demoSystem.texRenderingBuffer[(int)mySection->param[1]];
 	} else {
-		local->texture = tex_load (mySection->strings[0], USE_CACHE, 0);
+		local->texture = tex_load (mySection->strings[0], USE_CACHE);
 		if (local->texture == -1)
 			return;
 		tex_upload (local->texture, USE_CACHE);

@@ -51,7 +51,7 @@ void load_background()
 		}
 
 	// texture loading
-	local->texture = tex_load(mySection->strings[0], USE_CACHE, FALSE);
+	local->texture = tex_load(mySection->strings[0], USE_CACHE);
 	if (local->texture==-1)
 		return;
 

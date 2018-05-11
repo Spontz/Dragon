@@ -1337,7 +1337,7 @@ int model_upload_tex(H3dsScene *scene, char *dir)
 			dkernel_trace("model_upload_tex: Uploading texture: %s\n", fullName);
 			
 			// hack : No entiendo porque hay que forzar la recarga de las texturas y no usar mipmaps
-			mat->hTex = tex_load(fullName, NO_CACHE | NO_MIPMAP, FALSE);
+			mat->hTex = tex_load(fullName, NO_CACHE | NO_MIPMAP);
 			if (mat->hTex==-1)
 				error++;
 			tex_properties(mat->hTex, 0);

@@ -99,7 +99,7 @@ layer_t *layers_load(char *name) {
 			// texture
 			else if (spz_strcmpi(key, "texture") == 0)
 				{
-				layer->texture = tex_load(value, USE_CACHE, 0);
+				layer->texture = tex_load(value, USE_CACHE);
 				tex_properties(layer->texture, MODULATE);
 				tex_upload(layer->texture, USE_CACHE);
 				}

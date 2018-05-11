@@ -45,11 +45,11 @@ void load_loading() {
 
 	// texture loading
 	if (!byDefault) {
-		local->tex_back = tex_load(mySection->strings[0], USE_CACHE, 0);
+		local->tex_back = tex_load(mySection->strings[0], USE_CACHE);
 		tex_properties(local->tex_back, CLAMP); // it should be NO_MIPMAP
 		tex_upload(local->tex_back, USE_CACHE);
 
-		local->tex_front = tex_load(mySection->strings[1], USE_CACHE, 0);
+		local->tex_front = tex_load(mySection->strings[1], USE_CACHE);
 		tex_properties(local->tex_front, CLAMP); // it should be NO_MIPMAP
 		tex_upload(local->tex_front, USE_CACHE);
 

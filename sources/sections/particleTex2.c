@@ -160,7 +160,7 @@ void load_particleTex2 () {
 		}
 	else
 		{
-		local->texture = tex_load((char *)mySection->strings[0], USE_CACHE, FALSE);
+		local->texture = tex_load((char *)mySection->strings[0], USE_CACHE);
 		if (local->texture==-1)
 			return;
 		local->useRTTsources = 0;

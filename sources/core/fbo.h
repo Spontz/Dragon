@@ -19,7 +19,6 @@ typedef struct {
 
 	int target;
 	int properties;
-	int mipmap;
 	int wrap;
 	int texfunc;
 
@@ -38,7 +37,6 @@ extern int fbo_detail;
 int fbo_init ();
 int fbo_new (int width, int height, int iformat, int format, int ttype);
 void fbo_properties (int index, int flags);
-void fbo_persistent (int index, int value);
 
 void fbo_upload (int index, int usecache);
 void fbo_reset_bind ();
@@ -51,7 +49,6 @@ int fbo_get_texbind_id(int index);
 // ******************************************************************
 
 void fbo_free (int index);
-int fbo_get_used_memory ();
 
 // ******************************************************************
 

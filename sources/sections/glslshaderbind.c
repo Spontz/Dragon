@@ -216,7 +216,7 @@ void load_glslshaderbind () {
 			}
 			// Is it s a normal texture...
 			else {
-				sampler2D->texture = tex_load (string_value, USE_CACHE, 0);
+				sampler2D->texture = tex_load (string_value, USE_CACHE);
 				if (sampler2D->texture == -1)
 					return;
 				tex_properties(sampler2D->texture, NO_MIPMAP);

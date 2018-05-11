@@ -67,9 +67,6 @@ typedef struct {
 	char vertex_array;
 	char blend_subtract;
 
-	// SGIS extensions
-	char generate_mipmap;
-
 	// Windows only extensions
 	char ext_extensions_string;
 	char pbuffer;

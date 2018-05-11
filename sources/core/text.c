@@ -25,7 +25,7 @@ void text_load_font (font *p, char *charset, int charX, int charY, char *fname) 
 	p->filename = fname;
 	p->charset = charset;
 
-	p->texture_ID = tex_load(p->filename, USE_CACHE, 0);
+	p->texture_ID = tex_load(p->filename, USE_CACHE);
 	tex_properties(p->texture_ID, NO_MIPMAP | CLAMP);
 	tex_upload(p->texture_ID, 1);
 

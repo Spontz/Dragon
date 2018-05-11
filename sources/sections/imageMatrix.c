@@ -38,7 +38,7 @@ void load_imageMatrix() {
 	if (fabs(mySection->param[1]) < FLT_EPSILON)
 		{
 		// We are using a texture, so upload it to the graphic card memory
-		local->texture = tex_load (mySection->strings[0], USE_CACHE, 0);
+		local->texture = tex_load (mySection->strings[0], USE_CACHE);
 		if (local->texture == -1)
 			return;
 		tex_properties(local->texture, NO_MIPMAP | CLAMP);

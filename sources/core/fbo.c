@@ -70,16 +70,9 @@ void fbo_properties (int index, int flags) {
 	fbo_t *fbo = fbo_array[index];
 	fbo->properties = flags;
 
-	if (flags & TEXTURE_1D) fbo->target = GL_TEXTURE_1D;
-	else fbo->target = GL_TEXTURE_2D;
+	fbo->target = GL_TEXTURE_2D;
+	fbo->wrap = GL_CLAMP_TO_EDGE;
 
-	if (flags & NO_MIPMAP) fbo->mipmap = GL_LINEAR;
-	else fbo->mipmap = GL_NEAREST;
-
-	if (flags & CLAMP) fbo->wrap = GL_CLAMP;
-	else if (flags & CLAMP_TO_EDGE) fbo->wrap = GL_CLAMP_TO_EDGE;
-	else fbo->wrap = GL_REPEAT;
-	
 	if (flags & MODULATE) {
 		fbo->texfunc = GL_MODULATE;
 	} else {
@@ -125,8 +118,8 @@ void fbo_upload(int index, int cache)
 	
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)fbo->mipmap);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)fbo->mipmap);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	// Bind buffers
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo->id_fbo);
@@ -214,9 +207,6 @@ void fbo_bind_tex (int index) {
 
 	if (fbo->id_tex != fbo_current_tex) {
 		glBindTexture (GL_TEXTURE_2D, fbo->id_tex);
-		// Podem aplicar el filre aqui tambe, segons com volguem
-		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, fbo->mipmap);
-		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, fbo->mipmap);
 		tex_reset_bind ();	// Me must advise to the texture array that an fbo has been used 
 		fbo_current_tex = fbo->id_tex;
 	}
