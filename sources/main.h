@@ -62,3 +62,4 @@
 #include "core/cubemap.h"
 #include "core/parse.h"
 #include "core/viewport.h"
+#include "core/text.h"
