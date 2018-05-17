@@ -206,7 +206,7 @@ void load_glslshaderquad () {
 	
 	// Unbind any shader used
 	glslshad_reset_bind();
-	glUseProgramObjectARB(0);
+	glUseProgram(0);
 	mySection->loaded=1;
 }
 
@@ -324,7 +324,7 @@ void render_glslshaderquad() {
 	////////////////////////////////
 	// Unbind shader
 	glslshad_reset_bind();
-	glUseProgramObjectARB(0);
+	glUseProgram(0);
 
 }
 

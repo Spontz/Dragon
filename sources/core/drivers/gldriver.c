@@ -25,18 +25,18 @@ void gldrv_create()
 {
 	int i;
 
-	glDriver.fullScreen  = 0;
-	glDriver.saveInfo    = 0;
+	glDriver.fullScreen = 0;
+	glDriver.saveInfo = 0;
 
-	glDriver.width  = 640;
+	glDriver.width = 640;
 	glDriver.height = 480;
 
 	glDriver.AspectRatio = 0;
 
-	glDriver.bpp     = 32;
+	glDriver.bpp = 32;
 	glDriver.zbuffer = 16;
 	glDriver.stencil = 0;
-	glDriver.accum   = 0;
+	glDriver.accum = 0;
 
 	glDriver.multisampling = 0;
 
@@ -69,9 +69,9 @@ void gldrv_saveInfo() {
 	const unsigned char *s = NULL;
 
 	dkernel_trace("\n%sOpenGL driver information\n", log_separator);
-	dkernel_trace("vendor: %s\n"  , glGetString(GL_VENDOR  ));
+	dkernel_trace("vendor: %s\n", glGetString(GL_VENDOR));
 	dkernel_trace("renderer: %s\n", glGetString(GL_RENDERER));
-	dkernel_trace("version: %s\n" , glGetString(GL_VERSION ));
+	dkernel_trace("version: %s\n", glGetString(GL_VERSION));
 }
 
 
@@ -134,7 +134,7 @@ void gldrv_initState() {
 
 	// Enable multisampling
 	if (glDriver.multisampling && glDriver.ext.multisample)
-		glEnable(GL_MULTISAMPLE_ARB);
+		glEnable(GL_MULTISAMPLE);
 
 	// Check for ogl errors
 	while (gl_drv_check_for_gl_errors(OGLError))
@@ -167,7 +167,8 @@ void gldrv_initViewport()
 			width = glDriver.width;
 			height = (int)((float)glDriver.height / glDriver.AspectRatio * DisplayAspectRatio);
 			y = (glDriver.height - height) / 2;
-		} else {
+		}
+		else {
 			// we need to cut sides
 			y = 0;
 			height = glDriver.height;
@@ -175,15 +176,16 @@ void gldrv_initViewport()
 			x = (glDriver.width - width) / 2;
 		}
 
-		glDriver.vpWidth   = width;
-		glDriver.vpHeight  = height;
+		glDriver.vpWidth = width;
+		glDriver.vpHeight = height;
 		glDriver.vpXOffset = x;
 		glDriver.vpYOffset = y;
 
-	} else {
+	}
+	else {
 		// In window mode, the viewport has the same size as the window
-		glDriver.vpWidth   = glDriver.width;
-		glDriver.vpHeight  = glDriver.height;
+		glDriver.vpWidth = glDriver.width;
+		glDriver.vpHeight = glDriver.height;
 		glDriver.vpYOffset = 0;
 		glDriver.vpXOffset = 0;
 	}
@@ -199,7 +201,7 @@ void gldrv_initViewport()
 	tex_properties(demoSystem.backup, NO_MIPMAP);
 	tex_upload(demoSystem.backup, NO_CACHE);
 
-	//TODO: Eliminar los render buffers
+	// init render buffers
 	for (i = 0; i < RENDERING_BUFFERS; i++)
 	{
 		demoSystem.texRenderingBuffer[i] = tex_new(glDriver.vpWidth, glDriver.vpHeight, GL_RGB, 3);
@@ -302,7 +304,7 @@ void gldrv_init()
 	}
 	// Get the current aspect ratio before setting new resolution
 	glDriver.AspectRatio = (float)glDriver.width / (float)glDriver.height;
-	
+
 	// TODO: glDriver.bpp = info->vfmt->BitsPerPixel;
 	glDriver.pSDLWindow = SDL_CreateWindow(
 		demoSystem.demoName,
@@ -403,7 +405,7 @@ void gldrv_texscreenquad()
 	glTexCoord2f(1, 0); glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
 	glTexCoord2f(1, 1); glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
 	glTexCoord2f(0, 1); glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
-	
+
 	glEnd();
 }
 
@@ -425,7 +427,8 @@ void gldrv_initRender(int clear)
 
 		if (glDriver.stencil > 0) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		} else {
+		}
+		else {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
 	}
@@ -487,39 +490,39 @@ void gldrv_enable_multitexture() {
 
 	tex_reset_bind();
 
-	glActiveTextureARB(GL_TEXTURE0_ARB);
-	glClientActiveTextureARB(GL_TEXTURE0_ARB);
+	glActiveTexture(GL_TEXTURE0);
+	glClientActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 
-	glActiveTextureARB(GL_TEXTURE1_ARB);
-	glClientActiveTextureARB(GL_TEXTURE1_ARB);
+	glActiveTexture(GL_TEXTURE1);
+	glClientActiveTexture(GL_TEXTURE1);
 	glEnable(GL_TEXTURE_2D);
 
-	glActiveTextureARB(GL_TEXTURE2_ARB);
-	glClientActiveTextureARB(GL_TEXTURE2_ARB);
+	glActiveTexture(GL_TEXTURE2);
+	glClientActiveTexture(GL_TEXTURE2);
 	glEnable(GL_TEXTURE_2D);
 
-	glActiveTextureARB(GL_TEXTURE3_ARB);
-	glClientActiveTextureARB(GL_TEXTURE3_ARB);
+	glActiveTexture(GL_TEXTURE3);
+	glClientActiveTexture(GL_TEXTURE3);
 	glEnable(GL_TEXTURE_2D);
 }
 
 void gldrv_disable_multitexture() {
 
-	glActiveTextureARB(GL_TEXTURE3_ARB);
-	glClientActiveTextureARB(GL_TEXTURE3_ARB);
+	glActiveTexture(GL_TEXTURE3);
+	glClientActiveTexture(GL_TEXTURE3);
 	glDisable(GL_TEXTURE_2D);
 
-	glActiveTextureARB(GL_TEXTURE2_ARB);
-	glClientActiveTextureARB(GL_TEXTURE2_ARB);
+	glActiveTexture(GL_TEXTURE2);
+	glClientActiveTexture(GL_TEXTURE2);
 	glDisable(GL_TEXTURE_2D);
 
-	glActiveTextureARB(GL_TEXTURE1_ARB);
-	glClientActiveTextureARB(GL_TEXTURE1_ARB);
+	glActiveTexture(GL_TEXTURE1);
+	glClientActiveTexture(GL_TEXTURE1);
 	glDisable(GL_TEXTURE_2D);
 
-	glActiveTextureARB(GL_TEXTURE0_ARB);
-	glClientActiveTextureARB(GL_TEXTURE0_ARB);
+	glActiveTexture(GL_TEXTURE0);
+	glClientActiveTexture(GL_TEXTURE0);
 	glDisable(GL_TEXTURE_2D);
 
 	glEnable(GL_TEXTURE_2D);

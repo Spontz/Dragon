@@ -85,12 +85,12 @@ void render_highpassfilter_ext (int tex, float threshold_R, float threshold_G, f
 	// enable multitexturing
 	gldrv_enable_multitexture();
 
-	glActiveTextureARB(GL_TEXTURE0_ARB);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex_array[tex]->id);
 	gldrv_copyColorBuffer ();
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
-	glActiveTextureARB (GL_TEXTURE1_ARB);
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, tex_array[tex]->id);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
 	glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS);
@@ -102,37 +102,37 @@ void render_highpassfilter_ext (int tex, float threshold_R, float threshold_G, f
 	glBegin (GL_QUADS);
 	for (i=0; i<accum/2; i++)
 		{
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, 0);
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, 0);
+		glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
+		glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
 		glVertex2f(x0, y0);
 
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 1, 0);
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 1, 0);
+		glMultiTexCoord2f(GL_TEXTURE0, 1, 0);
+		glMultiTexCoord2f(GL_TEXTURE1, 1, 0);
 		glVertex2f(x1, y0);
 
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 1, 1);
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 1, 1);
+		glMultiTexCoord2f(GL_TEXTURE0, 1, 1);
+		glMultiTexCoord2f(GL_TEXTURE1, 1, 1);
 		glVertex2f(x1, y1);
 
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, 1);
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, 1);
+		glMultiTexCoord2f(GL_TEXTURE0, 0, 1);
+		glMultiTexCoord2f(GL_TEXTURE1, 0, 1);
 		glVertex2f(x0, y1);
 
 		/*
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, 0);
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, 0);
+		glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
+		glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
 		glVertex2f (0,0);
 
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, gldrv_get_viewport_aspect_ratio(), 0);
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, gldrv_get_viewport_aspect_ratio(), 0);
+		glMultiTexCoord2f(GL_TEXTURE0, gldrv_get_viewport_aspect_ratio(), 0);
+		glMultiTexCoord2f(GL_TEXTURE1, gldrv_get_viewport_aspect_ratio(), 0);
 		glVertex2f (1,0);
 
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
+		glMultiTexCoord2f(GL_TEXTURE0, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
+		glMultiTexCoord2f(GL_TEXTURE1, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
 		glVertex2f (1,1);
 
-		glMultiTexCoord2fARB(GL_TEXTURE0_ARB, 0, (1 / gldrv_get_viewport_aspect_ratio()));
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, 0, (1 / gldrv_get_viewport_aspect_ratio()));
+		glMultiTexCoord2f(GL_TEXTURE0, 0, (1 / gldrv_get_viewport_aspect_ratio()));
+		glMultiTexCoord2f(GL_TEXTURE1, 0, (1 / gldrv_get_viewport_aspect_ratio()));
 		glVertex2f (0,1);
 		*/
 		}

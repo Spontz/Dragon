@@ -44,7 +44,7 @@ void load_efxAccum () {
 void init_efxAccum ()
 	{
 	// Clean the current RTT texture
-	tex_free(demoSystem.rtt);
+	tex_free(  demoSystem.rtt);
 	
 	// init shared rtt textures
 	demoSystem.rtt = tex_new(glDriver.vpWidth, glDriver.vpHeight, GL_RGB, 3);

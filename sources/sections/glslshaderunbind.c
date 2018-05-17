@@ -38,7 +38,7 @@ void render_glslshaderunbind () {
 		
 	// Choose the proper program shader
 	glslshad_reset_bind();
-	glUseProgramObjectARB(0);
+	glUseProgram(0);
 }
 
 // ******************************************************************

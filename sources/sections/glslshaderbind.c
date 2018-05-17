@@ -235,7 +235,7 @@ void load_glslshaderbind () {
 	
 	// Unbind any shader used
 	glslshad_reset_bind();
-	glUseProgramObjectARB(0);
+	glUseProgram(0);
 	mySection->loaded=1;
 }
 

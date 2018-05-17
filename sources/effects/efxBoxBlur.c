@@ -2,10 +2,9 @@
 
 // types
 
-typedef struct
-	{
+typedef struct {
 	float radius;
-	} efxBoxBlur_section;
+} efxBoxBlur_section;
 
 // variables
 
@@ -13,34 +12,29 @@ static efxBoxBlur_section*	local;
 
 // functions
 
-void	preload_efxBoxBlur()
-	{
-	}
+void	preload_efxBoxBlur() {
+}
 
-void	load_efxBoxBlur()
-	{
+void	load_efxBoxBlur() {
 	local = malloc(sizeof(efxBoxBlur_section));
-	mySection->vars = (void *) local;
+	mySection->vars = (void *)local;
 
 	// script validation
-	if ((mySection->paramNum != 1))
-		{
+	if ((mySection->paramNum != 1)) {
 		dkernel_trace("1 param needed");
-		local->radius =  1;
-		}
+		local->radius = 1;
+	}
 	else
 		local->radius = mySection->param[0];
 
-	mySection->loaded=1;
-	}
+	mySection->loaded = 1;
+}
 
-void	init_efxBoxBlur()
-	{
-	}
+void	init_efxBoxBlur() {
+}
 
-void	render_efxBoxBlur()
-	{
-	local = (efxBoxBlur_section *) mySection->vars;
+void	render_efxBoxBlur() {
+	local = (efxBoxBlur_section *)mySection->vars;
 
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
@@ -48,7 +42,7 @@ void	render_efxBoxBlur()
 
 	camera_set2d();
 
-	render_boxblur_ext(demoSystem.rtt, local->radius);
+	render_boxblur(demoSystem.rtt, local->radius);
 
 	camera_restore();
 
@@ -56,8 +50,7 @@ void	render_efxBoxBlur()
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	}
+}
 
-void end_efxBoxBlur()
-	{
-	}
+void end_efxBoxBlur() {
+}

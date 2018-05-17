@@ -526,15 +526,15 @@ void render_bump3ds (H3dsScene *scene, GLuint texture, GLuint CubeMap) {
 	}
 
 	// TU0 = normal map texture
-	glActiveTextureARB(GL_TEXTURE0_ARB);
-	glClientActiveTextureARB(GL_TEXTURE0_ARB);
+	glActiveTexture(GL_TEXTURE0);
+	glClientActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	// TU1 = normalization cube map
-	glActiveTextureARB(GL_TEXTURE1_ARB);
-	glClientActiveTextureARB(GL_TEXTURE1_ARB);
+	glActiveTexture(GL_TEXTURE1);
+	glClientActiveTexture(GL_TEXTURE1);
 	glEnable(GL_TEXTURE_CUBE_MAP);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, CubeMap);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -552,8 +552,8 @@ void render_bump3ds (H3dsScene *scene, GLuint texture, GLuint CubeMap) {
 			glBegin(GL_POLYGON);
 			for (nvert=0; nvert<mesh->facelist[nface].vertexes; nvert++) {
 				v = mesh->facelist[nface].v[nvert].vertex;
-				glMultiTexCoord2fvARB(GL_TEXTURE0_ARB, (GLfloat*)&mesh->facelist[nface].v[nvert].u);
-				glMultiTexCoord3fvARB(GL_TEXTURE1_ARB, (GLfloat*)&mesh->vertlist[v].result);
+				glMultiTexCoord2fv(GL_TEXTURE0, (GLfloat*)&mesh->facelist[nface].v[nvert].u);
+				glMultiTexCoord3fv(GL_TEXTURE1, (GLfloat*)&mesh->vertlist[v].result);
 				glVertex3fv((GLfloat*)&mesh->vertlist[v]);
 			}
 			glEnd();
@@ -561,13 +561,13 @@ void render_bump3ds (H3dsScene *scene, GLuint texture, GLuint CubeMap) {
 	}
 
 	// disable TU1
-	glActiveTextureARB(GL_TEXTURE1_ARB);
-	glClientActiveTextureARB(GL_TEXTURE1_ARB);
+	glActiveTexture(GL_TEXTURE1);
+	glClientActiveTexture(GL_TEXTURE1);
 	glDisable(GL_TEXTURE_CUBE_MAP);
 
 	// disable TU0
-	glActiveTextureARB(GL_TEXTURE0_ARB);
-	glClientActiveTextureARB(GL_TEXTURE0_ARB);
+	glActiveTexture(GL_TEXTURE0);
+	glClientActiveTexture(GL_TEXTURE0);
 	glDisable(GL_TEXTURE_2D);
 	
 	glMatrixMode(GL_MODELVIEW);

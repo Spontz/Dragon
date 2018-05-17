@@ -97,11 +97,7 @@ void render_efxGlow2 () {
 	// box blur
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-//	#ifdef WIN32
-		render_boxblur_ext (demoSystem.rtt, (float)radius);
-//	#else
-//		render_boxblur (demoSystem.rtt, (float)radius);
-//	#endif
+	render_boxblur (demoSystem.rtt, (float)radius);
 		
 	// restore original color buffer
 	tex_bind (demoSystem.backup);

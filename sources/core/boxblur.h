@@ -7,8 +7,7 @@ extern "C" {
 
 // ******************************************************************
 
-// void render_boxblur(int tex, float radius);
-void render_boxblur_ext(int tex, float radius);
+void render_boxblur(int tex, float radius);
 
 // ******************************************************************
 
