@@ -42,6 +42,18 @@ void render_highpassfilter (int tex, float threshold_R, float threshold_G, float
 	glColor4f (1,1,1,1);
 	glBegin (GL_QUADS);
 	for (i=0; i<accum; i++) {
+		glTexCoord2f(0,0);
+		glVertex2f(0,0);
+
+		glTexCoord2f(1,0);
+		glVertex2f(1,0);
+
+		glTexCoord2f(1,1);
+		glVertex2f(1,1);
+
+		glTexCoord2f(0,1);
+		glVertex2f(0,1);
+		/*
 		glTexCoord2f (0,0);
 		glVertex2f (0,0);
 
@@ -53,6 +65,7 @@ void render_highpassfilter (int tex, float threshold_R, float threshold_G, float
 
 		glTexCoord2f (0,(1 / gldrv_get_viewport_aspect_ratio()));
 		glVertex2f (0,1);
+		*/
 	}
 	glEnd ();
 }
@@ -60,7 +73,6 @@ void render_highpassfilter (int tex, float threshold_R, float threshold_G, float
 // ******************************************************************
 
 extern void draw_offset_quad_multi(float offsetX, float offsetY);
-extern unsigned int get_closest_power_of_two(unsigned int value);
 
 void render_highpassfilter_ext (int tex, float threshold_R, float threshold_G, float threshold_B, int accum)
 	{
@@ -69,8 +81,8 @@ void render_highpassfilter_ext (int tex, float threshold_R, float threshold_G, f
 
 	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
 
-	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)get_closest_power_of_two(glDriver.vpWidth);
-	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)get_closest_power_of_two(glDriver.vpHeight);
+	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth;
+	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight;
 
 	// disable texturing
 	glDisable (GL_TEXTURE_2D);

@@ -93,6 +93,7 @@ void render_efxGlow2 () {
 
 	// highpass filter
 	render_highpassfilter_ext (demoSystem.rtt, (float)red, (float)green, (float)blue, (int)accumulation);
+	//render_highpassfilter (demoSystem.rtt, (float)red, (float)green, (float)blue, (int)accumulation);
 
 	// box blur
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

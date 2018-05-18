@@ -19,7 +19,6 @@ static int env_mode = -1;
 
 // ******************************************************************
 
-int powerOfTwo(int number);
 int getCompressedFormat(texture_t *tex);
 
 // ******************************************************************

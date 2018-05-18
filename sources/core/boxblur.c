@@ -21,17 +21,14 @@ void drawOffsetQuadMulti(float offsetX, float offsetY) {
 }
 */
 
-extern unsigned int get_closest_power_of_two(unsigned int value);
-
-// TODO: Fix this, the "get_closest_power_of_two" should be removed
 void draw_offset_quad_multi(float offsetX, float offsetY)
 {
 	float x0, y0, x1, y1;
 
 	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
 
-	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)get_closest_power_of_two(glDriver.vpWidth);
-	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)get_closest_power_of_two(glDriver.vpHeight);
+	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth;
+	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight;
 
 	glBegin(GL_QUADS);
 	glMultiTexCoord2f(GL_TEXTURE0, 0, 0);

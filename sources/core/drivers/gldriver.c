@@ -141,15 +141,6 @@ void gldrv_initState() {
 		dkernel_warn("OpenGL Error while setting the default state in gldrv_initState:\n\n%s", OGLError);
 }
 
-unsigned int get_closest_power_of_two(unsigned int value) {
-	unsigned int p = 1;
-
-	while (p < value)
-		p = p << 1;
-
-	return p;
-}
-
 void gldrv_initViewport()
 {
 	int i;

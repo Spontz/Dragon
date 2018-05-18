@@ -68,7 +68,6 @@ void init_renderBuffer()
 	{
 	}
 
-extern unsigned int get_closest_power_of_two(unsigned int value);
 
 void draw_fucking_quad()
 	{
