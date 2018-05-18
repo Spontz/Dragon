@@ -1,5 +1,5 @@
 /*
-	efxGlow2.c: glow effect
+	efxGlow.c: glow effect
 */
 
 #include "../interface/demo.h"
@@ -8,18 +8,18 @@
 
 typedef struct {
 	tExpression tParameters;
-} efxGlow2_section;
+} efxGlow_section;
 
-static efxGlow2_section *local;
+static efxGlow_section *local;
 
 // ******************************************************************
 
-void preload_efxGlow2 () {
+void preload_efxGlow () {
 }
 
 // ******************************************************************
 
-void load_efxGlow2 () {
+void load_efxGlow () {
 	char *equation;
 	size_t equationSize;
 	
@@ -29,7 +29,7 @@ void load_efxGlow2 () {
 		return;
 	}
 
-	local = malloc(sizeof(efxGlow2_section));
+	local = malloc(sizeof(efxGlow_section));
 	mySection->vars = (void *) local;
 
 	equationSize  = strlen(mySection->strings[0]);
@@ -55,16 +55,16 @@ void load_efxGlow2 () {
 
 // ******************************************************************
 
-void init_efxGlow2 () {
+void init_efxGlow () {
 }
 
 // ******************************************************************
 
-void render_efxGlow2 () {
+void render_efxGlow () {
 	double red, green, blue;
 	double accumulation, radius;
 	
-	local = (efxGlow2_section *) mySection->vars;
+	local = (efxGlow_section *) mySection->vars;
 
 	// capture current color buffer
 	tex_bind (demoSystem.backup);
@@ -77,7 +77,7 @@ void render_efxGlow2 () {
 	local->tParameters.err = exprEval(local->tParameters.o, &local->tParameters.result);
 
 	// Check for errors
-	if(local->tParameters.err != EXPR_ERROR_NOERROR) section_error("efxGlow2: render_efxGlow2: Expression evaluation Error (%d): %s", local->tParameters.err, local->tParameters.equation);
+	if(local->tParameters.err != EXPR_ERROR_NOERROR) section_error("efxGlow: render_efxGlow: Expression evaluation Error (%d): %s", local->tParameters.err, local->tParameters.equation);
 
 	// Retrieve the values and assign them
 	exprValListGet(local->tParameters.v,          "red", &red  );
@@ -93,8 +93,8 @@ void render_efxGlow2 () {
 
 	// highpass filter
 	render_highpassfilter_ext (demoSystem.rtt, (float)red, (float)green, (float)blue, (int)accumulation);
-	//render_highpassfilter (demoSystem.rtt, (float)red, (float)green, (float)blue, (int)accumulation);
 
+	
 	// box blur
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -124,5 +124,5 @@ void render_efxGlow2 () {
 
 // ******************************************************************
 
-void end_efxGlow2 () {
+void end_efxGlow () {
 }
