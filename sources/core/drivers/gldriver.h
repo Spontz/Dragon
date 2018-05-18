@@ -131,6 +131,8 @@ void gldrv_close();
 
 void gldrv_screenquad();
 void gldrv_texscreenquad();
+void gldrv_multitexscreenquad();
+void gldrv_multitexscreenquad_offset(float offsetX, float offsetY);
 
 // ******************************************************************
 

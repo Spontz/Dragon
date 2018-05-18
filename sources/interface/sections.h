@@ -53,11 +53,11 @@ void init_efxFog();
 void render_efxFog();
 void end_efxFog();
 
-void preload_efxGlow2();
-void load_efxGlow2();
-void init_efxGlow2();
-void render_efxGlow2();
-void end_efxGlow2();
+void preload_efxGlow();
+void load_efxGlow();
+void init_efxGlow();
+void render_efxGlow();
+void end_efxGlow();
 
 void preload_efxHighPassFilter();
 void load_efxHighPassFilter();
@@ -295,7 +295,7 @@ tSectionFunction sectionFunction[] = {
 	{"efxBoxBlur",			&preload_efxBoxBlur,			&load_efxBoxBlur,			&init_efxBoxBlur,			&render_efxBoxBlur,			&end_efxBoxBlur			},
 	{"efxFader",			&preload_efxFader,				&load_efxFader,				&init_efxFader,				&render_efxFader,			&end_efxFader			},
 	{"efxFog",				&preload_efxFog,				&load_efxFog,				&init_efxFog,				&render_efxFog,				&end_efxFog				},
-	{"efxGlow2",			&preload_efxGlow2,				&load_efxGlow2,				&init_efxGlow2,				&render_efxGlow2,			&end_efxGlow2			},
+	{"efxGlow",				&preload_efxGlow,				&load_efxGlow,				&init_efxGlow,				&render_efxGlow,			&end_efxGlow			},
 	{"efxHighPassFilter",	&preload_efxHighPassFilter,		&load_efxHighPassFilter,	&init_efxHighPassFilter,	&render_efxHighPassFilter,	&end_efxHighPassFilter	},
 	{"efxInverse",			&preload_efxInverse,			&load_efxInverse,			&init_efxInverse,			&render_efxInverse,			&end_efxInverse			},
 	{"efxMotionBlur",		&preload_efxMotionBlur,			&load_efxMotionBlur,		&init_efxMotionBlur,		&render_efxMotionBlur,		&end_efxMotionBlur		},

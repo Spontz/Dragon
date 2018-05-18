@@ -400,6 +400,64 @@ void gldrv_texscreenquad()
 	glEnd();
 }
 
+void gldrv_multitexscreenquad()
+{
+	float x0, y0, x1, y1;
+
+	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
+
+	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)(glDriver.vpWidth);
+	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)(glDriver.vpHeight);
+
+	glBegin(GL_QUADS);
+	glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
+	glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
+	glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
+	
+	glMultiTexCoord2f(GL_TEXTURE0, 1, 0);
+	glMultiTexCoord2f(GL_TEXTURE1, 1, 0);
+	glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
+
+	glMultiTexCoord2f(GL_TEXTURE0, 1, 1);
+	glMultiTexCoord2f(GL_TEXTURE1, 1, 1);
+	glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
+	
+	glMultiTexCoord2f(GL_TEXTURE0, 0, 1);
+	glMultiTexCoord2f(GL_TEXTURE1, 0, 1);
+	glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
+
+	glEnd();
+}
+
+void gldrv_multitexscreenquad_offset(float offsetX, float offsetY)
+{
+	float x0, y0, x1, y1;
+
+	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
+
+	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth * (float)(glDriver.vpWidth);
+	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight * (float)(glDriver.vpHeight);
+
+	glBegin(GL_QUADS);
+	glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
+	glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
+	glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS + offsetX, y0 - GL_DRV__SUBPIXEL_BIAS + offsetY);
+
+	glMultiTexCoord2f(GL_TEXTURE0, 1, 0);
+	glMultiTexCoord2f(GL_TEXTURE1, 1, 0);
+	glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS + offsetX, y0 - GL_DRV__SUBPIXEL_BIAS + offsetY);
+
+	glMultiTexCoord2f(GL_TEXTURE0, 1, 1);
+	glMultiTexCoord2f(GL_TEXTURE1, 1, 1);
+	glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS + offsetX, y1 + GL_DRV__SUBPIXEL_BIAS + offsetY);
+
+	glMultiTexCoord2f(GL_TEXTURE0, 0, 1);
+	glMultiTexCoord2f(GL_TEXTURE1, 0, 1);
+	glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS + offsetX, y1 + GL_DRV__SUBPIXEL_BIAS + offsetY);
+
+	glEnd();
+}
+
 
 /* *************************************************************
  this needs to be called before render a frame

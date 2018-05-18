@@ -1,54 +1,5 @@
 #include "../main.h"
 
-/*
-void drawOffsetQuadMulti(float offsetX, float offsetY) {
-
-	glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
-	glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
-	glVertex2f(0.0f+offsetX,0.0f+offsetY);
-
-	glMultiTexCoord2f(GL_TEXTURE0, gldrv_get_viewport_aspect_ratio(), 0);
-	glMultiTexCoord2f(GL_TEXTURE1, gldrv_get_viewport_aspect_ratio(), 0);
-	glVertex2f(1.0f+offsetX,0.0f+offsetY);
-
-	glMultiTexCoord2f(GL_TEXTURE0, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
-	glMultiTexCoord2f(GL_TEXTURE1, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
-	glVertex2f(1.0f+offsetX,1.0f+offsetY);
-
-	glMultiTexCoord2f(GL_TEXTURE0, 0, (1 / gldrv_get_viewport_aspect_ratio()));
-	glMultiTexCoord2f(GL_TEXTURE1, 0, (1 / gldrv_get_viewport_aspect_ratio()));
-	glVertex2f(0.0f+offsetX,1.0f+offsetY);
-}
-*/
-
-void draw_offset_quad_multi(float offsetX, float offsetY)
-{
-	float x0, y0, x1, y1;
-
-	camera_2d_fit_to_viewport(glDriver.AspectRatio, &x0, &x1, &y0, &y1);
-
-	x1 = x0 + (x1 - x0) / (float)glDriver.vpWidth;
-	y1 = y0 + (y1 - y0) / (float)glDriver.vpHeight;
-
-	glBegin(GL_QUADS);
-	glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
-	glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
-	glVertex2f(x0 + offsetX, y0 + offsetY);
-
-	glMultiTexCoord2f(GL_TEXTURE0, 1, 0);
-	glMultiTexCoord2f(GL_TEXTURE1, 1, 0);
-	glVertex2f(x1 + offsetX, y0 + offsetY);
-
-	glMultiTexCoord2f(GL_TEXTURE0, 1, 1);
-	glMultiTexCoord2f(GL_TEXTURE1, 1, 1);
-	glVertex2f(x1 + offsetX, y1 + offsetY);
-
-	glMultiTexCoord2f(GL_TEXTURE0, 0, 1);
-	glMultiTexCoord2f(GL_TEXTURE1, 0, 1);
-	glVertex2f(x0 + offsetX, y1 + offsetY);
-	glEnd();
-}
-
 void render_boxblur (int tex, float radius) {
 	float color[4] = { 0.5f,0.5f,0.5f,0.5f };
 	float pixelX, pixelY;
@@ -80,10 +31,10 @@ void render_boxblur (int tex, float radius) {
 	for (;;)
 	{
 		gldrv_copyColorBuffer();
-		draw_offset_quad_multi(pixelX, 0);
+		gldrv_multitexscreenquad_offset(pixelX, 0);
 
 		gldrv_copyColorBuffer();
-		draw_offset_quad_multi(0, pixelY);
+		gldrv_multitexscreenquad_offset(0, pixelY);
 
 		if (nOffset < radius)
 		{

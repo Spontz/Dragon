@@ -92,7 +92,7 @@ void render_highpassfilter_ext (int tex, float threshold_R, float threshold_G, f
 	glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
 	glColor4f (threshold_R, threshold_G ,threshold_B, 0);
 	gldrv_screenquad ();
-	glBlendEquationEXT (GL_FUNC_ADD);
+	glBlendEquation (GL_FUNC_ADD);
 
 	// enable multitexturing
 	gldrv_enable_multitexture();
@@ -111,44 +111,12 @@ void render_highpassfilter_ext (int tex, float threshold_R, float threshold_G, f
 
 	glBlendFunc (GL_ONE, GL_ONE);
 	glColor4f (1,1,1,1);
-	glBegin (GL_QUADS);
-	for (i=0; i<accum/2; i++)
-		{
-		glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
-		glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
-		glVertex2f(x0, y0);
-
-		glMultiTexCoord2f(GL_TEXTURE0, 1, 0);
-		glMultiTexCoord2f(GL_TEXTURE1, 1, 0);
-		glVertex2f(x1, y0);
-
-		glMultiTexCoord2f(GL_TEXTURE0, 1, 1);
-		glMultiTexCoord2f(GL_TEXTURE1, 1, 1);
-		glVertex2f(x1, y1);
-
-		glMultiTexCoord2f(GL_TEXTURE0, 0, 1);
-		glMultiTexCoord2f(GL_TEXTURE1, 0, 1);
-		glVertex2f(x0, y1);
-
-		/*
-		glMultiTexCoord2f(GL_TEXTURE0, 0, 0);
-		glMultiTexCoord2f(GL_TEXTURE1, 0, 0);
-		glVertex2f (0,0);
-
-		glMultiTexCoord2f(GL_TEXTURE0, gldrv_get_viewport_aspect_ratio(), 0);
-		glMultiTexCoord2f(GL_TEXTURE1, gldrv_get_viewport_aspect_ratio(), 0);
-		glVertex2f (1,0);
-
-		glMultiTexCoord2f(GL_TEXTURE0, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
-		glMultiTexCoord2f(GL_TEXTURE1, gldrv_get_viewport_aspect_ratio(), (1 / gldrv_get_viewport_aspect_ratio()));
-		glVertex2f (1,1);
-
-		glMultiTexCoord2f(GL_TEXTURE0, 0, (1 / gldrv_get_viewport_aspect_ratio()));
-		glMultiTexCoord2f(GL_TEXTURE1, 0, (1 / gldrv_get_viewport_aspect_ratio()));
-		glVertex2f (0,1);
-		*/
-		}
-	glEnd ();
+	
+	for (i = 0; i < accum / 2; i++)
+	{
+		gldrv_multitexscreenquad();
+		
+	}
 
 	gldrv_disable_multitexture();
 }
