@@ -32,7 +32,7 @@
 #include "core/dkernel.h"
 #include "core/disk.h"
 #include "core/drivers/gldriver.h"
-#include "core/drivers/fmoddriver.h"
+#include "core/drivers/bassdriver.h"
 #include "core/drivers/netdriver.h"
 #include "core/drivers/exprevaldriver.h"
 

@@ -50,9 +50,9 @@ link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_image-2.0.1/lib/x64
 include_directories(dependencies/vc141/SDL2_net-2.0.1/include)
 link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_net-2.0.1/lib/x64)
 
-# FMOD
-include_directories(dependencies/vc141/fmod10903/lowlevel/inc)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/fmod10903/lowlevel/lib)
+# BASS
+include_directories(dependencies/vc141/bass24/inc)
+link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/bass24/lib/x64)
 
 # GLEW
 add_definitions(-DGLEW_STATIC)

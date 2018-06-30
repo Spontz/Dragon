@@ -16,7 +16,7 @@
 #include "files.h"
 #include "debug.h"
 #include "drivers/events.h"
-#include "drivers/fmoddriver.h"
+#include "drivers/bassdriver.h"
 
 #include "../interface/sections.h"
 
@@ -1837,8 +1837,9 @@ void dkernel_restart() {
 
 	demoSystem.state = DEMO_PLAY;
 	if (demoSystem.sound) {
-		sound_end();
-		sound_init();
+		// PERE: There is no need to free sound, isn't it??
+		//sound_end();
+		//sound_init();
 	}
 
 	init_control_vars();
