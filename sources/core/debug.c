@@ -31,9 +31,9 @@ void drawTiming() {
 		else state = stateStr[0];
 	}
 
-	glPrintf(debugFont, "\n%d - %.1f/%.1f\nsound %0.1f%% chan %d\ntexmem %.2fM\n%s",
+	glPrintf(debugFont, "\n%d - %.1f/%.1f\nsound %0.1f%%\ntexmem %.2fM\n%s",
 				demoSystem.frameCount,demoSystem.runTime,demoSystem.endTime,
-				sound_cpu(),sound_channels(),(float)tex_get_used_memory()/1048576.0f,state);
+				sound_cpu(),(float)tex_get_used_memory()/1048576.0f,state);
 }
 
 // ******************************************************************
