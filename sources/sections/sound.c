@@ -1,13 +1,24 @@
 #pragma comment( lib, "bass" )
 
 #include "../interface/demo.h"
-
 #include <bass.h>
-//#include <fmod_errors.h>
+
+#define BUFFER_SAMPLES	512
+#define	DEFAULT_ENERGY	0.0f
+#define	BEAT_RATIO		1.4f
+#define FADE_OUT		4.0f
 
 
 typedef struct {
 	HSTREAM str;	// Music Stream
+	
+	// Beat parameters
+	float					energy[BUFFER_SAMPLES];
+	float					default_energy;
+	float					beat_ratio;
+	float					fade_out;
+	float					intensity;
+	int						position;
 } sound_section;
 
 static sound_section* local;
@@ -32,7 +43,10 @@ void load_sound(){
 
 
 	local->str = BASS_StreamCreateFile(FALSE, mySection->strings[0], 0, 0, BASS_STREAM_PRESCAN);
-	mySection->loaded = 1;
+	if (local->str == 0)
+		section_error("BASS cannot read file: %s", mySection->strings[0]);
+	else
+		mySection->loaded = 1;
 }
 
 void init_sound(){
@@ -42,6 +56,18 @@ void init_sound(){
 	if (demoSystem.state != DEMO_PLAY)
 		return;
 
+	// Beat detection - Init variables
+	local->default_energy = DEFAULT_ENERGY;
+	local->beat_ratio = BEAT_RATIO;
+	local->fade_out = FADE_OUT;
+	// Clean variables
+	for (auto i = 0; i<BUFFER_SAMPLES; i++) {
+		local->energy[i] = local->default_energy;
+	}
+	local->intensity = 0;
+	local->position = 1;
+
+
 	if (mySection->runTime > 0) {
 		QWORD bytes = BASS_ChannelSeconds2Bytes(local->str, mySection->runTime); // convert seconds to bytes
 		BASS_ChannelSetPosition(local->str, bytes, BASS_POS_BYTE); // seek there
@@ -49,88 +75,33 @@ void init_sound(){
 	BOOL r = BASS_ChannelPlay(local->str, FALSE);
 	if (r != TRUE)
 		section_error("BASS_ChannelPlay returned error: %i", BASS_ErrorGetCode());
-
-	/*	const auto r = FMOD_System_PlaySound(
-		local->m_pFMODSystem,
-		local->m_pSound,
-		nullptr,
-		false,
-		&local->m_pChannel);
-
-	if (r != FMOD_OK)
-		sound_error(r);
-
-	FMOD_System_CreateDSPByType(local->m_pFMODSystem, FMOD_DSP_TYPE::FMOD_DSP_TYPE_FFT, &local->m_pDSP);
-	FMOD_Channel_AddDSP(local->m_pChannel, FMOD_DSP_PARAMETER_DATA_TYPE_FFT, local->m_pDSP);
-
-	// Beat detection specific information
-	//unit = FSOUND_DSP_GetFFTUnit();
-	//FSOUND_DSP_SetActive(unit, TRUE);
-
-	
-	// get parameters
-	if (mySection->paramNum == 0) {
-		local->default_energy = DEFAULT_ENERGY;
-		local->beat_ratio = BEAT_RATIO;
-		local->fade_out = FADE_OUT;
-	}
-	else {
-		local->default_energy = mySection->param[0];
-		local->beat_ratio = mySection->param[1];
-		local->fade_out = mySection->param[2];
-	}
-
-	// clean variables
-	for (auto i=0; i<BUFFER_SAMPLES; i++) {
-		local->energy[i] = local->default_energy;
-	}
-	
-	local->intensity = 0;
-	local->position = 1;
-	*/
 }
 
 void render_sound() {
-/*	float *spectrum, instant, avg;
+	
+
+	float instant, avg;	// Instant energy
 	int i;
-			
-	// Update the beat information in the demo structure
-	local = (sound_section *) mySection->vars;
+	float fft[BUFFER_SAMPLES]; // 512 samples, because we have used "BASS_DATA_FFT1024", and this returns 512 values
+	
+	BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
 
-	FMOD_DSP_GetParameterData(
-		local->m_pDSP,
-		FMOD_DSP_FFT_SPECTRUMDATA,
-		reinterpret_cast<void **>(local->m_pFFT),
-		nullptr,
-		nullptr,
-		0);
-
-
-	return;
-
-	for (int c = 0; c < local->m_pFFT->numchannels; ++c)
-		for (int i = 0; i < local->m_pFFT->length; ++i)
-			float val = local->m_pFFT->spectrum[c][i];
-
-	spectrum = &local->m_pFFT->spectrum[0][0];
-
-	// get instant energy
 	instant = 0;
-	//for (i=0; i<512; i++) {
-//		instant += spectrum[i];
-//	}
-
+	for (i=0; i<(int)BUFFER_SAMPLES; i++)
+		instant += fft[i];
+	
 	// calculate average energy in last samples
 	avg = 0;
-	for (i=0; i<BUFFER_SAMPLES; i++) {
+	for (i = 0; i<BUFFER_SAMPLES; i++) {
 		avg += local->energy[i];
 	}
-	avg /= (float) local->position;
+	avg /= (float)local->position;
 
 	// instant sample is a beat?
 	if ((instant / avg) > local->beat_ratio) {
 		local->intensity = 1.0f;
-	} else if (local->intensity > 0) {
+	}
+	else if (local->intensity > 0) {
 		local->intensity -= local->fade_out * demoSystem.frameTime;
 		if (local->intensity < 0) local->intensity = 0;
 	}
@@ -150,55 +121,49 @@ void render_sound() {
 		}
 		local->energy[BUFFER_SAMPLES-1] = instant;
 	}
-	
+
 	// Spectrum drawing (Only in debug mode, when the timing information is also being displayed)
-	if ((demoSystem.debug)) {
+	if ((demoSystem.debug) && (demoSystem.drawSound)) {
 		glDisable(GL_DEPTH_TEST);
-		
+
 		if (mySection->hasBlend) {
 			glEnable(GL_BLEND);
 			glBlendFunc(mySection->sfactor, mySection->dfactor);
 		}
-		
 		camera_set2d();
-*/
-		/*glDisable(GL_TEXTURE_2D);
-			glColor4f(1,1,1,1);
-			
-			glBegin(GL_LINES);
-			
-				for (i=0; i<512; i++) {
-					glVertex2f(i/640.0f, spectrum[i]);
-					glVertex2f(i/640.0f, 0);
-				}
-			
-			glEnd ();
-		glEnable(GL_TEXTURE_2D);*/
-
-		/* if (local->intensity > 0) {
+		glDisable(GL_TEXTURE_2D);
+		glColor4f(1, 1, 1, 1);
+		glBegin(GL_LINES);
+		for (i = 0; i < BUFFER_SAMPLES; i++) {
+			glVertex2f(i / 640.0f, fft[i]);
+			glVertex2f(i / 640.0f, 0);
+		}
+		glEnd();
+		
+		// Draws a quad when a beat is detected
+		if (local->intensity > 0) {
 			glColor4f(local->intensity, local->intensity, local->intensity, local->intensity);
-			tex_bind(local->texture);
+			//tex_bind(local->texture);
 			glBegin(GL_QUADS);
-				glTexCoord2f(0,0);
-				glVertex2f(0.9f,0.9f);
+			glTexCoord2f(0,0);
+			glVertex2f(0.9f,0.9f);
 
-				glTexCoord2f(1,0);
-				glVertex2f(1,0.9f);
+			glTexCoord2f(1,0);
+			glVertex2f(1,0.9f);
 
-				glTexCoord2f(1,1);
-				glVertex2f(1,1);
+			glTexCoord2f(1,1);
+			glVertex2f(1,1);
 
-				glTexCoord2f(0,1);
-				glVertex2f(0.9f,1);
+			glTexCoord2f(0,1);
+			glVertex2f(0.9f,1);
 			glEnd();
-		} */
-
-/*		camera_restore();
+		}
+		camera_restore();
 
 		if (mySection->hasBlend) glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 	}
-*/
+
 }
 
 void end_sound() {

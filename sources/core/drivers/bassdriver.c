@@ -10,9 +10,7 @@
 // ******************************************************************
 
 void sound_init() {
-	int driver;
-	driver = BASS_Init(-1, 44100, 0, 0, NULL);
-	if (!driver) {
+	if (!BASS_Init(-1, 44100, 0, 0, NULL)) {
 		dkernel_error("bassdriver: Sound cannot be initialized, error in sound_init(), line BASS_Init()\n");
 		return;
 	}

@@ -960,7 +960,12 @@ void init_sectionQueues()
 		memset(loadingSection, 0, sizeof(tDemoSection));
 		loading = &sectionFunction[loadingSection->staticSectionIndex];
 	}
-		
+
+	// Demo states
+	demoSystem.drawFps = 1;
+	demoSystem.drawTiming = 1;
+	demoSystem.drawSound = 0;
+
 	// section accounting
 	demoSystem.numSections = 0;
 	demoSystem.numReadySections = 0;
@@ -1308,9 +1313,10 @@ void process_sectionQueues() {
 	// expand RTT to fullscreen
 	gldrv_endRender();
 
-	//if (demoSystem.drawFps) drawFps();
-	//else if (demoSystem.drawTiming) drawTiming();
-
+	if (demoSystem.debug) {
+		if (demoSystem.drawFps) drawFps();
+		if (demoSystem.drawTiming) drawTiming();
+	}
 	// swap buffer
 	gldrv_swap();
 }
@@ -1342,7 +1348,7 @@ void dkernel_initDemo() {
 	init_sectionQueues();
 
 	// initialize debugging font
-	// text_load_font(&debugFont, strDebugFont, 16, 16, "data/fonts/font.tga");
+	text_load_font(&debugFont, strDebugFont, 16, 16, "data/fonts/font.tga");
 
 	// get initial sync timer values
 	init_timer();

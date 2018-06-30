@@ -38,8 +38,7 @@ int eventHandler(SDL_Event event) {
 
 			if (demoSystem.debug) {
 				if (event.key.keysym.scancode == KEY_TIME) {
-					fprintf(stdout, "%f\n", demoSystem.runTime);
-
+					dkernel_trace("Demo Time: %f\n", demoSystem.runTime);
 				} else if (event.key.keysym.scancode == KEY_PLAY_PAUSE) {
 					if (demoSystem.state == DEMO_PLAY) {
 						dkernel_pause();
@@ -47,7 +46,6 @@ int eventHandler(SDL_Event event) {
 					else {
 						dkernel_play();
 					}
-
 				} else if (event.key.keysym.scancode == KEY_REWIND) {
 					dkernel_rewind();
 
@@ -56,7 +54,23 @@ int eventHandler(SDL_Event event) {
 
 				} else if (event.key.keysym.scancode == KEY_RESTART) {
 					dkernel_restart();
+				} else if (event.key.keysym.scancode == KEY_SHOWTIME) {
+					if (demoSystem.drawTiming)
+						demoSystem.drawTiming = 0;
+					else
+						demoSystem.drawTiming = 1;
+				} else if (event.key.keysym.scancode == KEY_SHOWFPS) {
+					if (demoSystem.drawFps)
+						demoSystem.drawFps = 0;
+					else
+						demoSystem.drawFps = 1;
+				} else if (event.key.keysym.scancode == KEY_SHOWSOUND) {
+					if (demoSystem.drawSound)
+						demoSystem.drawSound = 0;
+					else
+						demoSystem.drawSound = 1;
 				}
+
 			}
 
 			if (event.key.keysym.scancode<512)

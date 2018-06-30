@@ -223,6 +223,11 @@ typedef struct {
 	// network slave mode
 	int slaveMode; // 1 = network slave; 0 = standalone mode;
 	
+	// Drawing states
+	char drawSound;	// Draw sound render
+	char drawTiming;// Draw time of the demo
+	char drawFps;	// Draw FPS's of the demo
+
 	// engine state variables
 	matrix_t	m_VariableMatrix[MAX_SVE_VARIABLE_ID+1];
 } tDemoSystem;
