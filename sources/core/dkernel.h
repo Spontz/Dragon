@@ -214,7 +214,10 @@ typedef struct {
 	int texRenderingBuffer[RENDERING_BUFFERS];	// Array with the indexes to the rendering buffers
 	int fboRenderingBuffer[FBO_BUFFERS];		// Array with the indexes to the fbo buffers
 	
+	// Beat and beat detection parameters
 	float beat; // intensity of the current music beat
+	float beat_ratio;
+	float beat_fadeout;
 
 	int mouseX, mouseY; // Mouse global coordinates
 	int mouseXvar, mouseYvar; // Mouse variation rom the center of the screen
@@ -290,7 +293,6 @@ void dkernel_getArguments(int argc, char *argv[]);
 void dkernel_loadScripts();
 void dkernel_loadScriptData(const char* pScript, const char* pDataSource);
 
-void dkernel_configDialog();
 void dkernel_initDemo();
 void dkernel_mainLoop();
 void dkernel_closeDemo();

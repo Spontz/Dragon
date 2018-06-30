@@ -402,8 +402,7 @@ void dkernel_getArguments(int argc, char *argv[]) {
 
 // ******************************************************************
 
-void dkernel_loadScriptData(const char* pScript, const char* pSource)
-	{
+void dkernel_loadScriptData(const char* pScript, const char* pSource) {
 	const char*		name = "";
 	char			line[256], key[512], value[512], tmp[512], tmp2[512];
 	tDemoSection*	section;
@@ -414,8 +413,7 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 	// initialize script parse variables
 	lineNum = 0;
 	section = NULL;
-	for (;;)
-		{
+	for (;;) {
 		lineNum++;
 
 		//line = calloc(256, sizeof(char));
@@ -439,15 +437,13 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 		// fprintf(stdout,"    Parsing line %i... \n", lineNum);
 
 		// Ignore comments or empty line
-		if ((line[0] == ';') || (line[0] == '\n') || (line[0] == '\r'))
-			{
+		if ((line[0] == ';') || (line[0] == '\n') || (line[0] == '\r')) {
 			//fprintf(stdout,"comments found or empty line: ignoring this line.\n");
 			continue;
-			}
+		}
 		
 		// section type line
-		if (line[0] == '[')
-			{
+		if (line[0] == '[') {
 			// The section type goes to the "key" variable
 			sscanf(line, "[%s]", key);
 			key[strlen(key) - 1] = 0;
@@ -476,22 +472,18 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 				parse_error(name, lineNum, "Unknown section type.");
 
 			section->staticSectionIndex = i;
-			}
-		else if (section)
-			{
+		} else if (section) {
 			// section body
 			getKeyValue(line,key,value);
 
 			// select local variable
 			com = -1;
-			for (i=0; i<SECTION_COMMANDS_NUMBER; i++)
-				{
-				if (spz_strcmpi(key,scriptSectionCommand[i]) == 0)
-					{
+			for (i=0; i<SECTION_COMMANDS_NUMBER; i++) {
+				if (spz_strcmpi(key,scriptSectionCommand[i]) == 0) {
 					com = i;
 					break;
-					}
 				}
+			}
 
 			// if the command is not recognized
 			// look at the first character (fColor, cSpline, sTexture)
@@ -513,8 +505,7 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 				}
 
 			// load variable
-			switch (com)
-				{
+			switch (com) {
 				// identifier
 				case SECTION_IDENTIFIER:
 					values = sscanf(value,"%s", (char *)&section->identifier);
@@ -529,7 +520,6 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 
 				// start
 				case SECTION_START:
-					{
 					values = sscanf(value,"%f",&section->startTime);
 
 					if ((values != 1) || (section->startTime < 0))
@@ -537,11 +527,9 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 
 					dkernel_trace("section start: %f", section->startTime);
 					break;
-					}
 
 				// end
 				case SECTION_END:
-					{
 					values = sscanf(value, "%f", &section->endTime);
 
 					if (values != 1)
@@ -554,7 +542,6 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 
 					dkernel_trace("section end: %f", section->endTime);
 					break;
-					}
 
 				// layer
 				case SECTION_LAYER:
@@ -568,7 +555,6 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 
 				// blending function
 				case SECTION_BLEND:
-					{
 					values = sscanf(value,"%s %s",tmp,tmp2);
 
 					if (values != 2)
@@ -583,14 +569,11 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 					section->hasBlend = TRUE;
 					dkernel_trace("section blending: source %i and destination %i", section->sfactor, section->dfactor);
 					break;
-					}
 
 				// alpha function
 				case SECTION_ALPHA:
-					{
 					values = sscanf(value,"%s %f %f",tmp,&section->alpha1,&section->alpha2);
-					switch (values)
-						{
+					switch (values)	{
 						case 2:
 							section->alpha2 = section->alpha1;
 							break;
@@ -599,7 +582,7 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 						default:
 							parse_error(name, lineNum, "Invalid alpha");
 							break;
-						}
+					}
 
 					section->alphaFunc = getAlphaCodeByName(tmp);
 
@@ -609,11 +592,9 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 					section->hasAlpha = TRUE;
 					dkernel_trace("section alpha: from %f to %f", section->alpha1, section->alpha2);
 					break;
-					}
 
 				// param
 				case SECTION_PARAM:
-					{
 					if (section->paramNum >= SECTION_PARAMS)
 						parse_error(name, lineNum, "Too many params.");
 
@@ -622,11 +603,9 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 					
 					dkernel_trace("section parameter: %s = %f (%i found)", key, section->param[section->paramNum - 1], values);
 					break;
-					}
 
 				// string
 				case SECTION_STRING:
-					{
 					if (section->stringNum >= SECTION_STRINGS)
 						parse_error(name, lineNum, "Too many strings");
 
@@ -635,18 +614,15 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 					
 					dkernel_trace("found string \"%s\"", value);
 					break;
-					}
 
 				// spline
 				case SECTION_SPLINE:
-					{
 					if (section->splineNum >= SECTION_SPLINES)
 						parse_error(name, lineNum, "Too many splines");
 
 					values = sscanf(value, "%s %f", tmp, &fvalue);
 
-					switch (values)
-						{
+					switch (values) {
 						case 1:
 							fvalue = section->duration;
 							break;
@@ -655,14 +631,12 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 						default:
 							parse_error(name, lineNum, "Invalid spline");
 							break;
-						}
-
+					}
 					section->splineFiles[section->splineNum] = _strdup(tmp);
 					section->splineDuration[section->splineNum] = fvalue;
 					section->splineNum++;
 					dkernel_trace("section: found spline");
 					break;
-					}
 
 				/*
 				// modifier
@@ -692,20 +666,15 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 					dkernel_trace("Examined line: \"%s\" but ", line);
 					parse_error(name, lineNum, "Unknown section variable (id: %d) was found.", com);
 					break;
-				}
 			}
-		else
-			{
+		} else {
 			// global variables
 			getKeyValue(line, key, value);
 
 			// generic variable loading
-			for (i = 0; i < COMMANDS_NUMBER; ++i)
-				{
-				if (spz_strcmpi(key, scriptCommand[i].cName) == 0)
-					{
-					switch(scriptCommand[i].vType)
-						{
+			for (i = 0; i < COMMANDS_NUMBER; ++i) {
+				if (spz_strcmpi(key, scriptCommand[i].cName) == 0) {
+					switch(scriptCommand[i].vType) {
 						case VTYPE_INT:
 							sscanf(value,"%d",(int *)((char**)scriptCommand[i].vAddr));
 							break;
@@ -718,62 +687,57 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource)
 						default:
 							parse_error(name, lineNum, "%d is not a valid variable type id.", scriptCommand[i].vType);
 							break;
-						}
-					break;
 					}
+					break;
 				}
+			}
 
 			if (i >= COMMANDS_NUMBER)
 				parse_error(pSource, lineNum, "%s is not a valid SPO Script variable.", key);
-			}
 		}
 	}
+}
 
 // ******************************************************************
 
-void loadScriptFile(const char* pPath)
-	{
+void loadScriptFile(const char* pPath) {
 	char* pScript;
-
-	dkernel_trace("Loading SPO Script %s...\n", pPath);
+	dkernel_trace("> Loading script %s...", pPath);
 	pScript = loadFile(pPath);
 	
 	dkernel_loadScriptData(pScript, pPath);
 	
 	free(pScript);
-	}
+	dkernel_trace("> Finished Loading script!\n");
+}
 
 // ******************************************************************
 
 #ifdef WIN32
 
-void load_spos(char *dir)
-	{
+void load_spos(char *dir) {
 	struct _finddata_t FindData;
 	intptr_t hFile;
 	char fullpath[512];
 	char ScriptRelativePath[512];
 	strcpy(fullpath, dir);
 	strcat(fullpath, "/*.spo");
-	if( (hFile = _findfirst( fullpath, &FindData )) != -1L )
-		{
-		do
-			{
+	if( (hFile = _findfirst( fullpath, &FindData )) != -1L ) {
+		do {
 			strcpy(ScriptRelativePath, dir);
 			strcat(ScriptRelativePath, "\\");
 			strcat(ScriptRelativePath, FindData.name);
 			loadScriptFile(ScriptRelativePath);
-			}
-		while( _findnext( hFile, &FindData ) == 0 );
 		}
+		while( _findnext( hFile, &FindData ) == 0 );
 	}
+}
 
 #endif
 
 #ifdef __APPLE__
 
-void load_spos(char *dir)
-	{
+void load_spos(char *dir) {
 	char spec[512];
 	DIR *dirData;
 	struct dirent *dirent;
@@ -806,18 +770,15 @@ void load_spos(char *dir)
 	}
 
 	fprintf(stderr,"End reading from %s\n", dir);
-
-
 	closedir(dirData);
-	}
+}
 
 
 #endif
 
 // ******************************************************************
 
-void dkernel_loadScripts()
-	{
+void dkernel_loadScripts() {
 	// initialize global kernel variables
 	demoSystem.demoName = "Dragon";
 	demoSystem.debug = FALSE;
@@ -829,16 +790,18 @@ void dkernel_loadScripts()
 	demoSystem.startTime = 0.0f;
 	demoSystem.endTime = 20.0f;
 	demoSystem.slaveMode = FALSE;
+	demoSystem.beat_ratio = 1.4f;
+	demoSystem.beat_fadeout = 4.0f;
 
 	// initialize main queue
 	demoSystem.demoSection = NULL;
 
-	dkernel_trace("dkernel: variables inited to default state.\n");
+	dkernel_trace("Variables inited to default state");
 
 	// initialize driver variables
 	gldrv_create();
 
-	dkernel_trace("OpenGL environment created.\n");
+	dkernel_trace("OpenGL environment created");
 
 	#ifndef DEBUG
 		#ifdef WIN32
@@ -865,8 +828,6 @@ void dkernel_loadScripts()
 			}
 		}
 	}
-
-	dkernel_trace("Scripts loaded\n");
 }
 
 // ******************************************************************
@@ -930,12 +891,13 @@ void init_sectionQueues()
 	// Set the demo state to loading
 	demoSystem.state = DEMO_LOADING;
 
-	if (demoSystem.debug)
-		{
-		fprintf(stdout, "\n%s", log_separator);
-		fprintf(stdout, "loading: start\n");
+#ifdef _DEBUG
+	dkernel_trace("Loading Start...");
+#endif
+
+	if (demoSystem.debug) {
 		startTime = (float) SDL_GetTicks();
-		}
+	}
 
 	loadingSection = NULL;
 	loading = NULL;
@@ -953,7 +915,9 @@ void init_sectionQueues()
 		}
 
 	if (!loadingSection) {
+#ifdef _DEBUG
 		dkernel_trace("Loading section not found: using default loader");
+#endif
 
 		// create a new section as loader...
 		loadingSection = (tDemoSection *) malloc(sizeof(tDemoSection));
@@ -982,9 +946,9 @@ void init_sectionQueues()
 	demoSystem.readySection = NULL;
 	demoSystem.runSection = NULL;
 
-	if (demoSystem.debug)
-		dkernel_trace("loading: section setup complete, %.2f seconds\n", 0.001f * ((float) SDL_GetTicks() - startTime));
-
+#ifdef _DEBUG
+		dkernel_trace("Loading: section setup complete, %.2f seconds\n", 0.001f * ((float) SDL_GetTicks() - startTime));
+#endif
 	// view all sections looking for ready sections
 	ds = demoSystem.demoSection;
 	while (ds != NULL) {
@@ -1027,15 +991,13 @@ void init_sectionQueues()
 	// all sections will be preloaded except loading section
 	demoSystem.numSections += SECTIONS_NUMBER-1;
 
-	if (demoSystem.debug)
-		{
-		fprintf(stdout, "loading: build ready queue, %.2f seconds\n", 0.001f * ((float) SDL_GetTicks() - startTime));
-		fprintf(stdout, "loading: %d sections to be preloaded\n", demoSystem.numSections);
-		}
+#ifdef _DEBUG
+	dkernel_trace("Loading: build ready queue, %.2f seconds\n", 0.001f * ((float) SDL_GetTicks() - startTime));
+	dkernel_trace("Loading: %d sections to be preloaded\n", demoSystem.numSections);
+#endif
 
 	// preload all used demo sections
-	for (i = 1; i < SECTIONS_NUMBER; ++i)
-		{
+	for (i = 1; i < SECTIONS_NUMBER; ++i) {
 		sectionFunction[i].preload();
 		++demoSystem.loadedSections;
 
@@ -1045,29 +1007,24 @@ void init_sectionQueues()
 		// event handler
 		if (SDL_PollEvent(&event)) eventHandler(event);
 
-		if (demoSystem.exitDemo)
-			{
+		if (demoSystem.exitDemo) {
 			dkernel_closeDemo();
 			exit(EXIT_SUCCESS);
-			}
 		}
-
-	if (demoSystem.debug)
-		{
-		fprintf(stdout, "loading: sections preloaded, %.2f seconds\n", 0.001f * ((float) SDL_GetTicks() - startTime));
-		fprintf(stdout, "loading: %d sections to be loaded\n", demoSystem.numReadySections);
-		}
+	}
 
 	#ifdef _DEBUG
-		fprintf(stdout, "ready >");
-	#endif
+		dkernel_trace("Loading: sections preloaded! %.2f seconds", 0.001f * ((float) SDL_GetTicks() - startTime));
+	#endif	
 
+	#ifdef _DEBUG
+		dkernel_trace("Running Load(.load()) functions... %d sections to be loaded", demoSystem.numReadySections);
+	#endif	
 	// load all ready sections
 	ds = demoSystem.readySection;
-	while (ds != NULL)
-		{
+	while (ds != NULL) {
 		#ifdef _DEBUG
-			fprintf(stdout, " %s.load", sectionFunction[ds->staticSectionIndex].scriptName);
+		dkernel_trace(" Section Loaded: %s", sectionFunction[ds->staticSectionIndex].scriptName);
 		#endif
 
 		// section load
@@ -1084,15 +1041,15 @@ void init_sectionQueues()
 		// event handler
 		if (SDL_PollEvent(&event)) eventHandler(event);
 
-		if (demoSystem.exitDemo)
-			{
+		if (demoSystem.exitDemo) {
 			dkernel_closeDemo();
 			exit(EXIT_SUCCESS);
-			}
 		}
+	}
 
-	if (demoSystem.debug)
-		fprintf(stdout, "\nloading: sections loaded, %.2f seconds\n", 0.001f * ((float) SDL_GetTicks() - startTime));
+#ifdef _DEBUG
+	dkernel_trace("Loading: sections loaded, %.2f seconds\n", 0.001f * ((float)SDL_GetTicks() - startTime));
+#endif		
 
 	// end loading
 	loading->end();
@@ -1165,11 +1122,15 @@ void process_sectionQueues() {
 	char isLast;
 
 #ifdef _DEBUG
-	fprintf(stdout, "\n\nsecond %f\n", demoSystem.runTime);
-	fprintf(stdout, "run (finished sections) >");
+	dkernel_trace(">> START queue processing...");
+	dkernel_trace(">> Processing second: %f", demoSystem.runTime);
 #endif
 
-	// loop run sections looking for finished sections
+#ifdef _DEBUG
+	dkernel_trace("Start Analysis of sections that can be removed...");
+#endif
+	// We loop all the sections, searching for finished sections,
+	// if any is found, we will remove from the queue and will execute the .end() function
 	ds = demoSystem.runSection;
 	while (ds != NULL) {
 
@@ -1181,9 +1142,8 @@ void process_sectionQueues() {
 			if (ds->nextRun) (*(tDemoSection*)ds->nextRun).priorRun = ds->priorRun;
 
 #ifdef _DEBUG
-			fprintf(stdout, " %s.end", sectionFunction[ds->staticSectionIndex].scriptName);
+			dkernel_trace(" Section removed: %s.end", sectionFunction[ds->staticSectionIndex].scriptName);
 #endif
-
 			// execute end
 			mySection = ds;
 			sectionFunction[ds->staticSectionIndex].end();
@@ -1193,9 +1153,12 @@ void process_sectionQueues() {
 	}
 
 #ifdef _DEBUG
-	fprintf(stdout, "\nready >");
+	//dkernel_trace("ready >");
 #endif
 
+#ifdef _DEBUG
+	dkernel_trace("Running Init (.init()) functions...");
+#endif
 	// view ready sections looking for run sections
 	ds = demoSystem.readySection;
 	while (ds != NULL) {
@@ -1206,21 +1169,22 @@ void process_sectionQueues() {
 		// if finished section do nothing
 		if (ds->endTime <= demoSystem.runTime) {
 #ifdef _DEBUG
-			fprintf(stdout, " '%s' skipped", sectionFunction[ds->staticSectionIndex].scriptName);
+			dkernel_trace(" Section skipped: %s", sectionFunction[ds->staticSectionIndex].scriptName);
 #endif
 		}
-
 		// else execute init and add it to run queue
 		else {
 			// setup the runtime value
 			ds->runTime = demoSystem.runTime - ds->startTime;
 
 #ifdef _DEBUG
-			fprintf(stdout, " %s.init", sectionFunction[ds->staticSectionIndex].scriptName);
+			dkernel_trace (" Initializing %s (%i)", sectionFunction[ds->staticSectionIndex].scriptName, ds->staticSectionIndex);
 #endif
 
 			// section init
 			mySection = ds;
+			if ((ds->staticSectionIndex == 34)&&(demoSystem.state == DEMO_PLAY))
+				int kk = 0;
 			sectionFunction[ds->staticSectionIndex].init();
 
 			// first element in run queue
@@ -1262,48 +1226,39 @@ void process_sectionQueues() {
 	demoSystem.camera = NULL;
 
 #ifdef _DEBUG
-	fprintf(stdout, "\nrun >");
+	dkernel_trace("Running render (.exec()) functions...");
 #endif
 
 	// execute run sections
 	ds = demoSystem.runSection;
-	while (ds != NULL)
-		{
-		if (ds->endTime > demoSystem.runTime)
-			{
+	while (ds != NULL)	{
+		if (ds->endTime > demoSystem.runTime) {
 			// section exec
 			tex_reset_bind();
 			mySection = ds;
 			
-			if ((ds->enabled) && (ds->loaded))
-				{
+			if ((ds->enabled) && (ds->loaded)) {
 				#ifdef _DEBUG
-					dkernel_trace("dKernel: Rendering %s (%i)", sectionFunction[ds->staticSectionIndex].scriptName, ds->staticSectionIndex);
+					dkernel_trace(" Rendering %s (%i)", sectionFunction[ds->staticSectionIndex].scriptName, ds->staticSectionIndex);
 				#endif
 					
 				sectionFunction[ds->staticSectionIndex].exec();
 				while (gl_drv_check_for_gl_errors(OGLError))
 					dkernel_error("%s : The section has produced the following OGL error:\n\n%s", sectionFunction[ds->staticSectionIndex].scriptName, OGLError);
-				}
+			}
 			
 			// add last frame time
 			ds->runTime = demoSystem.runTime - ds->startTime;
-			}
-		else
-			{
-			dkernel_warn("Finished section not detected");
-			}
-
-		ds = ds->nextRun;
 		}
-	
-	// Leave an empty line
-	/*
-	#ifdef _DEBUG
-		dkernel_trace("");
-	#endif
-	*/
+		else
+			dkernel_warn("Finish section not detected");
+			
+		ds = ds->nextRun;
+	}
 
+#ifdef _DEBUG
+	dkernel_trace("END queue processing!\n");
+#endif
 	// restore viewport
 	gldrv_initRender(FALSE);
 
@@ -1423,15 +1378,11 @@ void dkernel_doExec() {
 
 	// play state
 	} else {
-
 		// Prepare and remove the sections
 		process_sectionQueues();
 		
 		// Update the timing information for the sections
 		process_timer();
-		
-		// Update the beat information
-		// update_beat();
 	}
 
 	// Default color
@@ -1500,8 +1451,7 @@ void dkernel_closeDemo() {
 	SDL_Quit();
 }
 
-int dkernel_createSection(const char* pSectionScript, const char* pDataSource)
-	{
+int dkernel_createSection(const char* pSectionScript, const char* pDataSource) {
 	// **************************************************************************
 	// * Creates a new section and adds it to the queue for inmediate rendering *
 	// **************************************************************************
@@ -1525,7 +1475,7 @@ int dkernel_createSection(const char* pSectionScript, const char* pDataSource)
 	//process_sectionQueues();
 	
 	return demoSystem.demoSection->loaded; //1=OK, 0=NOK
-	}
+}
 
 void dkernel_toggleSection(const char* identifiers) {
 // ******************************************************************
@@ -1855,8 +1805,7 @@ void dkernel_restart() {
 
 // ******************************************************************
 
-void dkernel_getSpline(int spline, float step, ChanVec resVec)
-	{
+void dkernel_getSpline(int spline, float step, ChanVec resVec) {
 	//	int i;
 
 	// interpolate spline
@@ -1878,13 +1827,12 @@ void dkernel_getSpline(int spline, float step, ChanVec resVec)
 			}
 		}
 	*/
-	}
+}
 
 
 // ******************************************************************
 
-void dkernel_error(const char *error, ...)
-	{
+void dkernel_error(const char *error, ...) {
 	va_list argptr;
 	char text[1024];
 
@@ -1910,12 +1858,11 @@ void dkernel_error(const char *error, ...)
 	// force exit (if we are in slave mode, try to continue)
 	if (!demoSystem.debug)
 		exit(EXIT_FAILURE);
-	}
+}
 
 // ******************************************************************
 
-void dkernel_warn(const char *warn, ...)
-	{
+void dkernel_warn(const char *warn, ...) {
 	va_list argptr;
 	char text[1024];
 
@@ -1934,12 +1881,11 @@ void dkernel_warn(const char *warn, ...)
 	#endif
 
 	SpzMessageBox("Engine Warning", text);
-	}
+}
 
 // ******************************************************************
 
-void dkernel_trace(const char *message, ...)
-	{
+void dkernel_trace(const char *message, ...) {
 	va_list argptr;
 	char text[1024];
 
@@ -1952,12 +1898,12 @@ void dkernel_trace(const char *message, ...)
 		fprintf(stdout, "Trace: %s\n", text);
 
 	#ifdef WIN32
-		OutputDebugStringA("Engine Kernel Trace: ");
+		OutputDebugStringA("Engine Trace: ");
 		OutputDebugStringA(text);
 		if (text[0]!='\0' || text[strlen(text)-1] != '\n')
 			OutputDebugStringA("\n");
 	#endif
-	}
+}
 
 // ******************************************************************
 

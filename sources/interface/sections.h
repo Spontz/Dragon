@@ -13,6 +13,13 @@ void init_sound();
 void render_sound();
 void end_sound();
 
+void preload_beatDetect();
+void load_beatDetect();
+void init_beatDetect();
+void render_beatDetect();
+void end_beatDetect();
+
+
 // ******************************************************************
 
 void preload_loading();
@@ -326,6 +333,7 @@ tSectionFunction sectionFunction[] = {
 	{"ray",					&preload_ray,					&load_ray,					&init_ray,					&render_ray,					&end_ray				},
 	{"rayMatrix",			&preload_rayMatrix,				&load_rayMatrix,			&init_rayMatrix,			&render_rayMatrix,				&end_rayMatrix			},
 	{"sound",				&preload_sound,					&load_sound,				&init_sound,				&render_sound,					&end_sound				},
+	{"beatDetect",			&preload_beatDetect,			&load_beatDetect,			&init_beatDetect,			&render_beatDetect,				&end_beatDetect			},
 	{"saveBuffer",			&preload_saveBuffer,			&load_saveBuffer,			&init_saveBuffer,			&render_saveBuffer,				&end_saveBuffer			},
 	{"renderBuffer",		&preload_renderBuffer,			&load_renderBuffer,			&init_renderBuffer,			&render_renderBuffer,			&end_renderBuffer		},
 	{"fbobind",				&preload_fbobind,				&load_fbobind,				&init_fbobind,				&render_fbobind,				&end_fbobind			},

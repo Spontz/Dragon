@@ -4,9 +4,9 @@
 #include <bass.h>
 
 #define BUFFER_SAMPLES	512
-#define	DEFAULT_ENERGY	0.0f
-#define	BEAT_RATIO		1.4f
-#define FADE_OUT		4.0f
+#define	DEFAULT_ENERGY	1.0f
+//#define	BEAT_RATIO		1.4f
+//#define FADE_OUT		4.0f
 
 
 typedef struct {
@@ -14,7 +14,6 @@ typedef struct {
 	
 	// Beat parameters
 	float					energy[BUFFER_SAMPLES];
-	float					default_energy;
 	float					beat_ratio;
 	float					fade_out;
 	float					intensity;
@@ -57,21 +56,20 @@ void init_sound(){
 		return;
 
 	// Beat detection - Init variables
-	local->default_energy = DEFAULT_ENERGY;
-	local->beat_ratio = BEAT_RATIO;
-	local->fade_out = FADE_OUT;
+	local->beat_ratio = demoSystem.beat_ratio;
+	local->fade_out = demoSystem.beat_fadeout;
+
 	// Clean variables
 	for (auto i = 0; i<BUFFER_SAMPLES; i++) {
-		local->energy[i] = local->default_energy;
+		local->energy[i] = DEFAULT_ENERGY;
 	}
 	local->intensity = 0;
 	local->position = 1;
 
 
-	if (mySection->runTime > 0) {
-		QWORD bytes = BASS_ChannelSeconds2Bytes(local->str, mySection->runTime); // convert seconds to bytes
-		BASS_ChannelSetPosition(local->str, bytes, BASS_POS_BYTE); // seek there
-	}
+	QWORD bytes = BASS_ChannelSeconds2Bytes(local->str, mySection->runTime); // convert seconds to bytes
+	BASS_ChannelSetPosition(local->str, bytes, BASS_POS_BYTE); // seek there
+	
 	BOOL r = BASS_ChannelPlay(local->str, FALSE);
 	if (r != TRUE)
 		section_error("BASS_ChannelPlay returned error: %i", BASS_ErrorGetCode());
@@ -84,6 +82,10 @@ void render_sound() {
 	int i;
 	float fft[BUFFER_SAMPLES]; // 512 samples, because we have used "BASS_DATA_FFT1024", and this returns 512 values
 	
+	// Update local values with the ones defined by the demosystem
+	local->beat_ratio = demoSystem.beat_ratio;
+	local->fade_out = demoSystem.beat_fadeout;
+
 	BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
 
 	instant = 0;
