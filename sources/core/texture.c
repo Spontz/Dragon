@@ -6,7 +6,8 @@
 
 // ******************************************************************
 
-#define MAX_TEXTURES 256
+#define MAX_TEXTURES 65535
+//#define MAX_TEXTURES 256
 
 texture_t *tex_array[MAX_TEXTURES];
 

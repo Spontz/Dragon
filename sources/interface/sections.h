@@ -285,6 +285,12 @@ void init_glslshaderunbind();
 void render_glslshaderunbind();
 void end_glslshaderunbind();
 
+void preload_video();
+void load_video();
+void init_video();
+void render_video();
+void end_video();
+
 // ******************************************************************
 
 // section 0 must be a loading section
@@ -342,6 +348,7 @@ tSectionFunction sectionFunction[] = {
 	{"glslshaderquad",		&preload_glslshaderquad,		&load_glslshaderquad,		&init_glslshaderquad,		&render_glslshaderquad,			&end_glslshaderquad		},
 	{"glslshaderbind",		&preload_glslshaderbind,		&load_glslshaderbind,		&init_glslshaderbind,		&render_glslshaderbind,			&end_glslshaderbind	    },
 	{"glslshaderunbind",	&preload_glslshaderunbind,		&load_glslshaderunbind,		&init_glslshaderunbind,		&render_glslshaderunbind,		&end_glslshaderunbind	},
+	{"video",				&preload_video,					&load_video,				&init_video,				&render_video,					&end_video				},
 	{"renderShadowMapping",	&preload_renderShadowMapping,	&load_renderShadowMapping,	&init_renderShadowMapping,	&render_renderShadowMapping,	&end_renderShadowMapping}
 };
 
