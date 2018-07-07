@@ -99,8 +99,7 @@ void tex_clean (int index) {
 
 // ******************************************************************
 
-void tex_upload (int index, int cache)
-	{
+void tex_upload (int index, int cache) {
 	GLenum error;
 	int curW, curH, format;
 	texture_t *tex = tex_array[index];
@@ -120,16 +119,14 @@ void tex_upload (int index, int cache)
 	curH = tex->height;
 	if (tex->mipmap != GL_LINEAR_MIPMAP_LINEAR)
 		tex->memory = curW * curH * tex->iformat;
-	else
-		{
+	else {
 		tex->memory = 0;
-		while ((curW != 1) || (curH != 1))
-			{
+		while ((curW != 1) || (curH != 1)) {
 			tex->memory += curW * curH * tex->iformat;
 			if (curW > 1) curW /= 2;
 			if (curH > 1) curH /= 2;
-			}
 		}
+	}
 
 	// reserve a new texture object
 	glGenTextures (1, (GLuint *)&tex->id);
@@ -240,7 +237,7 @@ int tex_load(const char* fname, int cache)	{
 	}
 	
 	// load texture resource
-	if (!(TextureImage = IMG_Load(fname)))	{
+	if (!(TextureImage = IMG_Load(fname))) {
 		dkernel_warn("Error loading texture \"%s\":\n%s", fname, IMG_GetError());
 		return -1;
 	}
@@ -351,4 +348,3 @@ int getCompressedFormat(texture_t *tex) {
 
 	return tex->iformat;
 }
-

@@ -19,8 +19,7 @@ extern "C" {
 // ******************************************************************
 
 // texture definition
-typedef struct
-	{
+typedef struct {
 	char*			name;
 	unsigned char*	data;
 	void*			SDL_surface;
@@ -37,15 +36,14 @@ typedef struct
 	int				texfunc;
 	int				persistent;
 	int				dynamic;
-	} texture_t;
+} texture_t;
 
 // 8bit paletted color
-typedef struct
-	{
+typedef struct {
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
-	} rgb_color;
+} rgb_color;
 
 // ******************************************************************
 
