@@ -7,7 +7,7 @@ typedef enum {
 } enum_video_drawing_mode;
 
 
-typedef struct	{
+typedef struct {
 	char		*folder;
 	rect2d_t	quad;
 	int			total_fps;
@@ -36,20 +36,20 @@ void load_video() {
 		return;
 	}
 
-	local = (video_section*) malloc(sizeof(video_section));
-	mySection->vars = (void *) local;
+	local = (video_section*)malloc(sizeof(video_section));
+	mySection->vars = (void *)local;
 
 	local->fps = mySection->param[0];
 	local->loop = (char)mySection->param[1];
-	switch((unsigned int)mySection->param[2]) {
-		case video_drawing_mode_fit_to_content:
-			local->mode = video_drawing_mode_fit_to_content;
-			break;
-		case video_drawing_mode_fit_to_viewport:
-			local->mode = video_drawing_mode_fit_to_viewport;
-			break;
-		default:
-			section_error("Invalid value for parameter 3 (fullscreen mode)");
+	switch ((unsigned int)mySection->param[2]) {
+	case video_drawing_mode_fit_to_content:
+		local->mode = video_drawing_mode_fit_to_content;
+		break;
+	case video_drawing_mode_fit_to_viewport:
+		local->mode = video_drawing_mode_fit_to_viewport;
+		break;
+	default:
+		section_error("Invalid value for parameter 3 (fullscreen mode)");
 	}
 
 	// Load the textures
@@ -83,7 +83,7 @@ void load_video() {
 				strcat(ImageRelativePath, FindData.name);
 				// Load a texture
 				local->textures[i] = tex_load(ImageRelativePath, USE_CACHE);
-				if (local->textures[i]== -1) {
+				if (local->textures[i] == -1) {
 					section_error("Video: Error loading image: %s", ImageRelativePath);
 					return;
 				}
@@ -107,45 +107,46 @@ void init_video() {
 void render_video() {
 	int i;
 
-	local = (video_section *) mySection->vars;
+	local = (video_section *)mySection->vars;
 
-	glDisable(GL_DEPTH_TEST); 
+	glDisable(GL_DEPTH_TEST);
 	{
 		if (mySection->hasBlend) {
 			glBlendFunc(mySection->sfactor, mySection->dfactor);
 			glEnable(GL_BLEND);
 		}
-		
+
 		if (mySection->hasAlpha) {
 			float alpha = mySection->alpha1 + mySection->runTime * (mySection->alpha2 - mySection->alpha1) / mySection->duration;
 			glEnable(GL_ALPHA_TEST);
 			glAlphaFunc(mySection->alphaFunc, alpha);
 		}
-		
+
 		// Calculate the image to draw
-		int myframe = (int)round (mySection->runTime * local->fps);
+		int myframe = (int)round(mySection->runTime * local->fps);
 		if (local->loop) {
 			myframe = myframe % local->total_fps;
-		}	else {
+		}
+		else {
 			if (myframe >= local->total_fps)
 				myframe = (local->total_fps - 1);
 		}
 
-		
+
 
 		float TextureAspectRatio = (float)tex_array[local->textures[myframe]]->width / (float)tex_array[local->textures[myframe]]->height;
-		switch(local->mode) {
-			case video_drawing_mode_fit_to_viewport:
-				camera_2d_fit_to_viewport(TextureAspectRatio, &local->quad.x0, &local->quad.x1, &local->quad.y0, &local->quad.y1);
-				break;
-			case video_drawing_mode_fit_to_content:
-				camera_2d_fit_to_content(TextureAspectRatio, &local->quad.x0, &local->quad.x1, &local->quad.y0, &local->quad.y1);
-				break;
-			default:
-				section_error("Invalid video section drawing mode");
-				break;
+		switch (local->mode) {
+		case video_drawing_mode_fit_to_viewport:
+			camera_2d_fit_to_viewport(TextureAspectRatio, &local->quad.x0, &local->quad.x1, &local->quad.y0, &local->quad.y1);
+			break;
+		case video_drawing_mode_fit_to_content:
+			camera_2d_fit_to_content(TextureAspectRatio, &local->quad.x0, &local->quad.x1, &local->quad.y0, &local->quad.y1);
+			break;
+		default:
+			section_error("Invalid video section drawing mode");
+			break;
 		}
-		
+
 
 		// store vertex values
 		local->quad.pc[0][0] = local->quad.x0;
@@ -167,10 +168,10 @@ void render_video() {
 
 		tex_bind(local->textures[myframe]);
 		glBegin(GL_QUADS);
-			for (i=0; i<4; i++) {
-				glTexCoord2fv(local->quad.tc[i]);
-				glVertex2fv(local->quad.pc[i]);
-			}
+		for (i = 0; i<4; i++) {
+			glTexCoord2fv(local->quad.tc[i]);
+			glVertex2fv(local->quad.pc[i]);
+		}
 		glEnd();
 
 		camera_restore();
@@ -186,5 +187,5 @@ void render_video() {
 
 // ******************************************************************
 
-void end_video () {
+void end_video() {
 }

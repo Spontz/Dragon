@@ -116,6 +116,12 @@ void init_background();
 void render_background();
 void end_background();
 
+void preload_video();
+void load_video();
+void init_video();
+void render_video();
+void end_video();
+
 void preload_camera();
 void load_camera();
 void init_camera();
@@ -285,12 +291,6 @@ void init_glslshaderunbind();
 void render_glslshaderunbind();
 void end_glslshaderunbind();
 
-void preload_video();
-void load_video();
-void init_video();
-void render_video();
-void end_video();
-
 // ******************************************************************
 
 // section 0 must be a loading section
@@ -319,6 +319,7 @@ tSectionFunction sectionFunction[] = {
 
 	// built-in sections
 	{"background",			&preload_background,			&load_background,			&init_background,			&render_background,				&end_background			},
+	{"video",				&preload_video,					&load_video,				&init_video,				&render_video,					&end_video				},
 	{"camera",				&preload_camera,				&load_camera,				&init_camera,				&render_camera,					&end_camera				},
 	{"camera2",				&preload_camera2,				&load_camera2,				&init_camera2,				&render_camera2,				&end_camera2			},
 	{"camera3",				&preload_camera3,				&load_camera3,				&init_camera3,				&render_camera3,				&end_camera3			},
@@ -348,7 +349,6 @@ tSectionFunction sectionFunction[] = {
 	{"glslshaderquad",		&preload_glslshaderquad,		&load_glslshaderquad,		&init_glslshaderquad,		&render_glslshaderquad,			&end_glslshaderquad		},
 	{"glslshaderbind",		&preload_glslshaderbind,		&load_glslshaderbind,		&init_glslshaderbind,		&render_glslshaderbind,			&end_glslshaderbind	    },
 	{"glslshaderunbind",	&preload_glslshaderunbind,		&load_glslshaderunbind,		&init_glslshaderunbind,		&render_glslshaderunbind,		&end_glslshaderunbind	},
-	{"video",				&preload_video,					&load_video,				&init_video,				&render_video,					&end_video				},
 	{"renderShadowMapping",	&preload_renderShadowMapping,	&load_renderShadowMapping,	&init_renderShadowMapping,	&render_renderShadowMapping,	&end_renderShadowMapping}
 };
 
