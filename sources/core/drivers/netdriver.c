@@ -83,9 +83,12 @@ char * process_message(char *message) {
 	theResult = "OK";
 	theInformation = calloc(1024, sizeof(char));
 
+	dkernel_trace("NET2 > Received message at %.3f: [identifier: %s] [type: %s] [action: %s]", demoSystem.runTime, identifier, type, action);
+
 	// ***********************
 	// * COMMANDS PROCESSING *
 	// ***********************
+
 	if (strcmp(type, "command") == 0)
 		{
 		if      (strcmp(action, "pause"		  ) == 0) { dkernel_pause          ();							theResult = "OK"; }
@@ -140,6 +143,7 @@ char * process_message(char *message) {
 	
 	// Create the response
 	sprintf((char *)theResponse,"%s::%s::%f::%d::%f::%s", identifier, theResult, demoSystem.fps, demoSystem.state, demoSystem.runTime, (char *)theInformation);
+	dkernel_trace("NET2 > Responded with: %s", theResponse);
 
 	// Free memory
 	free(theInformation);

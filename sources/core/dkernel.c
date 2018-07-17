@@ -1183,8 +1183,6 @@ void process_sectionQueues() {
 
 			// section init
 			mySection = ds;
-			if ((ds->staticSectionIndex == 34)&&(demoSystem.state == DEMO_PLAY))
-				int kk = 0;
 			sectionFunction[ds->staticSectionIndex].init();
 
 			// first element in run queue
