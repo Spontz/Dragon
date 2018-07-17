@@ -40,19 +40,35 @@ endif ()
 
 # SDL2
 include_directories(dependencies/vc141/SDL2-2.0.5/include)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2-2.0.5/lib/x64)
+if(CMAKE_CL_64)
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2-2.0.5/lib/x64)
+else()
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2-2.0.5/lib/x86)
+endif()
 
 # SDL2 Image
 include_directories(dependencies/vc141/SDL2_image-2.0.1/include)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_image-2.0.1/lib/x64)
+if(CMAKE_CL_64)
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_image-2.0.1/lib/x64)
+else()
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_image-2.0.1/lib/x86)
+endif()
 
 # SDL2 Net
 include_directories(dependencies/vc141/SDL2_net-2.0.1/include)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_net-2.0.1/lib/x64)
+if(CMAKE_CL_64)
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_net-2.0.1/lib/x64)
+else()
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/SDL2_net-2.0.1/lib/x86)
+endif()
 
 # BASS
 include_directories(dependencies/vc141/bass24/inc)
-link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/bass24/lib/x64)
+if(CMAKE_CL_64)
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/bass24/lib/x64)
+else()
+	link_directories(${CMAKE_SOURCE_DIR}/dependencies/vc141/bass24/lib/x86)
+endif()
 
 # GLEW
 add_definitions(-DGLEW_STATIC)
