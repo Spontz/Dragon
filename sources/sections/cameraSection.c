@@ -5,6 +5,7 @@
 typedef struct {
 	camera_t *cam;
 	float freeCamera;
+	float Multiplier;	// When the Multiplier key is pressed, the movement will be boosted with this value
 } camera_section;
 
 static camera_section *local;
@@ -19,8 +20,8 @@ void preload_camera() {
 void load_camera() {
 
 	// script validation
-	if ((mySection->splineNum != 1)||(mySection->paramNum  != 1)) {
-		section_error("1 spline and 1 float needed");
+	if ((mySection->splineNum != 1)||(mySection->paramNum  != 2)) {
+		section_error("1 spline and 2 floats needed");
 		return;
 	}
 	
@@ -32,6 +33,8 @@ void load_camera() {
 	
 	// Free camera handling
 	local->freeCamera = mySection->param[0];
+	local->Multiplier = mySection->param[1];
+
 	mySection->loaded=1;
 }
 
@@ -71,7 +74,7 @@ void render_camera () {
 
 	// free camera?
 	if (fabs(local->freeCamera - 1.0f) < FLT_EPSILON)
-		interactive_mov (local->cam, demoSystem.realFrameTime);
+		interactive_mov (local->cam, demoSystem.realFrameTime, local->Multiplier);
 	else if (mySection->splineNum > 0)
 		interpolate_camera (mySection->runTime, local->cam);
 

@@ -55,14 +55,19 @@ void camera_strafe_mov (camera_t *cam, float accel) {
 
 // ******************************************************************
 
-void interactive_mov (camera_t *cam, float t) {
+void interactive_mov (camera_t *cam, float t, float multiplier) {
 	float at;
 	FILE * myFile;
 	char * data;
+	float mult = 1.0f;
 
 // In order to execute this routine, no spline modifier key should be pressed.
 	// This includes the number keys from 0 to 9:
-	if ((demoSystem.debug) & !demoSystem.keys[KEY_NUM_1] & !demoSystem.keys[KEY_NUM_2] & !demoSystem.keys[KEY_NUM_3] & !demoSystem.keys[KEY_NUM_4] & !demoSystem.keys[KEY_NUM_5] & !demoSystem.keys[KEY_NUM_6] & !demoSystem.keys[KEY_NUM_7] & !demoSystem.keys[KEY_NUM_8] & !demoSystem.keys[KEY_NUM_9]) { //-V564
+	if ((demoSystem.debug) & !demoSystem.keys[KEY_NUM_1] & !demoSystem.keys[KEY_NUM_2] & !demoSystem.keys[KEY_NUM_3] & !demoSystem.keys[KEY_NUM_4] & !demoSystem.keys[KEY_NUM_5] & !demoSystem.keys[KEY_NUM_6] & !demoSystem.keys[KEY_NUM_7] & !demoSystem.keys[KEY_NUM_8] & !demoSystem.keys[KEY_NUM_9]) {
+
+		// Multiplyer
+		if (demoSystem.keys[KEY_MULTIPLIER])
+			mult = multiplier;
 
 		// capture camera position
 		if (demoSystem.keys[KEY_CAPTURE]) {
@@ -96,7 +101,7 @@ void interactive_mov (camera_t *cam, float t) {
 			if (accel > 15) accel = 15;
 			if (accel < -15) accel = -15;
 
-			camera_front_mov (cam, accel*t);
+			camera_front_mov (cam, accel*t*mult);
 
 			at = 20.0f*t;
 			if (accel > at) accel -= at;
@@ -112,7 +117,7 @@ void interactive_mov (camera_t *cam, float t) {
 			if (accel_strafe > 15) accel_strafe = 15;
 			if (accel_strafe < -15) accel_strafe = -15;
 			
-			camera_strafe_mov (cam, accel_strafe*t);
+			camera_strafe_mov (cam, accel_strafe*t*mult);
 
 			at = 20.0f*t;
 			if (accel_strafe > at) accel_strafe -= at;
@@ -121,8 +126,8 @@ void interactive_mov (camera_t *cam, float t) {
 		}
 
 		// camera fov
-		if (demoSystem.keys[KEY_FOVUP]) cam->fov++;
-		if (demoSystem.keys[KEY_FOVDOWN]) cam->fov--;
+		if (demoSystem.keys[KEY_FOVUP]) cam->fov=cam->fov+0.1f;
+		if (demoSystem.keys[KEY_FOVDOWN]) cam->fov=cam->fov-0.1f;
 
 		// camera roll
 		if (demoSystem.keys[KEY_ROLLUP]) cam->roll--;

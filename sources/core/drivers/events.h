@@ -32,6 +32,7 @@ extern "C" {
 #define KEY_FOVDOWN			SDL_SCANCODE_A
 #define KEY_ROLLUP			SDL_SCANCODE_W
 #define KEY_ROLLDOWN	    SDL_SCANCODE_S
+#define KEY_MULTIPLIER		SDL_SCANCODE_RSHIFT
 
 // definition of spline control keys
 #define KEY_NUM_1			SDL_SCANCODE_1

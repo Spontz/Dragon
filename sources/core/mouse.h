@@ -7,7 +7,7 @@ extern "C" {
 
 // ******************************************************************
 
-void interactive_mov (camera_t *cam, float t);
+void interactive_mov (camera_t *cam, float t, float multiplier);
 
 // ******************************************************************
 
