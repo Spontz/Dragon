@@ -37,7 +37,6 @@ void load_sound(){
 		return;
 	}
 	local = malloc(sizeof(sound_section));
-
 	mySection->vars = (void *)local;
 
 
@@ -54,6 +53,8 @@ void init_sound(){
 
 	if (demoSystem.state != DEMO_PLAY)
 		return;
+
+	local = (sound_section *)mySection->vars;
 
 	// Beat detection - Init variables
 	local->beat_ratio = demoSystem.beat_ratio;
@@ -82,11 +83,15 @@ void render_sound() {
 	int i;
 	float fft[BUFFER_SAMPLES]; // 512 samples, because we have used "BASS_DATA_FFT1024", and this returns 512 values
 	
+	local = (sound_section *)mySection->vars;
+
 	// Update local values with the ones defined by the demosystem
 	local->beat_ratio = demoSystem.beat_ratio;
 	local->fade_out = demoSystem.beat_fadeout;
 
-	BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
+	BOOL r = BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
+	if (r == -1)
+		section_error("BASS_ChannelGetData returned error: %i", BASS_ErrorGetCode());
 
 	instant = 0;
 	for (i=0; i<(int)BUFFER_SAMPLES; i++)
