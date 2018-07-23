@@ -1242,7 +1242,7 @@ void process_sectionQueues() {
 					
 				sectionFunction[ds->staticSectionIndex].exec();
 				while (gl_drv_check_for_gl_errors(OGLError))
-					dkernel_error("%s : The section has produced the following OGL error:\n\n%s", sectionFunction[ds->staticSectionIndex].scriptName, OGLError);
+					dkernel_error("%s : The section has produced the following OGL error:\n%s", sectionFunction[ds->staticSectionIndex].scriptName, OGLError);
 			}
 			
 			// add last frame time

@@ -13,11 +13,13 @@ typedef struct {
 	HSTREAM str;	// Music Stream
 	
 	// Beat parameters
-	float					energy[BUFFER_SAMPLES];
-	float					beat_ratio;
-	float					fade_out;
-	float					intensity;
-	int						position;
+	float	energy[BUFFER_SAMPLES];
+	float	beat_ratio;
+	float	fade_out;
+	float	intensity;
+	int		position;
+	float	volume;
+	float	prev_volume;	// Previous volume value
 } sound_section;
 
 static sound_section* local;
@@ -32,13 +34,21 @@ void load_sound(){
 		return;
 	}
 
-	if (mySection->stringNum != 1){
-		section_error("1 string needed");
+	if (mySection->stringNum != 1) {
+		section_error("1 string needed: path to the sound");
 		return;
 	}
+
+	if (mySection->paramNum != 1) {
+		section_error("1 param needed: volume of the sound (0.0 to 1.0)");
+		return;
+	}
+
 	local = malloc(sizeof(sound_section));
 	mySection->vars = (void *)local;
 
+	local->volume = mySection->param[0];
+	local->prev_volume = local->volume;
 
 	local->str = BASS_StreamCreateFile(FALSE, mySection->strings[0], 0, 0, BASS_STREAM_PRESCAN);
 	if (local->str == 0)
@@ -67,13 +77,14 @@ void init_sound(){
 	local->intensity = 0;
 	local->position = 1;
 
-
+	
 	QWORD bytes = BASS_ChannelSeconds2Bytes(local->str, mySection->runTime); // convert seconds to bytes
 	BASS_ChannelSetPosition(local->str, bytes, BASS_POS_BYTE); // seek there
 	
 	BOOL r = BASS_ChannelPlay(local->str, FALSE);
 	if (r != TRUE)
 		section_error("BASS_ChannelPlay returned error: %i", BASS_ErrorGetCode());
+	BASS_ChannelSetAttribute(local->str, BASS_ATTRIB_VOL, local->volume);
 }
 
 void render_sound() {
@@ -88,6 +99,9 @@ void render_sound() {
 	// Update local values with the ones defined by the demosystem
 	local->beat_ratio = demoSystem.beat_ratio;
 	local->fade_out = demoSystem.beat_fadeout;
+
+	if (local->volume != local->prev_volume) // TODO: Puede q el local->volume no se actualice... creo que hay q pillar el mySection->param[0] otra vez...
+		BASS_ChannelSetAttribute(local->str, BASS_ATTRIB_VOL, local->volume);
 
 	BOOL r = BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
 	if (r == -1)
@@ -176,6 +190,9 @@ void render_sound() {
 void end_sound() {
 	if (!demoSystem.sound)
 		return;
+
+	local = (sound_section *)mySection->vars;
+
 	BOOL r = BASS_ChannelStop(local->str);
 	if (r != TRUE)
 		section_error("BASS_ChannelStop returned error: %i", BASS_ErrorGetCode());
