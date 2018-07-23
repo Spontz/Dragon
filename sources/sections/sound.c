@@ -100,8 +100,11 @@ void render_sound() {
 	local->beat_ratio = demoSystem.beat_ratio;
 	local->fade_out = demoSystem.beat_fadeout;
 
-	if (local->volume != local->prev_volume) // TODO: Puede q el local->volume no se actualice... creo que hay q pillar el mySection->param[0] otra vez...
+	// Adjust volume if necessary
+	if (local->volume != local->prev_volume) {
 		BASS_ChannelSetAttribute(local->str, BASS_ATTRIB_VOL, local->volume);
+		local->prev_volume = local->volume;
+	}
 
 	BOOL r = BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
 	if (r == -1)
