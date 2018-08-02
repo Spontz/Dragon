@@ -86,7 +86,6 @@ void glslshad_upload (int index) {
 		{
 			compiler_log = (GLchar*)malloc(v_blen);
 			glGetShaderInfoLog(glslshad->id_vertex, v_blen, &v_slen, compiler_log);
-			//glGetInfoLogARB(glslshad->id_vertex, v_blen, &v_slen, compiler_log);
 			dkernel_error("glslshad_upload: Error compiling Vertex Shader '%s': %s", glslshad->name_v, compiler_log);
 			free (compiler_log);
 		}

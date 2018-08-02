@@ -203,7 +203,6 @@ typedef struct {
 	float accumFrameTime; // time since last fps calculation
 	float fps; // frames per second
 
-
 	int keys[512]; // keyboard control (SDL 2.0 handles 512 diferent scan codes)
 	char mouseButton; // left mouse button status
 	char exitDemo; // exits demo at next loop if true
