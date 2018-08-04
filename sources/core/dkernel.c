@@ -1864,21 +1864,20 @@ void dkernel_warn(const char *warn, ...) {
 	va_list argptr;
 	char text[1024];
 
-	va_start(argptr,warn);
-	vsprintf(text,warn,argptr);
-	va_end(argptr);
-
 	// write down the warning
-	if (demoSystem.debug)
-		fprintf(stderr, "Warning: second %.2f, message '%s'\n", demoSystem.runTime, text);
-
-	#ifdef WIN32
-		OutputDebugStringA("Engine Warning: ");
-		OutputDebugStringA(text);
+	if (demoSystem.debug) {
+		va_start(argptr,warn);
+		vsprintf(text,warn,argptr);
+		va_end(argptr);
+		//fprintf(stderr, "Warning: second %.2f, message '%s'\n", demoSystem.runTime, text);
+		fprintf(stderr, "Warning: '%s'\n", text);
+	}
+#ifdef WIN32
+	OutputDebugStringA("Engine Warning: ");
+	OutputDebugStringA(text);
+	if (text[0] != '\0' || text[strlen(text) - 1] != '\n')
 		OutputDebugStringA("\n");
-	#endif
-
-	SpzMessageBox("Engine Warning", text);
+#endif
 }
 
 // ******************************************************************
@@ -1887,26 +1886,24 @@ void dkernel_trace(const char *message, ...) {
 	va_list argptr;
 	char text[1024];
 
-	va_start(argptr,message);
-	vsprintf(text,message,argptr);
-	va_end(argptr);
-
 	// write down the trace to the standard output
-	if (demoSystem.slaveMode)
+	if (demoSystem.slaveMode) {
+		va_start(argptr, message);
+		vsprintf(text, message, argptr);
+		va_end(argptr);
 		fprintf(stdout, "Trace: %s\n", text);
-
-	#ifdef WIN32
-		OutputDebugStringA("Engine Trace: ");
-		OutputDebugStringA(text);
-		if (text[0]!='\0' || text[strlen(text)-1] != '\n')
-			OutputDebugStringA("\n");
-	#endif
+	}
+#ifdef WIN32
+	OutputDebugStringA("Engine Trace: ");
+	OutputDebugStringA(text);
+	if (text[0] != '\0' || text[strlen(text) - 1] != '\n')
+		OutputDebugStringA("\n");
+#endif
 }
 
 // ******************************************************************
 
-void section_error(const char *error, ...)
-	{
+void section_error(const char *error, ...) {
 	va_list argptr;
 	char text[1024];
 
@@ -1914,18 +1911,16 @@ void section_error(const char *error, ...)
 	vsprintf(text,error,argptr);
 	va_end(argptr);
 
-	dkernel_error
-		(
+	dkernel_error (
 		"%s (%d, %f -> %f): %s",
 		sectionFunction[mySection->staticSectionIndex].scriptName,
 		mySection->layer, mySection->startTime, mySection->endTime, text
 		);
-	}
+}
 
 // ******************************************************************
 
-void parse_error(const char* pFilename, int line, const char* pError, ...)
-	{
+void parse_error(const char* pFilename, int line, const char* pError, ...) {
 	va_list argptr;
 	char text[1024];
 
@@ -1934,7 +1929,7 @@ void parse_error(const char* pFilename, int line, const char* pError, ...)
 	va_end(argptr);
 
 	dkernel_warn("%s(%d) : parse error : %s", pFilename, line, text);
-	}
+}
 
 // ******************************************************************
 

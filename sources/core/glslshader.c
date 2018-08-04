@@ -86,14 +86,14 @@ void glslshad_upload (int index) {
 		{
 			compiler_log = (GLchar*)malloc(v_blen);
 			glGetShaderInfoLog(glslshad->id_vertex, v_blen, &v_slen, compiler_log);
-			dkernel_error("glslshad_upload: Error compiling Vertex Shader '%s': %s", glslshad->name_v, compiler_log);
+			dkernel_warn("glslshad_upload: Error compiling Vertex Shader '%s': %s", glslshad->name_v, compiler_log);
 			free (compiler_log);
 		}
 		if (f_blen > 1)
 		{
 			compiler_log = (GLchar*)malloc(f_blen);
 			glGetShaderInfoLog(glslshad->id_fragment, f_blen, &f_slen, compiler_log);
-			dkernel_error("glslshad_upload: Error compiling Fragment Shader '%s': %s", glslshad->name_f, compiler_log);
+			dkernel_warn("glslshad_upload: Error compiling Fragment Shader '%s': %s", glslshad->name_f, compiler_log);
 			free (compiler_log);
 		}
 		return;
@@ -118,7 +118,7 @@ void glslshad_upload (int index) {
 		{
 			compiler_log = (GLchar*)malloc(p_blen);
 			glGetShaderInfoLog(glslshad->id_program, p_blen, &p_slen, compiler_log);
-			dkernel_error("GLSL: Error Linking Shaders [v:'%s'] [f: '%s'] : %s", glslshad->name_v, glslshad->name_f, compiler_log);
+			dkernel_error("GLSL: Error Linking Shaders [v:'%s'] [f: '%s']: %s", glslshad->name_v, glslshad->name_f, compiler_log);
 			free (compiler_log);
 		}
 		return;
@@ -227,25 +227,22 @@ int glslshad_load (char *fname_vert, char *fname_frag) {
 
 // ******************************************************************
 
-void glslshad_free (int Index)
-	{
+void glslshad_free (int Index) {
 	glslshader_t *glslshad = glslshad_array[Index];
 
-	if (glslshad)
-		{
-		if (glslshad->id_program != -1)
-			{
+	if (glslshad) {
+		if (glslshad->id_program != -1) {
 			glDetachShader (glslshad->id_program, glslshad->id_vertex);
 			glDetachShader (glslshad->id_program, glslshad->id_fragment);
 			glDeleteShader (glslshad->id_vertex);
 			glDeleteShader (glslshad->id_fragment);
 			glDeleteProgram(glslshad->id_program);
-			}
+		}
 		free(glslshad->data_v);
 		free(glslshad->name_v);
 		free(glslshad->data_f);
 		free(glslshad->name_f);
 		free(glslshad);
 		glslshad_array[Index] = NULL;
-		}
 	}
+}

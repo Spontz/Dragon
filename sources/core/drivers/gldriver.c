@@ -396,7 +396,6 @@ void gldrv_texscreenquad()
 	glTexCoord2f(1, 0); glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y0 - GL_DRV__SUBPIXEL_BIAS);
 	glTexCoord2f(1, 1); glVertex2f(x1 + GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
 	glTexCoord2f(0, 1); glVertex2f(x0 - GL_DRV__SUBPIXEL_BIAS, y1 + GL_DRV__SUBPIXEL_BIAS);
-
 	glEnd();
 }
 
