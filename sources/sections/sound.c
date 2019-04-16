@@ -106,7 +106,7 @@ void render_sound() {
 		local->prev_volume = local->volume;
 	}
 
-	if (FALSE == BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); { // get the FFT data
+	if (FALSE == BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024) { // get the FFT data
 		int error = BASS_ErrorGetCode();
 		if (error != BASS_ERROR_ENDED)
 			section_error("BASS_ChannelGetData returned error: %i", BASS_ErrorGetCode());
