@@ -92,7 +92,7 @@ void render_sound() {
 
 	float instant, avg;	// Instant energy
 	int i;
-	float fft[BUFFER_SAMPLES]; // 512 samples, because we have used "BASS_DATA_FFT1024", and this returns 512 values
+	float fft[BUFFER_SAMPLES] = {0.0f}; // 512 samples, because we have used "BASS_DATA_FFT1024", and this returns 512 values
 	
 	local = (sound_section *)mySection->vars;
 
@@ -106,9 +106,12 @@ void render_sound() {
 		local->prev_volume = local->volume;
 	}
 
-	BOOL r = BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
-	if (r == -1)
-		section_error("BASS_ChannelGetData returned error: %i", BASS_ErrorGetCode());
+	if (FALSE == BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); { // get the FFT data
+		int error = BASS_ErrorGetCode();
+		if (error != BASS_ERROR_ENDED)
+			section_error("BASS_ChannelGetData returned error: %i", BASS_ErrorGetCode());
+	}
+		
 
 	instant = 0;
 	for (i=0; i<(int)BUFFER_SAMPLES; i++)
