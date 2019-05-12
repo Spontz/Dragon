@@ -114,6 +114,7 @@ void gldrv_initState() {
 
 	glClearColor(0, 0, 0, 0);
 	glDisable(GL_BLEND);						// blending disabled
+	glBlendEquation(GL_FUNC_ADD);				// Additive blending function by default
 	glDisable(GL_ALPHA_TEST);					// alpha test disabled
 	glDisable(GL_LIGHTING);						// lighting disabled
 	glDisable(GL_LIGHT0);						// default light disabled too

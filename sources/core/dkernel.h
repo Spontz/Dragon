@@ -64,6 +64,7 @@ struct tDemoSection
 	int			loaded;								// 1: Section loaded; 0: Section not loaded
 	float		runTime;							// seconds elapsed since section start
 	int			hasBlend;							// has blending function parameters?
+	int			blendEquation;						// Blend Equation
 	int			sfactor;							// default source blending factor
 	int			dfactor;							// default dest blending factor
 	int			hasAlpha;							// has alpha function parameters?

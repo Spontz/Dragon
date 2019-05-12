@@ -135,26 +135,26 @@ static tScriptCommand scriptCommand[] = {
 // ******************************************************************
 
 // defined section commands
-#define SECTION_IDENTIFIER	0
-#define SECTION_START		1
-#define SECTION_END			2
-#define SECTION_LAYER		3
-#define SECTION_BLEND		4
-#define SECTION_ALPHA		5
-#define SECTION_PARAM		6
-#define SECTION_STRING		7
-#define SECTION_SPLINE		8
-#define SECTION_MODIFIER	9
-#define SECTION_ENABLED    10
-
+#define SECTION_IDENTIFIER		0
+#define SECTION_START			1
+#define SECTION_END				2
+#define SECTION_LAYER			3
+#define SECTION_BLEND			4
+#define SECTION_BLEND_EQUATION	5
+#define SECTION_ALPHA			6
+#define SECTION_PARAM			7
+#define SECTION_STRING			8
+#define SECTION_SPLINE			9
+#define SECTION_MODIFIER		10
+#define SECTION_ENABLED			11
 
 // defined section reserved keys
-#define SECTION_COMMANDS_NUMBER 11
+#define SECTION_COMMANDS_NUMBER 12
 
 static char *scriptSectionCommand[SECTION_COMMANDS_NUMBER] = {
 
-	"id", "start", "end", "layer", "blend", "alpha",
-	"param", "string", "spline", "modify", "enabled"
+	"id", "start", "end", "layer", "blend", "blendequation",
+	"alpha", "param", "string", "spline", "modify", "enabled"
 
 };
 
@@ -194,6 +194,16 @@ glTable_t blendFunc[BLEND_FUNC] = {
 	// SRC_COLOR es especifico de destination factor
 	// pero... no quiere decir que no funcionen
 };
+
+// ******************************************************************
+
+glTable_t blendEquationFunc[] = {
+	{ "ADD",				GL_FUNC_ADD				},
+	{ "SUBTRACT",			GL_FUNC_SUBTRACT		},
+	{ "REVERSE_SUBTRACT",	GL_FUNC_REVERSE_SUBTRACT}
+};
+
+#define BLEND_EQUATION_FUNC (sizeof(blendEquationFunc) / sizeof(glTable_t))
 
 // ******************************************************************
 
@@ -319,6 +329,12 @@ int getCodeByName(char *name, glTable_t *table, int size) {
 
 int getBlendCodeByName(char *name) {
 	return getCodeByName(name, blendFunc, BLEND_FUNC);
+}
+
+// ******************************************************************
+
+int getBlendEquationCodeByName(char *name) {
+	return getCodeByName(name, blendEquationFunc, BLEND_EQUATION_FUNC);
 }
 
 // ******************************************************************
@@ -569,7 +585,20 @@ void dkernel_loadScriptData(const char* pScript, const char* pSource) {
 					section->hasBlend = TRUE;
 					dkernel_trace("section blending: source %i and destination %i", section->sfactor, section->dfactor);
 					break;
+				// blending equation
+				case SECTION_BLEND_EQUATION:
+					values = sscanf(value, "%s", tmp);
 
+					if (values != 1)
+						parse_error(name, lineNum, "Invalid blend equation");
+
+					section->blendEquation = getBlendEquationCodeByName(tmp);
+
+					if ((section->blendEquation == -1))
+						parse_error(name, lineNum, "Invalid blend equation");
+
+					dkernel_trace("section blending equation: %i", section->blendEquation);
+					break;
 				// alpha function
 				case SECTION_ALPHA:
 					values = sscanf(value,"%s %f %f",tmp,&section->alpha1,&section->alpha2);
@@ -1871,13 +1900,13 @@ void dkernel_warn(const char *warn, ...) {
 		va_end(argptr);
 		//fprintf(stderr, "Warning: second %.2f, message '%s'\n", demoSystem.runTime, text);
 		fprintf(stderr, "Warning: '%s'\n", text);
-	}
 #ifdef WIN32
-	OutputDebugStringA("Engine Warning: ");
-	OutputDebugStringA(text);
-	if (text[0] != '\0' || text[strlen(text) - 1] != '\n')
-		OutputDebugStringA("\n");
+		OutputDebugStringA("Engine Warning: ");
+		OutputDebugStringA(text);
+		if (text[0] != '\0' || text[strlen(text) - 1] != '\n')
+			OutputDebugStringA("\n");
 #endif
+	}
 }
 
 // ******************************************************************
@@ -1892,13 +1921,13 @@ void dkernel_trace(const char *message, ...) {
 		vsprintf(text, message, argptr);
 		va_end(argptr);
 		fprintf(stdout, "Trace: %s\n", text);
-	}
 #ifdef WIN32
-	OutputDebugStringA("Engine Trace: ");
-	OutputDebugStringA(text);
-	if (text[0] != '\0' || text[strlen(text) - 1] != '\n')
-		OutputDebugStringA("\n");
+		OutputDebugStringA("Engine Trace: ");
+		OutputDebugStringA(text);
+		if (text[0] != '\0' || text[strlen(text) - 1] != '\n')
+			OutputDebugStringA("\n");
 #endif
+	}
 }
 
 // ******************************************************************

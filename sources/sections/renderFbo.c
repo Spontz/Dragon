@@ -48,6 +48,9 @@ void render_renderFbo () {
 		
 		// And then set the start and end blending factors
 		glBlendFunc(mySection->sfactor, mySection->dfactor);
+
+		if (mySection->blendEquation > 0)
+			glBlendEquation(mySection->blendEquation);
 	}
 	
 	// Deactivate the depth buffer calculations to avoid interferences with other objects
