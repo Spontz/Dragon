@@ -1803,7 +1803,7 @@ void dkernel_pause() {
 void dkernel_rewind() {
 
 	demoSystem.state = (demoSystem.state & DEMO_PAUSE) | DEMO_REWIND;
-	if (demoSystem.sound) sound_pause();
+	if (demoSystem.sound) sound_stop();
 }
 
 // ******************************************************************
@@ -1811,7 +1811,7 @@ void dkernel_rewind() {
 void dkernel_fastforward() {
 
 	demoSystem.state = (demoSystem.state & DEMO_PAUSE) | DEMO_FASTFORWARD;
-	if (demoSystem.sound) sound_pause();
+	if (demoSystem.sound) sound_stop();
 }
 
 // ******************************************************************

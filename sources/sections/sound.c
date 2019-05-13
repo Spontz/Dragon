@@ -50,6 +50,17 @@ void load_sound(){
 	local->volume = mySection->param[0];
 	local->prev_volume = local->volume;
 
+	// Beat detection - Init variables
+	local->beat_ratio = demoSystem.beat_ratio;
+	local->fade_out = demoSystem.beat_fadeout;
+
+	// Clean variables
+	for (auto i = 0; i < BUFFER_SAMPLES; i++) {
+		local->energy[i] = DEFAULT_ENERGY;
+	}
+	local->intensity = 0;
+	local->position = 1;
+
 	local->str = BASS_StreamCreateFile(FALSE, mySection->strings[0], 0, 0, BASS_STREAM_PRESCAN);
 	if (local->str == 0)
 		section_error("BASS cannot read file: %s", mySection->strings[0]);
@@ -92,7 +103,7 @@ void render_sound() {
 
 	float instant, avg;	// Instant energy
 	int i;
-	float fft[BUFFER_SAMPLES]; // 512 samples, because we have used "BASS_DATA_FFT1024", and this returns 512 values
+	float fft[BUFFER_SAMPLES] = {0.0f}; // 512 samples, because we have used "BASS_DATA_FFT1024", and this returns 512 values
 	
 	local = (sound_section *)mySection->vars;
 
@@ -106,9 +117,12 @@ void render_sound() {
 		local->prev_volume = local->volume;
 	}
 
-	BOOL r = BASS_ChannelGetData(local->str, fft, BASS_DATA_FFT1024); // get the FFT data
-	if (r == -1)
-		section_error("BASS_ChannelGetData returned error: %i", BASS_ErrorGetCode());
+	if (FALSE == BASS_ChannelGetData(local->str, &fft, BASS_DATA_FFT1024)) { // get the FFT data
+		int BASS_err = BASS_ErrorGetCode();
+		if ((BASS_err>0) && (BASS_err != BASS_ERROR_ENDED))
+			section_error("BASS_ChannelGetData returned error: %i", BASS_err);
+	}
+		
 
 	instant = 0;
 	for (i=0; i<(int)BUFFER_SAMPLES; i++)
