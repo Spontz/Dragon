@@ -8,6 +8,9 @@
 
 #include <stdio.h>
 
+#define DELIMITER '\x1f'
+#define DELIMITER_SEND "\x1f"
+
 static network_connection *local;
 // static char *additionalData;
 
@@ -41,11 +44,9 @@ char * getParamString(char *message, int requestedParameter) {
 	
 	theParameter = SPZ_STL(strdup)(message);
 	
-	for (theParameter = strtok(theParameter,"::");
-		counter < requestedParameter;
-		theParameter = strtok(NULL, "::"))
-			counter++;
-	
+	for (theParameter = strtok(theParameter, DELIMITER_SEND); counter < requestedParameter; theParameter = strtok(NULL, DELIMITER_SEND))
+		counter++;
+
 	return theParameter;
 }
 
@@ -142,7 +143,13 @@ char * process_message(char *message) {
 	}
 	
 	// Create the response
-	sprintf((char *)theResponse,"%s::%s::%f::%d::%f::%s", identifier, theResult, demoSystem.fps, demoSystem.state, demoSystem.runTime, (char *)theInformation);
+	sprintf((char *)theResponse,"%s%c%s%c%f%c%d%c%f%c%s",	identifier, DELIMITER,
+															theResult, DELIMITER,
+															demoSystem.fps, DELIMITER,
+															demoSystem.state, DELIMITER,
+															demoSystem.runTime, DELIMITER,
+															(char *)theInformation);
+
 	dkernel_trace("NET2 > Responded with: %s", theResponse);
 
 	// Free memory
